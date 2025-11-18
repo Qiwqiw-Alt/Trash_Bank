@@ -1,9 +1,9 @@
 package Model;
 
+import java.time.LocalDate;
+
 public class Poin {
-    int beratSampah;
-    String kategoriSampah;
-    int totalPoin;
-
-
+    public static int konversiKePoin(double totalHarga) {
+        return (int)(totalHarga / 100); // Belum fix cuyy
+    }
 }
