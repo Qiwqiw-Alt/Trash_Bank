@@ -3,6 +3,7 @@ package Model;
 public class User {
     private String username;
     private String password;
+    
 
     public User() {}
 
@@ -18,4 +19,5 @@ public class User {
     // Setter dan Getter Password
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
+
 }
