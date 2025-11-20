@@ -12,14 +12,11 @@ public class Admin extends User {
     }
 
     // Setter and Getter namaAdmin
-    public String getAdmin() {return namaAdmin;}
-    public void setAdmin(String nama) {this.namaAdmin = nama;}
+    public String getNamaAdmin() {return namaAdmin;}
+    public void setNamaAdmin(String nama) {this.namaAdmin = nama;}
 
-    
     // Setter dan Getter nohp
     public String getNohp() {return this.nohp;}
     public void setNohp(String noHp) {this.nohp = noHp;}
-
-
 
 }
