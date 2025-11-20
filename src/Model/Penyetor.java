@@ -8,7 +8,7 @@ public class Penyetor extends User {
     private int totalSetoran = 0;
     private ArrayList<Transaksi> riwayatTransaksi;
 
-    public Penyetor(String username, String password, String namaLengkap, String nohp) {
+    public Penyetor(String username, String password, String namaLengkap) {
         super(username, password);
         this.namaLengkap = namaLengkap;
     }
