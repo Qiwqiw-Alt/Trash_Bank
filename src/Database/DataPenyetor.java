@@ -17,26 +17,48 @@ public class DataPenyetor {
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
+    public String generatePenyetorId() {
+        int max = 0;
+
+        for (Penyetor a : daftarSemuaPenyetor) {
+            String id = a.getIdPenyetor().substring(2); // ambil bagian angkanya
+            int num = Integer.parseInt(id);
+            if (num > max) max = num;
+        }
+
+        int next = max + 1;
+        return String.format("UP%03d", next); // UP001, UP002, dst
+    }
+
     public ArrayList<Penyetor> loadData(String filepath) {
         daftarSemuaPenyetor.clear();
         File file = new File(filepath);
 
         try {
             if (!file.exists()) {
-                throw new IOException("File" + filepath + "tidak ada");
+                System.out.println("File tidak ditemukan, membuat file baru.");
+                file.createNewFile();
+                return daftarSemuaPenyetor;
             }
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
-            while ((line = br.readLine()).trim() != null) {
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+
                 String[] parts = line.split(delim);
-                if (parts.length >= 4) {
-                    daftarSemuaPenyetor.add(new Penyetor(parts[0], parts[1], parts[2], parts[3]));
-                    // 0 = username biasa
-                    // 1 = nama admin -> buat login/sigin
-                    // 2 = nomor hp
-                    // 3 = password -> buat login/signin
+                if (parts.length >= 6) {
+                    Penyetor penyetorBaru = new Penyetor(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                    // 0 = ID
+                    // 1 = username biasa
+                    // 2 = password
+                    // 3 = nama lengkap
+                    // 4 = no hp
+                    if(!parts[5].equalsIgnoreCase("null")){
+                        penyetorBaru.setIdBankSampah(parts[5]);
+                    }
+                    daftarSemuaPenyetor.add(penyetorBaru);
                 }
             }
             return daftarSemuaPenyetor;
@@ -50,12 +72,13 @@ public class DataPenyetor {
     //Tulis data
     public void writeData(String filepath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
-
             for (Penyetor penyetor : daftarSemuaPenyetor) {
-                String data = penyetor.getUsername() + "|" +
+                String data = penyetor.getIdPenyetor() + "|" +
+                        penyetor.getUsername() + "|" +
+                        penyetor.getPassword() + "|" +
                         penyetor.getNamaLengkap() + "|" +
-                        penyetor.getNohp() + "|" +
-                        penyetor.getPassword();
+                        penyetor.getNoHp() + "|" +
+                        (penyetor.getIdBankSampah() == null ? "null" : penyetor.getIdBankSampah());;
 
                 writer.write(data);
                 writer.newLine();

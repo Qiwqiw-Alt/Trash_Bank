@@ -3,7 +3,6 @@ package Database;
 import java.io.*;
 import java.util.ArrayList;
 import Model.Admin;
-import Model.Penyetor;
 
 public class DataAdmin {
     private ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
@@ -16,26 +15,50 @@ public class DataAdmin {
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
+    public String generateAdminId() {
+        int max = 0;
+
+        for (Admin a : daftarSemuaAdmin) {
+            String id = a.getIdAdmin().substring(2); // ambil bagian angkanya
+            int num = Integer.parseInt(id);
+            if (num > max) max = num;
+        }
+
+        int next = max + 1;
+        return String.format("UA%03d", next); // UA001, UA002, dst
+    }
+
     public ArrayList<Admin> loadData(String filepath) {
         daftarSemuaAdmin.clear();
         File file = new File(filepath);
 
         try {
             if (!file.exists()) {
-                throw new IOException("File" + filepath + "tidak ada");
+                System.out.println("File tidak ditemukan, membuat file baru.");
+                file.createNewFile();
+                return daftarSemuaAdmin;
             }
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
-            while ((line = br.readLine()).trim() != null) {
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if(line.isEmpty()) continue;
+
                 String[] parts = line.split(delim);
-                if (parts.length >= 4) {
-                    daftarSemuaAdmin.add(new Admin(parts[0], parts[1], parts[2], parts[3]));
-                    // 0 = username biasa
-                    // 1 = nama admin -> buat login/sigin
-                    // 2 = nomor hp
-                    // 3 = password -> buat login/signin
+                if (parts.length >= 6) {
+                    Admin adminBaru = new Admin(parts[0], parts[1], parts[2], parts[3], parts[4]);
+
+                    if(!parts[5].equalsIgnoreCase("null")){
+                        adminBaru.setIdBankSampah(parts[5]);
+                    }
+                    daftarSemuaAdmin.add(adminBaru);
+                    // 0 = ID
+                    // 1 = username biasa
+                    // 2 = password
+                    // 3 = nama admin
+                    // 4 = no hp
                 }
             }
             return daftarSemuaAdmin;
@@ -51,10 +74,12 @@ public class DataAdmin {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
 
             for (Admin admin : daftarSemuaAdmin) {
-                String data = admin.getUsername() + "|" +
+                String data = admin.getIdAdmin() + "|" +
+                        admin.getUsername() + "|" +
+                        admin.getPassword() + "|" +
                         admin.getNamaAdmin() + "|" +
                         admin.getNohp() + "|" +
-                        admin.getPassword();
+                        (admin.getIdBankSampah() == null ? "null" : admin.getIdBankSampah());
 
                 writer.write(data);
                 writer.newLine();
@@ -66,4 +91,6 @@ public class DataAdmin {
         }
     }
 
+    public static class DataSampah {
+    }
 }
