@@ -90,7 +90,4 @@ public class DataAdmin {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
     }
-
-    public static class DataSampah {
-    }
 }

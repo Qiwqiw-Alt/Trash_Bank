@@ -37,6 +37,22 @@ public class Transaksi {
         totalPoin = Poin.konversiKePoin(totalHarga);
     }
 
+    public String getIdPenyetor() {
+        return this.idPenyetor;
+    }
+
+    public void setIdPenyetor(String idPenyetor){
+        this.idPenyetor = idPenyetor;
+    }
+
+    public String getIdBank() {
+        return this.idBank;
+    }
+
+    public void setIdBank(String idBank){
+        this.idBank = idBank;
+    }
+
     public String getIdTransaksi() { return idTransaksi; }
     public LocalDate getTanggal() { return tanggal; }
     public double getTotalHarga() { return totalHarga; }
