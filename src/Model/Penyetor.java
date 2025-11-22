@@ -4,17 +4,30 @@ import java.util.ArrayList;
 
 public class Penyetor extends User {
     private String namaLengkap;
+    private String noHp;
+
     private int totalPoin = 0;
     private int totalSetoran = 0;
     private ArrayList<Transaksi> riwayatTransaksi;
 
-    public Penyetor(String username, String password, String namaLengkap) {
+    public Penyetor(String username, String password, String namaLengkap, String Nohp) {
         super(username, password);
         this.namaLengkap = namaLengkap;
+        this.noHp = Nohp;
+    }
+
+    public Penyetor(String username, String password, String namaLengkap) {
+        super(username,password);
+        this.namaLengkap = namaLengkap;
+        this.noHp = "Belum Ada";
     }
 
     public String getNamaLengkap() {return namaLengkap;}
     public void setNamaLengkap(String namaLengkap) {this.namaLengkap = namaLengkap;}
+
+    public String getNohp(){return  this.noHp;}
+    public void setNoHp(String noHp) {this.noHp = noHp;}
+
 
     public int getTotalPoin() {return totalPoin;}
     public void tambahPoin(int poin) {this.totalPoin += poin;}

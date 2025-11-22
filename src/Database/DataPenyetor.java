@@ -1,23 +1,24 @@
 package Database;
 
-import java.io.*;
-import java.util.ArrayList;
 import Model.Admin;
 import Model.Penyetor;
 
-public class DataAdmin {
-    private ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
+import java.io.*;
+import java.util.ArrayList;
 
-    public void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
-        daftarSemuaAdmin.add(adminBaru);
+public class DataPenyetor {
+    private ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
+
+    public void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn
+        daftarSemuaPenyetor.add(penyetorBaru);
     }
 
-    //filepath = src/Database/Admin/data.txt
+    //filepath = src/Database/Penyetor/data.txt
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
-    public ArrayList<Admin> loadData(String filepath) {
-        daftarSemuaAdmin.clear();
+    public ArrayList<Penyetor> loadData(String filepath) {
+        daftarSemuaPenyetor.clear();
         File file = new File(filepath);
 
         try {
@@ -31,18 +32,18 @@ public class DataAdmin {
             while ((line = br.readLine()).trim() != null) {
                 String[] parts = line.split(delim);
                 if (parts.length >= 4) {
-                    daftarSemuaAdmin.add(new Admin(parts[0], parts[1], parts[2], parts[3]));
+                    daftarSemuaPenyetor.add(new Penyetor(parts[0], parts[1], parts[2], parts[3]));
                     // 0 = username biasa
                     // 1 = nama admin -> buat login/sigin
                     // 2 = nomor hp
                     // 3 = password -> buat login/signin
                 }
             }
-            return daftarSemuaAdmin;
+            return daftarSemuaPenyetor;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return daftarSemuaAdmin;
+            return daftarSemuaPenyetor;
         }
     }
 
@@ -50,11 +51,11 @@ public class DataAdmin {
     public void writeData(String filepath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
 
-            for (Admin admin : daftarSemuaAdmin) {
-                String data = admin.getUsername() + "|" +
-                        admin.getNamaAdmin() + "|" +
-                        admin.getNohp() + "|" +
-                        admin.getPassword();
+            for (Penyetor penyetor : daftarSemuaPenyetor) {
+                String data = penyetor.getUsername() + "|" +
+                        penyetor.getNamaLengkap() + "|" +
+                        penyetor.getNohp() + "|" +
+                        penyetor.getPassword();
 
                 writer.write(data);
                 writer.newLine();
@@ -65,5 +66,4 @@ public class DataAdmin {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
     }
-
 }

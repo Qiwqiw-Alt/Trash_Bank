@@ -1,23 +1,23 @@
 package Database;
 
+import Model.BankSampah;
+
 import java.io.*;
 import java.util.ArrayList;
-import Model.Admin;
-import Model.Penyetor;
 
-public class DataAdmin {
-    private ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
+public class DataBankSampah {
+    private ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
 
-    public void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
-        daftarSemuaAdmin.add(adminBaru);
+    public void addBankSampah(BankSampah bankSampahBaru){ // untuk nambah bank sampah yang dipakai di SignIn
+        daftarSemuaBankSampah.add(bankSampahBaru);
     }
 
-    //filepath = src/Database/Admin/data.txt
+    //filepath = src/Database/BankSampah/data.txt
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
-    public ArrayList<Admin> loadData(String filepath) {
-        daftarSemuaAdmin.clear();
+    public ArrayList<BankSampah> loadData(String filepath) {
+        daftarSemuaBankSampah.clear();
         File file = new File(filepath);
 
         try {
@@ -31,30 +31,30 @@ public class DataAdmin {
             while ((line = br.readLine()).trim() != null) {
                 String[] parts = line.split(delim);
                 if (parts.length >= 4) {
-                    daftarSemuaAdmin.add(new Admin(parts[0], parts[1], parts[2], parts[3]));
+                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1], parts[2], parts[3]));
                     // 0 = username biasa
                     // 1 = nama admin -> buat login/sigin
                     // 2 = nomor hp
                     // 3 = password -> buat login/signin
                 }
             }
-            return daftarSemuaAdmin;
+            return BankSampah;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return daftarSemuaAdmin;
+            return BankSampah;
         }
     }
 
     //Tulis data
-    public void writeData(String filepath){
+    public void writeData(String filepath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
 
-            for (Admin admin : daftarSemuaAdmin) {
-                String data = admin.getUsername() + "|" +
-                        admin.getNamaAdmin() + "|" +
-                        admin.getNohp() + "|" +
-                        admin.getPassword();
+            for (BankSampah penyetor : BankSampah) {
+                String data = penyetor.getUsername() + "|" +
+                        penyetor.getNamaLengkap() + "|" +
+                        penyetor.getNohp() + "|" +
+                        penyetor.getPassword();
 
                 writer.write(data);
                 writer.newLine();
@@ -65,5 +65,4 @@ public class DataAdmin {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
     }
-
 }

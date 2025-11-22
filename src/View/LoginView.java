@@ -119,39 +119,59 @@ public class LoginView extends JFrame {
         });
     }
 
+    public String getUsernameInput(){
+        return usernameField.getText();
+    }
+
+    public String getPasswordInput(){
+        return new String(passwordField.getPassword());
+    }
+
+    public void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
+    public void moveToAdminDashboard() {
+        JOptionPane.showMessageDialog(this, "Menuju Admin Dashboard...");
+    }
+
+    public void moveToUserDashboard() {
+        JOptionPane.showMessageDialog(this, "Menuju User Dashboard...");
+    }
+
     // ===========================
     // LOGIC LOGIN (TIDAK DIUBAH)
     // ===========================
-    private void loginAction() {
-        String userInput = usernameField.getText();
-        String passInput = String.valueOf(passwordField.getPassword());
+//    private void loginAction() {
+//        String userInput = usernameField.getText();
+//        String passInput = String.valueOf(passwordField.getPassword());
+//
+//        if (users.isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Belum ada akun terdaftar!", "Error", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//
+//        for (User user : users) {
+//            if (user.getUsername().equals(userInput) && user.getPassword().equals(passInput)) {
+//
+//                if (user instanceof Admin) {
+//                    JOptionPane.showMessageDialog(this,
+//                            "Login berhasil sebagai ADMIN: " + ((Admin) user).getAdmin());
+//                }
+//
+//                else if (user instanceof Penyetor) {
+//                    JOptionPane.showMessageDialog(this,
+//                            "Login berhasil sebagai PENYETOR: " + ((Penyetor) user).getNamaLengkap());
+//                }
+//
+//                return;
+//            }
+//        }
+//
+//        JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+//    }
 
-        if (users.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Belum ada akun terdaftar!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        for (User user : users) {
-            if (user.getUsername().equals(userInput) && user.getPassword().equals(passInput)) {
-
-                if (user instanceof Admin) {
-                    JOptionPane.showMessageDialog(this,
-                            "Login berhasil sebagai ADMIN: " + ((Admin) user).getAdmin());
-                }
-
-                else if (user instanceof Penyetor) {
-                    JOptionPane.showMessageDialog(this,
-                            "Login berhasil sebagai PENYETOR: " + ((Penyetor) user).getNamaLengkap());
-                }
-
-                return;
-            }
-        }
-
-        JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
+//    }
 }
