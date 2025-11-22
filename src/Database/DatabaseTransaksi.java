@@ -6,7 +6,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class DataTransaksi {
+public class DatabaseTransaksi {
 
     private ArrayList<Transaksi> daftarTransaksi = new ArrayList<>();
     private final String delim = "\\|";

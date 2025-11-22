@@ -6,7 +6,7 @@ import Model.Penyetor;
 import java.io.*;
 import java.util.ArrayList;
 
-public class DataPenyetor {
+public class DatabasePenyetor {
     private ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
 
     public void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn

@@ -5,7 +5,7 @@ import Model.BankSampah;
 import java.io.*;
 import java.util.ArrayList;
 
-public class DataBankSampah {
+public class DatabaseBankSampah {
     private ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
 
     public void addBankSampah(BankSampah bankSampahBaru){ // untuk nambah bank sampah yang dipakai di SignIn
@@ -33,12 +33,12 @@ public class DataBankSampah {
         daftarSemuaBankSampah.clear();
         File file = new File(filepath);
 
-        try {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))){
             if (!file.exists()) {
                 throw new IOException("File" + filepath + "tidak ada");
             }
 
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            
             String line;
 
             while ((line = br.readLine()) != null) {

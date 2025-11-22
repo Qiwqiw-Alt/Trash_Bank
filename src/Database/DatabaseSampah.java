@@ -5,7 +5,7 @@ import Model.Sampah;
 import java.io.*;
 import java.util.ArrayList;
 
-public class DataSampah {
+public class DatabaseSampah {
 
     private ArrayList<Sampah> daftarSampah = new ArrayList<>();
     private final String delim = "\\|";

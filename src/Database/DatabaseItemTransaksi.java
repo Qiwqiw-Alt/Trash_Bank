@@ -5,7 +5,7 @@ import Model.ItemTransaksi;
 import java.io.*;
 import java.util.ArrayList;
 
-public class DataItemTransaksi {
+public class DatabaseItemTransaksi {
 
     private ArrayList<ItemTransaksi> daftarItem = new ArrayList<>();
     private final String delim = "\\|";

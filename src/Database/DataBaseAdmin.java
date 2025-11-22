@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import Model.Admin;
 
-public class DataAdmin {
+public class DataBaseAdmin {
     private ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
     // private static Scanner input = new Scanner(System.in);
 
