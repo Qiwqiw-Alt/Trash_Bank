@@ -4,18 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BankSampah {
+    private String idBank;
     private String namaBankSampah;
+
     private Admin admin;
     private ArrayList<Penyetor> daftarPenyetor;
     private ArrayList<Sampah> daftarKategoriSampah;
     private ArrayList<Transaksi> daftarTransaksi;
 
-    public BankSampah(String namaBank, Admin admin) {
+    private String fileAdmin;
+    private String filePenyetor;
+    private String fileTransaksi;
+
+    public BankSampah(String idBank, String namaBank) {
+        this.idBank = idBank;
         this.namaBankSampah = namaBank;
-        this.admin = admin;
+
         this.daftarPenyetor = new ArrayList<>();
         this.daftarKategoriSampah = new ArrayList<>();
         this.daftarTransaksi = new ArrayList<>();
+
+        this.fileAdmin = "admin_" + idBank + ".txt";
+        this.filePenyetor = "penyetor_" + idBank + ".txt";
+        this.fileTransaksi = "trx_" + idBank + ".txt";
     }
 
     public void tambahPenyetor(Penyetor p){
@@ -51,11 +62,11 @@ public class BankSampah {
         return daftarTransaksi;
     }
 
-    public String getNamaBank() {
-        return namaBankSampah;
-    }
+    public String getIdBank() { return idBank; }
+    public String getNamaBank() { return namaBankSampah; }
+    public Admin getAdmin() { return admin; }
 
-    public Admin getAdmin() {
-        return admin;
-    }
+    public String getFileAdmin() { return fileAdmin; }
+    public String getFilePenyetor() { return filePenyetor; }
+    public String getFileTransaksi() { return fileTransaksi; }
 }

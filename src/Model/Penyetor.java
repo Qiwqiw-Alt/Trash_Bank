@@ -3,40 +3,82 @@ package Model;
 import java.util.ArrayList;
 
 public class Penyetor extends User {
+
+    private String idPenyetor;
     private String namaLengkap;
     private String noHp;
+    private String idBankSampah;
 
     private int totalPoin = 0;
     private int totalSetoran = 0;
-    private ArrayList<Transaksi> riwayatTransaksi;
+    private ArrayList<String> riwayatTransaksi;
 
-    public Penyetor(String username, String password, String namaLengkap, String Nohp) {
+    public Penyetor(String idPenyetor, String username, String password, String namaLengkap, String noHp) {
         super(username, password);
+        this.idPenyetor = idPenyetor;
         this.namaLengkap = namaLengkap;
-        this.noHp = Nohp;
-        this.riwayatTransaksi = new ArrayList<>();
-    }
-    
-    public Penyetor(String username, String password, String namaLengkap) {
-        super(username,password);
-        this.namaLengkap = namaLengkap;
-        this.noHp = "Belum Ada";
-        this.riwayatTransaksi = new ArrayList<>();
+        this.noHp = noHp;
+        this.idBankSampah = null;
+        this.riwayatTransaksi = new ArrayList<>();   // WAJIB
     }
 
-    public String getNamaLengkap() {return namaLengkap;}
-    public void setNamaLengkap(String namaLengkap) {this.namaLengkap = namaLengkap;}
+    public String getNamaLengkap() {
+        return namaLengkap;
+    }
 
-    public String getNohp(){return  this.noHp;}
-    public void setNoHp(String noHp) {this.noHp = noHp;}
+    public void setNamaLengkap(String namaLengkap) {
+        this.namaLengkap = namaLengkap;
+    }
 
+    public String getNoHp() {
+        return noHp;
+    }
 
-    public int getTotalPoin() {return totalPoin;}
-    public void tambahPoin(int poin) {this.totalPoin += poin;}
-    public void setTotalPoint(int poin) {this.totalPoin = poin;}
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
+    }
 
-    public int getTotalSetoran(){return totalSetoran;}
-    public void tambahSetoran(int banyakSetoran) {this.totalSetoran += banyakSetoran;}
-    public void setSetoran(int setoran) {this.totalSetoran = setoran;}
+    public int getTotalPoin() {
+        return totalPoin;
+    }
 
+    public void tambahPoin(int poin) {
+        this.totalPoin += poin;
+    }
+
+    public void setTotalPoin(int totalPoin) {
+        this.totalPoin = totalPoin;
+    }
+
+    public int getTotalSetoran() {
+        return totalSetoran;
+    }
+
+    public void tambahSetoran(int banyakSetoran) {
+        this.totalSetoran += banyakSetoran;
+    }
+
+    public void setTotalSetoran(int totalSetoran) {
+        this.totalSetoran = totalSetoran;
+    }
+
+    public ArrayList<String> getRiwayatTransaksi() {
+        return riwayatTransaksi;
+    }
+
+    public void tambahTransaksi(String id_trx) {
+        riwayatTransaksi.add(id_trx);
+    }
+
+    public String getIdPenyetor() {
+        return idPenyetor;
+    }
+
+    public String getIdBankSampah() {
+        return idBankSampah;
+    }
+
+    public void setIdBankSampah(String idBankSampah) {
+        this.idBankSampah = idBankSampah;
+    }
 }

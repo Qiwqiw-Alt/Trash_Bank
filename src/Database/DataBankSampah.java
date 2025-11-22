@@ -16,6 +16,19 @@ public class DataBankSampah {
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
+    public String generateBankId() {
+        int max = 0;
+
+        for (BankSampah a : daftarSemuaBankSampah) {
+            String id = a.getIdBank().substring(2); // ambil bagian angkanya
+            int num = Integer.parseInt(id);
+            if (num > max) max = num;
+        }
+
+        int next = max + 1;
+        return String.format("BS%03d", next); // UA001, UA002, dst
+    }
+
     public ArrayList<BankSampah> loadData(String filepath) {
         daftarSemuaBankSampah.clear();
         File file = new File(filepath);
@@ -28,21 +41,20 @@ public class DataBankSampah {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
-            while ((line = br.readLine()).trim() != null) {
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
                 String[] parts = line.split(delim);
-                if (parts.length >= 4) {
-                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1], parts[2], parts[3]));
-                    // 0 = username biasa
-                    // 1 = nama admin -> buat login/sigin
-                    // 2 = nomor hp
-                    // 3 = password -> buat login/signin
+                if (parts.length >= 2) {
+                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1]));
+                    // 0 = idBank
+                    // 1 = nama bank
                 }
             }
-            return BankSampah;
+            return daftarSemuaBankSampah;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return BankSampah;
+            return daftarSemuaBankSampah;
         }
     }
 
@@ -50,11 +62,9 @@ public class DataBankSampah {
     public void writeData(String filepath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
 
-            for (BankSampah penyetor : BankSampah) {
-                String data = penyetor.getUsername() + "|" +
-                        penyetor.getNamaLengkap() + "|" +
-                        penyetor.getNohp() + "|" +
-                        penyetor.getPassword();
+            for (BankSampah bankSampah : daftarSemuaBankSampah) {
+                String data = bankSampah.getIdBank() + "|" +
+                        bankSampah.getNamaBank();
 
                 writer.write(data);
                 writer.newLine();

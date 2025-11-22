@@ -1,37 +1,61 @@
 package Model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Transaksi {
-    private Penyetor penyetor;
-    private Sampah sampah;
-    private double beratKg;
-    private double totalHarga;
-    private int poinDidapat;
+    private String idTransaksi;
+    private String idPenyetor;
+    private String idBank;
+
+    private List<ItemTransaksi> items;
     private LocalDate tanggal;
 
-    public Transaksi(Penyetor penyetor, Sampah sampah, double beratKg) {
-        this.penyetor = penyetor;
-        this.sampah = sampah;
-        this.beratKg = beratKg;
-        this.totalHarga = beratKg * sampah.getHargaPerKg();
-        this.poinDidapat = Poin.konversiKePoin(totalHarga);
+    private int totalPoin;
+    private double totalHarga;
+
+    public Transaksi(String idTransaksi, String idPenyetor, String idBank) {
+        this.idTransaksi = idTransaksi;
+        this.idPenyetor = idPenyetor;
+        this.idBank = idBank;
+
+        this.items = new ArrayList<>();
         this.tanggal = LocalDate.now();
-
-        this.penyetor.tambahPoin(poinDidapat); // langsung tambah poin
     }
 
-    public double getTotalHarga() {
-        return totalHarga;
+    public void tambahItem(ItemTransaksi item) {
+        items.add(item);
+        hitungTotal();
     }
 
-    public int getPoinDidapat() {
-        return poinDidapat;
+    private void hitungTotal() {
+        totalHarga = 0;
+        for (ItemTransaksi i : items) {
+            totalHarga += i.getSubtotal();
+        }
+        totalPoin = Poin.konversiKePoin(totalHarga);
     }
 
-    public LocalDate getTanggal() {
-        return tanggal;
+    public String getIdPenyetor() {
+        return this.idPenyetor;
     }
 
+    public void setIdPenyetor(String idPenyetor){
+        this.idPenyetor = idPenyetor;
+    }
 
+    public String getIdBank() {
+        return this.idBank;
+    }
+
+    public void setIdBank(String idBank){
+        this.idBank = idBank;
+    }
+
+    public String getIdTransaksi() { return idTransaksi; }
+    public LocalDate getTanggal() { return tanggal; }
+    public double getTotalHarga() { return totalHarga; }
+    public int getTotalPoin() { return totalPoin; }
+    public List<ItemTransaksi> getItems() { return items; }
 }
