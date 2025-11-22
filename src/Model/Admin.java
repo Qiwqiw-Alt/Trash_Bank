@@ -1,6 +1,6 @@
 package Model;
 
-import Database.DataAdmin;
+import Database.DataBaseAdmin;
 
 public class Admin extends User {
     private String idAdmin;

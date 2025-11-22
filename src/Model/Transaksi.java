@@ -24,6 +24,18 @@ public class Transaksi {
         this.tanggal = LocalDate.now();
     }
 
+    public void setTanggal(LocalDate tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public void setTotalHarga(double totalHarga) {
+        this.totalHarga = totalHarga;
+    }
+
+    public void setTotalPoin(int poin) {
+        this.totalPoin = poin;
+    }
+
     public void tambahItem(ItemTransaksi item) {
         items.add(item);
         hitungTotal();
