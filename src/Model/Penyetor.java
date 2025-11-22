@@ -14,12 +14,14 @@ public class Penyetor extends User {
         super(username, password);
         this.namaLengkap = namaLengkap;
         this.noHp = Nohp;
+        this.riwayatTransaksi = new ArrayList<>();
     }
-
+    
     public Penyetor(String username, String password, String namaLengkap) {
         super(username,password);
         this.namaLengkap = namaLengkap;
         this.noHp = "Belum Ada";
+        this.riwayatTransaksi = new ArrayList<>();
     }
 
     public String getNamaLengkap() {return namaLengkap;}
