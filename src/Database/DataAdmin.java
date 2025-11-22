@@ -2,11 +2,13 @@ package Database;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import Model.Admin;
-import Model.Penyetor;
 
 public class DataAdmin {
     private ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
+    // private static Scanner input = new Scanner(System.in);
 
     public void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);
@@ -20,12 +22,11 @@ public class DataAdmin {
         daftarSemuaAdmin.clear();
         File file = new File(filepath);
 
-        try {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))){
             if (!file.exists()) {
                 throw new IOException("File" + filepath + "tidak ada");
             }
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            
             String line;
 
             while ((line = br.readLine()).trim() != null) {
