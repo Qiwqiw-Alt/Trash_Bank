@@ -23,6 +23,21 @@ public class DatabaseReward {
         saveData();
     }
 
+    public String generateRewardId() {
+        int max = 0;
+
+        for (Reward reward : listReward) {
+            String id = reward.getIdReward().substring(1);
+            int num = Integer.parseInt(id);
+            if (num > max) max = num;
+        }
+
+        int next = max + 1;
+        return String.format("R%03d", next);
+
+    }
+
+
     ArrayList<Reward> loadData() {
         ArrayList<Reward> list = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(DATA_REWARD))) {
