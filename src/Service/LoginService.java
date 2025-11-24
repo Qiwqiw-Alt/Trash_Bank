@@ -1,29 +1,54 @@
 package Service;
 
+import Database.DataBaseAdmin;
+import Database.DatabasePenyetor;
 import Model.Admin;
 import Model.Penyetor;
-import Model.User;
-import Model.BankSampah;
+
+import java.util.ArrayList;
 
 public class LoginService {
-    private BankSampah bankSampah;
+    private final String ADMIN_FILE = "src/Database/Admin/data.txt";
+    private final String PENYETOR_FILE = "src/Database/Penyetor/data.txt";
 
-    public LoginService(BankSampah bankSampah) {
-        this.bankSampah = bankSampah;
-    }
-
-    public User login(String username, String password) {
-        Admin admin = bankSampah.getAdmin();
-        if(admin.getUsername().equals(username) && admin.getPassword().equals(password)){
-            return  admin;
+    public boolean isUsernameTaken(String username) {
+        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData(PENYETOR_FILE);
+        for (Penyetor u : penyetor) {
+            if (u.getUsername().equals(username)) return true;
         }
 
-        for(Penyetor penyetor : bankSampah.getDaftarPenyetor()){
-            if(penyetor.getUsername().equals(username) && penyetor.getPassword().equals(password)){
-                return  penyetor;
+        ArrayList<Admin> admin = DataBaseAdmin.loadData(ADMIN_FILE);
+        for (Admin u : admin) {
+            if (u.getUsername().equals(username)) return true;
+        }
+        return false;
+    }
+
+    public Object loginUser(String username, String password) {
+        // cek admin
+        ArrayList<Admin> admins = DataBaseAdmin.loadData(ADMIN_FILE);
+        for (Admin a : admins) {
+            if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
+                return a;
             }
         }
 
-        return  null;
+        // cek penyetor
+        ArrayList<Penyetor> penyetors = DatabasePenyetor.loadData(PENYETOR_FILE);
+        for (Penyetor p : penyetors) {
+            if (p.getUsername().equals(username) && p.getPassword().equals(password)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Admin> getAllAdmins() {
+        return DataBaseAdmin.loadData(ADMIN_FILE);
+    }
+
+    public ArrayList<Penyetor> getAllPenyetors() {
+        return DatabasePenyetor.loadData(PENYETOR_FILE);
     }
 }

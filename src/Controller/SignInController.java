@@ -4,9 +4,9 @@ import Service.SignInService;
 
 public class SignInController {
 
-    private SignInService service;
+    private static SignInService service;
 
-    public static SignInController() {
+    public SignInController() {
         this.service = new SignInService();
     }
 

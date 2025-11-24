@@ -12,11 +12,12 @@ public class DataBaseAdmin {
 
     public static void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);
+        writeData("src/Database/Admin/data.txt");
     }
 
     //filepath = src/Database/Admin/data.txt
     // Load/baca data sebelum Sign In dan Login
-    String delim = "\\|";
+    static String delim = "\\|";
 
     public static String generateAdminId() {
         int max = 0;
@@ -72,7 +73,7 @@ public class DataBaseAdmin {
     }
 
     //Tulis data
-    public void writeData(String filepath){
+    public static void writeData(String filepath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
 
             for (Admin admin : daftarSemuaAdmin) {

@@ -1,4 +1,6 @@
 package View;
 
-public class DasboardAdminView {
+import javax.swing.*;
+
+public class DasboardAdminView extends JFrame {
 }
