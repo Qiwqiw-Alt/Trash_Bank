@@ -7,10 +7,10 @@ import java.util.Scanner;
 import Model.Admin;
 
 public class DataBaseAdmin {
-    private ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
+    private static ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
     // private static Scanner input = new Scanner(System.in);
 
-    public void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
+    public static void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);
     }
 
@@ -18,7 +18,7 @@ public class DataBaseAdmin {
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
-    public String generateAdminId() {
+    public static String generateAdminId() {
         int max = 0;
 
         for (Admin a : daftarSemuaAdmin) {
@@ -31,7 +31,7 @@ public class DataBaseAdmin {
         return String.format("UA%03d", next); // UA001, UA002, dst
     }
 
-    public ArrayList<Admin> loadData(String filepath) {
+    public static ArrayList<Admin> loadData(String filepath) {
         daftarSemuaAdmin.clear();
         File file = new File(filepath);
 
