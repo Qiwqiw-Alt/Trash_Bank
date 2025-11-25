@@ -1,6 +1,8 @@
 package Database;
 
 import Model.PenukaranReward;
+import Model.Reward;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,6 +17,11 @@ public class DatabasePenukaranReward {
     private ArrayList<PenukaranReward> listTransaksiPenukaranReward;
     private static final String DATA_PENUKARAN_REWARD = "src/Database/DataPenukaranReward/dataPenukaran.txt";
     private final String delim = "\\|";
+
+    public void addReward(PenukaranReward transaksiPenukaranBaru) {
+        listTransaksiPenukaranReward.add(transaksiPenukaranBaru);
+        saveData();
+    }
 
     public ArrayList<PenukaranReward> loadData() {
         listTransaksiPenukaranReward.clear();
