@@ -1,7 +1,5 @@
 package View;
 
-package Service;
-
 import javax.swing.*;
 
 import Model.Admin;
@@ -197,10 +195,10 @@ public class SignInView extends JFrame {
 
         // Buat user baru berdasarkan role
         if (role.equals("Admin")) {
-            Admin admin = new Admin(id, user, pass, nama, noHp);
+            Admin admin = new Admin(role,id, user, pass, nama, noHp);
             LoginView.users.add(admin);
         } else {
-            Penyetor penyetor = new Penyetor(id, user, pass, nama, noHp);
+            Penyetor penyetor = new Penyetor(role,id, user, pass, nama, noHp);
             LoginView.users.add(penyetor);
         }
 
