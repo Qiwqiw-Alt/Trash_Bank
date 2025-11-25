@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class PenukaranReward {
 
@@ -8,6 +9,8 @@ public class PenukaranReward {
     private String idReward;
     private String idPenyetor;
     private LocalDate tanggal;
+
+    public PenukaranReward() {}
 
     public PenukaranReward(String idPenukaran, String idReward, String idPenyetor) {
         this.idPenukaran = idPenukaran;
@@ -20,4 +23,12 @@ public class PenukaranReward {
     public String getIdReward() { return idReward; }
     public String getIdPenyetor() { return idPenyetor; }
     public LocalDate getTanggal() { return tanggal; }
+    public void setTanggalPenukaran(LocalDate time) {
+        this.tanggal = time;
+    }
+
+    public String getFormattedTime() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return tanggal.format(format);
+    }
 }
