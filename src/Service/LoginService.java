@@ -12,12 +12,12 @@ public class LoginService {
     private final String PENYETOR_FILE = "src/Database/Penyetor/data.txt";
 
     public boolean isUsernameTaken(String username) {
-        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData(PENYETOR_FILE);
+        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
         for (Penyetor u : penyetor) {
             if (u.getUsername().equals(username)) return true;
         }
 
-        ArrayList<Admin> admin = DataBaseAdmin.loadData(ADMIN_FILE);
+        ArrayList<Admin> admin = DataBaseAdmin.loadData();
         for (Admin u : admin) {
             if (u.getUsername().equals(username)) return true;
         }
@@ -26,7 +26,7 @@ public class LoginService {
 
     public Object loginUser(String username, String password) {
         // cek admin
-        ArrayList<Admin> admins = DataBaseAdmin.loadData(ADMIN_FILE);
+        ArrayList<Admin> admins = DataBaseAdmin.loadData();
         for (Admin a : admins) {
             if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
                 return a;
@@ -34,7 +34,7 @@ public class LoginService {
         }
 
         // cek penyetor
-        ArrayList<Penyetor> penyetors = DatabasePenyetor.loadData(PENYETOR_FILE);
+        ArrayList<Penyetor> penyetors = DatabasePenyetor.loadData();
         for (Penyetor p : penyetors) {
             if (p.getUsername().equals(username) && p.getPassword().equals(password)) {
                 return p;
@@ -45,10 +45,10 @@ public class LoginService {
     }
 
     public ArrayList<Admin> getAllAdmins() {
-        return DataBaseAdmin.loadData(ADMIN_FILE);
+        return DataBaseAdmin.loadData();
     }
 
     public ArrayList<Penyetor> getAllPenyetors() {
-        return DatabasePenyetor.loadData(PENYETOR_FILE);
+        return DatabasePenyetor.loadData();
     }
 }
