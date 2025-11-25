@@ -1,4 +1,11 @@
 package View.PenyetorPanels;
 
-public class ProfilPenyetorPanel {
+import javax.swing.JPanel;
+
+import Model.Penyetor;
+
+public class ProfilPenyetorPanel extends JPanel {
+    public ProfilPenyetorPanel(Penyetor user){
+    
+   }
 }

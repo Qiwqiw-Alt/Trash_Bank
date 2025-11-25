@@ -1,6 +1,9 @@
 package View;
 
 import javax.swing.*;
+
+import Controller.LoginController;
+
 import java.awt.*;
 
 import Model.Admin;

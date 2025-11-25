@@ -8,9 +8,6 @@ import Model.Penyetor;
 import java.util.ArrayList;
 
 public class LoginService {
-    private final String ADMIN_FILE = "src/Database/Admin/data.txt";
-    private final String PENYETOR_FILE = "src/Database/Penyetor/data.txt";
-
     public boolean isUsernameTaken(String username) {
         ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
         for (Penyetor u : penyetor) {

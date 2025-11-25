@@ -1,4 +1,11 @@
 package View.PenyetorPanels;
 
-public class KeluhanPanel {
+import javax.swing.JPanel;
+
+import Model.Penyetor;
+
+public class KeluhanPanel extends JPanel {
+   public KeluhanPanel(Penyetor user){
+    
+   }
 }

@@ -1,4 +1,12 @@
 package View.PenyetorPanels;
 
-public class SetorSampahPanel {
+import javax.swing.JPanel;
+
+import Model.BankSampah;
+import Model.Penyetor;
+
+public class SetorSampahPanel extends JPanel {
+    public SetorSampahPanel(Penyetor user, BankSampah banksampah){
+    
+   }
 }
