@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 
+import Controller.SignInController;
 import Database.DataBaseAdmin;
 import Database.DatabasePenyetor;
 import Model.Admin;
@@ -165,24 +166,16 @@ public class SignInView extends JFrame {
             JOptionPane.showMessageDialog(this, "Isi semua data!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        // Validasi username unik
-        for (User u : LoginView.users) {
-            if (u.getUsername().equals(user)) {
-                JOptionPane.showMessageDialog(this, "Username sudah dipakai!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        if (SignInController.getService().isUsernameTaken(user, role)) {
+            JOptionPane.showMessageDialog(this, "Username sudah dipakai!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         // Buat user baru berdasarkan role
         if (role.equals("Admin")) {
-            String id = DataBaseAdmin.generateAdminId();
-            Admin admin = new Admin(role,id, user, pass, nama, noHp);
-            LoginView.users.add(admin);
+            SignInController.getService().registerAdmin(role, nama, user, pass, noHp);
         } else {
-            String id = DatabasePenyetor.generatePenyetorId();
-            Penyetor penyetor = new Penyetor(role,id, user, pass, nama, noHp);
-            LoginView.users.add(penyetor);
+            SignInController.getService().registerPenyetor(role, nama, user, pass, noHp);
         }
 
         JOptionPane.showMessageDialog(this, "Akun berhasil dibuat!");

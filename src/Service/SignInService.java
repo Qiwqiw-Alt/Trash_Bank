@@ -9,15 +9,17 @@ import java.util.ArrayList;
 
 public class SignInService {
 
-    public boolean isUsernameTaken(String username) {
-        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
-        for (Penyetor u : penyetor) {
-            if (u.getUsername().equals(username)) return true;
-        }
-
-        ArrayList<Admin> admin = DataBaseAdmin.loadData();
-        for (Admin u : admin) {
-            if (u.getUsername().equals(username)) return true;
+    public boolean isUsernameTaken(String username, String role) {
+        if(role.equals("penyetor")) {
+            ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
+            for (Penyetor u : penyetor) {
+                if (u.getUsername().equals(username)) return true;
+            }
+        }  else {
+            ArrayList<Admin> admin = DataBaseAdmin.loadData();
+            for (Admin u : admin) {
+                if (u.getUsername().equals(username)) return true;
+            }
         }
 
         return false;

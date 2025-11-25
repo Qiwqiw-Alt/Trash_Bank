@@ -2,18 +2,10 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List; // Import List
-import java.util.UUID;
+
 import Model.Admin;
 import Model.Penyetor;
-import Model.User;
-import Model.BankSampah;
-import Model.Complain;
-import Model.Sampah; // Import Model Sampah
-import Model.Reward; // Import Model Reward
-import Model.Transaksi; // Import Model Transaksi
-import Model.PenukaranReward; // Import Model PenukaranReward
+
 
 public class LoginView extends JFrame {
 
@@ -22,14 +14,7 @@ public class LoginView extends JFrame {
     private JButton loginButton, signupButton;
     private ImageIcon image = new ImageIcon("recycle-bin.png");
     
-    // Global Static Data Lists
-    public static ArrayList<User> users = new ArrayList<>();
-    public static List<Complain> complains = new ArrayList<>();
-    public static List<Sampah> sampahs = new ArrayList<>(); // LIST BARU
-    public static List<Reward> rewards = new ArrayList<>(); // LIST BARU
-    public static List<Transaksi> transactions = new ArrayList<>(); // LIST BARU
-    public static List<PenukaranReward> penukaranRewards = new ArrayList<>(); // LIST BARU
-    public static BankSampah bankSampah = new BankSampah("BS001", "Bank Sampah Hijau Lestari"); // INSTANCE BARU
+
 
     public LoginView() {
         setTitle("Login - Bank Sampah");
@@ -231,36 +216,41 @@ public class LoginView extends JFrame {
     // LOGIC LOGIN (TIDAK DIUBAH)
     // ===========================
     private void loginAction() {
-        String userInput = usernameField.getText();
-        String passInput = String.valueOf(passwordField.getPassword());
+        String username = usernameField.getText();
+        String password = String.valueOf(passwordField.getPassword());
 
-        if (users.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Belum ada akun terdaftar! Buat akun dulu.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Masukkan username dan password!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        for (User user : users) {
-            if (user.getUsername().equals(userInput) && user.getPassword().equals(passInput)) {
+        Object user = LoginController.login(username, password);
 
-                if (user instanceof Admin) {
-                    JOptionPane.showMessageDialog(this,
-                            "Login berhasil sebagai ADMIN: " + ((Admin) user).getNamaAdmin());
-                    // Panggil Dashboard Admin
-                    new DashboardAdmin((Admin) user, bankSampah).setVisible(true); 
-                }
-
-                else if (user instanceof Penyetor) {
-                    JOptionPane.showMessageDialog(this,
-                            "Login berhasil sebagai PENYETOR: " + ((Penyetor) user).getNamaLengkap());
-                    // Panggil Dashboard Penyetor
-                    new DashboardPenyetorView((Penyetor) user, bankSampah).setVisible(true);
-                }
-                dispose();
-                return;
-            }
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+        // USER DITEMUKAN → CEK TYPE
+        if (user instanceof Admin) {
+            Admin admin = (Admin) user;
+            JOptionPane.showMessageDialog(this,
+                    "Login berhasil sebagai ADMIN: " + admin.getNamaAdmin());
+
+            new DashboardAdminView(admin).setVisible(true);
+            dispose();
+            return;
+        }
+
+        if (user instanceof Penyetor) {
+            Penyetor p = (Penyetor) user;
+            JOptionPane.showMessageDialog(this,
+                    "Login berhasil sebagai PENYETOR: " + p.getNamaLengkap());
+
+            new DashboardPenyetorView(p).setVisible(true);
+            dispose();
+            return;
+        }
     }
 
     public static void main(String[] args) {

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import java.util.UUID; 
 import java.util.ArrayList;
 
-public class DashboardAdmin extends JFrame {
+public class DashboardAdminView extends JFrame {
     
     private Admin currentUser;
     private BankSampah bankSampah; 
@@ -32,7 +32,7 @@ public class DashboardAdmin extends JFrame {
     private final Color GREEN_LIGHT = new Color(200, 240, 200); 
     private final Color TEXT_DARK = new Color(50, 50, 50);
 
-    public DashboardAdmin(Admin user, BankSampah bankSampah) {
+    public DashboardAdminView(Admin user, BankSampah bankSampah) {
         this.currentUser = user;
         this.bankSampah = bankSampah; 
         String namaBank = bankSampah.getNamaBank() != null ? bankSampah.getNamaBank() : "Bank Sampah App";

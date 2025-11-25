@@ -29,6 +29,10 @@ public class DashboardPenyetorView extends JFrame {
     private final Color GREEN_LIGHT = new Color(200, 240, 200); 
     private final Color TEXT_DARK = new Color(50, 50, 50);
 
+    public DashboardPenyetorView(Penyetor user){
+
+    }
+
     public DashboardPenyetorView(Penyetor user, BankSampah bankSampah) {
         this.currentUser = user;
         this.bankSampah = bankSampah; 
