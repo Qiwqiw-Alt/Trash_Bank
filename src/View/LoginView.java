@@ -253,7 +253,7 @@ public class LoginView extends JFrame {
                     JOptionPane.showMessageDialog(this,
                             "Login berhasil sebagai PENYETOR: " + ((Penyetor) user).getNamaLengkap());
                     // Panggil Dashboard Penyetor
-                    new DashboardPenyetor((Penyetor) user, bankSampah).setVisible(true);
+                    new DashboardPenyetorView((Penyetor) user, bankSampah).setVisible(true);
                 }
                 dispose();
                 return;
