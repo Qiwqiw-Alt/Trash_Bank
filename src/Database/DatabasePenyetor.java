@@ -1,6 +1,5 @@
 package Database;
 
-import Model.Admin;
 import Model.Penyetor;
 
 import java.io.*;
@@ -8,10 +7,11 @@ import java.util.ArrayList;
 
 public class DatabasePenyetor {
     private static ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
+    private static final String DATA_PENYETOR = "src\\Database\\Penyetor\\data.txt";
 
     public static void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn
         daftarSemuaPenyetor.add(penyetorBaru);
-        writeData("src/Database/Admin/data.txt");
+        writeData();
     }
 
     //filepath = src/Database/Penyetor/data.txt
@@ -31,9 +31,9 @@ public class DatabasePenyetor {
         return String.format("UP%03d", next); // UP001, UP002, dst
     }
 
-    public static ArrayList<Penyetor> loadData(String filepath) {
+    public static ArrayList<Penyetor> loadData() {
         daftarSemuaPenyetor.clear();
-        File file = new File(filepath);
+        File file = new File(DATA_PENYETOR);
 
         try {
             if (!file.exists()) {
@@ -62,6 +62,7 @@ public class DatabasePenyetor {
                     daftarSemuaPenyetor.add(penyetorBaru);
                 }
             }
+            br.close();
             return daftarSemuaPenyetor;
 
         } catch (IOException e) {
@@ -71,8 +72,8 @@ public class DatabasePenyetor {
     }
 
     //Tulis data
-    public static void writeData(String filepath){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
+    public static void writeData(){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_PENYETOR))) {
             for (Penyetor penyetor : daftarSemuaPenyetor) {
                 String data = penyetor.getIdPenyetor() + "|" +
                         penyetor.getUsername() + "|" +
