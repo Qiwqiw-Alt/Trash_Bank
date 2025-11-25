@@ -7,17 +7,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DatabasePenyetor {
-    private ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
+    private static ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
 
-    public void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn
+    public static void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn
         daftarSemuaPenyetor.add(penyetorBaru);
+        writeData("src/Database/Admin/data.txt");
     }
 
     //filepath = src/Database/Penyetor/data.txt
     // Load/baca data sebelum Sign In dan Login
-    String delim = "\\|";
+    static String delim = "\\|";
 
-    public String generatePenyetorId() {
+    public static String generatePenyetorId() {
         int max = 0;
 
         for (Penyetor a : daftarSemuaPenyetor) {
@@ -30,7 +31,7 @@ public class DatabasePenyetor {
         return String.format("UP%03d", next); // UP001, UP002, dst
     }
 
-    public ArrayList<Penyetor> loadData(String filepath) {
+    public static ArrayList<Penyetor> loadData(String filepath) {
         daftarSemuaPenyetor.clear();
         File file = new File(filepath);
 
@@ -70,7 +71,7 @@ public class DatabasePenyetor {
     }
 
     //Tulis data
-    public void writeData(String filepath){
+    public static void writeData(String filepath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
             for (Penyetor penyetor : daftarSemuaPenyetor) {
                 String data = penyetor.getIdPenyetor() + "|" +

@@ -3,6 +3,9 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import Controller.LoginController;
 import Model.Admin;
 import Model.Penyetor;
 import Model.User;
@@ -13,7 +16,6 @@ public class LoginView extends JFrame {
     private JPasswordField passwordField;
     private JButton loginButton, signupButton;
     private ImageIcon image = new ImageIcon("recycle-bin.png");
-    public static ArrayList<User> users = new ArrayList<>();
 
     public LoginView() {
         setTitle("Login - Bank Sampah");
@@ -142,36 +144,30 @@ public class LoginView extends JFrame {
     // ===========================
     // LOGIC LOGIN (TIDAK DIUBAH)
     // ===========================
-//    private void loginAction() {
-//        String userInput = usernameField.getText();
-//        String passInput = String.valueOf(passwordField.getPassword());
-//
-//        if (users.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Belum ada akun terdaftar!", "Error", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//
-//        for (User user : users) {
-//            if (user.getUsername().equals(userInput) && user.getPassword().equals(passInput)) {
-//
-//                if (user instanceof Admin) {
-//                    JOptionPane.showMessageDialog(this,
-//                            "Login berhasil sebagai ADMIN: " + ((Admin) user).getAdmin());
-//                }
-//
-//                else if (user instanceof Penyetor) {
-//                    JOptionPane.showMessageDialog(this,
-//                            "Login berhasil sebagai PENYETOR: " + ((Penyetor) user).getNamaLengkap());
-//                }
-//
-//                return;
-//            }
-//        }
-//
-//        JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
-//    }
+    private void loginAction() {
+        String userInput = usernameField.getText();
+        String passInput = String.valueOf(passwordField.getPassword());
+        Object user = LoginController.login(userInput, passInput);
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
-//    }
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (user instanceof Admin) {
+            JOptionPane.showMessageDialog(this, "Login sebagai ADMIN");
+            new DasboardAdminView().setVisible(true);
+            dispose();
+        }
+
+        if (user instanceof Penyetor) {
+            JOptionPane.showMessageDialog(this, "Login sebagai PENYETOR");
+            new DasboardPenyetorView().setVisible(true);
+            dispose();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
+    }
 }

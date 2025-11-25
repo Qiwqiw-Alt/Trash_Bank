@@ -2,17 +2,17 @@ package View;
 
 import javax.swing.*;
 
-import Model.Admin;
-import Model.Penyetor;
-import Model.User;
+import Controller.SignInController;
+import Database.DataBaseAdmin.*;
+import Controller.SignInController.*;
 
 import java.awt.*;
 
 public class SignInView extends JFrame {
-
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField namaField;
+    private JTextField noHpField;
     private JComboBox<String> roleBox;
     private ImageIcon image = new ImageIcon("recycle-bin.png");
     private JButton registerButton, backButton;
@@ -107,6 +107,15 @@ public class SignInView extends JFrame {
         passwordField.setBounds(60, 390, 330, 35);
         rightPanel.add(passwordField);
 
+        JLabel noHpLabel = new JLabel("Nomor HP:");
+        noHpLabel.setBounds(60, 420, 200, 35);
+        noHpLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
+        rightPanel.add(noHpLabel);
+
+        noHpField = new JTextField();
+        noHpField.setBounds(60, 310, 330, 35);
+        rightPanel.add(noHpField);
+
         // BUTTON
         registerButton = new JButton("Register");
         registerButton.setBounds(60, 460, 145, 40);
@@ -145,25 +154,22 @@ public class SignInView extends JFrame {
         String nama = namaField.getText();
         String user = usernameField.getText();
         String pass = String.valueOf(passwordField.getPassword());
+        String noHp = noHpField.getText();
 
-        if (nama.isEmpty() || user.isEmpty() || pass.isEmpty()) {
+        if (nama.isEmpty() || user.isEmpty() || pass.isEmpty() || noHp.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua data!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        for (User u : LoginView.users) {
-            if (u.getUsername().equals(user)) {
-                JOptionPane.showMessageDialog(this, "Username sudah dipakai!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        if (SignInController.getService().isUsernameTaken(user)) {
+            JOptionPane.showMessageDialog(this, "Username sudah dipakai!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         if (role.equals("Admin")) {
-            Admin admin = new Admin(user, pass, nama);
-            LoginView.users.add(admin);
+            SignInController.getService().registerAdmin(nama, user, pass, noHp);
         } else {
-            Penyetor penyetor = new Penyetor(user, pass, nama);
-            LoginView.users.add(penyetor);
+            SignInController.getService().registerPenyetor(nama, user, pass, noHp);
         }
 
         JOptionPane.showMessageDialog(this, "Akun berhasil dibuat!");

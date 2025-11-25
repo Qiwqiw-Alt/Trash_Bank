@@ -50,9 +50,10 @@ public class DatabaseReward {
                             data[0], // untuk id
                             data[1], // nama hadiah
                             data[2], // deskripsi
-                            Double.parseDouble(data[3]), // poin tukar
+                            (int) Double.parseDouble(data[3]), // poin tukar
                             Integer.parseInt(data[4]) // stok
                     );
+
                     listReward.add(loadReward);
                 }
 

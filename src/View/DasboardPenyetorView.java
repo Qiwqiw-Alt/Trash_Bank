@@ -1,4 +1,6 @@
 package View;
 
-public class DasboardPenyetorView {
+import javax.swing.*;
+
+public class DasboardPenyetorView extends JFrame {
 }
