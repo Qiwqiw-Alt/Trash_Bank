@@ -2,9 +2,12 @@ package View;
 
 import javax.swing.*;
 
+import Database.DataBaseAdmin;
+import Database.DatabasePenyetor;
 import Model.Admin;
 import Model.Penyetor;
 import Model.User;
+import Database.DataBaseAdmin.*;
 
 import java.awt.*;
 
@@ -13,7 +16,7 @@ public class SignInView extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField namaField;
-    private JTextField idField;
+//    private JTextField idField;
     private JTextField noHpField;
     private JComboBox<String> roleBox;
     private ImageIcon image = new ImageIcon("recycle-bin.png");
@@ -68,68 +71,59 @@ public class SignInView extends JFrame {
 
         JLabel titleRight = new JLabel("Buat Akun Baru");
         titleRight.setFont(new Font("Fredoka", Font.BOLD, 26));
-        titleRight.setBounds(110, 30, 300, 40);
+        titleRight.setBounds(110, 65, 300, 40);
         rightPanel.add(titleRight);
 
         // LABEL & INPUT
         JLabel roleLabel = new JLabel("Daftar Sebagai:");
-        roleLabel.setBounds(60, 90, 200, 25);
+        roleLabel.setBounds(60, 135, 200, 25);
         roleLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(roleLabel);
 
         roleBox = new JComboBox<>(new String[]{"Admin", "Penyetor"});
-        roleBox.setBounds(60, 120, 330, 35);
+        roleBox.setBounds(60, 170, 330, 35);
         roleBox.setFont(new Font("Fredoka", Font.PLAIN, 14));
         rightPanel.add(roleBox);
 
-        JLabel idLabel = new JLabel("ID:");
-        idLabel.setBounds(60, 170, 200, 25);
-        idLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(idLabel);
-
-        idField = new JTextField();
-        idField.setBounds(60, 200, 330, 35);
-        rightPanel.add(idField);
-
         JLabel namaLabel = new JLabel("Nama Lengkap:");
-        namaLabel.setBounds(60, 250, 200, 25);
+        namaLabel.setBounds(60, 215, 200, 25);
         namaLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(namaLabel);
 
         namaField = new JTextField();
-        namaField.setBounds(60, 280, 330, 35);
+        namaField.setBounds(60, 240, 330, 35);
         rightPanel.add(namaField);
 
         JLabel noHpLabel = new JLabel("No. HP:");
-        noHpLabel.setBounds(60, 330, 200, 25);
+        noHpLabel.setBounds(60, 280, 200, 25);
         noHpLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(noHpLabel);
 
         noHpField = new JTextField();
-        noHpField.setBounds(60, 360, 330, 35);
+        noHpField.setBounds(60, 310, 330, 35);
         rightPanel.add(noHpField);
 
         JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(60, 410, 200, 25);
+        userLabel.setBounds(60, 360, 200, 25);
         userLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(userLabel);
 
         usernameField = new JTextField();
-        usernameField.setBounds(60, 440, 330, 35);
+        usernameField.setBounds(60, 390, 330, 35);
         rightPanel.add(usernameField);
 
         JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(60, 490, 200, 25);
+        passLabel.setBounds(60, 430, 200, 25);   // dari 410 → 430
         passLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(passLabel);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(60, 520, 330, 35);
+        passwordField.setBounds(60, 460, 330, 35);   // dari 440 → 460
         rightPanel.add(passwordField);
 
         // BUTTON
         registerButton = new JButton("Register");
-        registerButton.setBounds(60, 580, 145, 40);
+        registerButton.setBounds(60, 540, 145, 40);
         registerButton.setBackground(new Color(0x59AC77));
         registerButton.setForeground(Color.WHITE);
         registerButton.setFont(new Font("Fredoka", Font.BOLD, 15));
@@ -137,7 +131,7 @@ public class SignInView extends JFrame {
         rightPanel.add(registerButton);
 
         backButton = new JButton("Back");
-        backButton.setBounds(245, 580, 145, 40);
+        backButton.setBounds(245, 540, 145, 40);
         backButton.setBackground(new Color(0x59AC77));
         backButton.setForeground(Color.WHITE);
         backButton.setFont(new Font("Fredoka", Font.BOLD, 15));
@@ -162,27 +156,14 @@ public class SignInView extends JFrame {
     // ==============================
     private void registerUser() {
         String role = roleBox.getSelectedItem().toString();
-        String id = idField.getText();
         String nama = namaField.getText();
         String noHp = noHpField.getText();
         String user = usernameField.getText();
         String pass = String.valueOf(passwordField.getPassword());
 
-        if (id.isEmpty() || nama.isEmpty() || noHp.isEmpty() || user.isEmpty() || pass.isEmpty()) {
+        if (nama.isEmpty() || noHp.isEmpty() || user.isEmpty() || pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua data!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        }
-
-        // Validasi ID unik
-        for (User u : LoginView.users) {
-            if (u instanceof Admin && ((Admin) u).getIdAdmin().equals(id)) {
-                JOptionPane.showMessageDialog(this, "ID sudah digunakan!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (u instanceof Penyetor && ((Penyetor) u).getIdPenyetor().equals(id)) {
-                JOptionPane.showMessageDialog(this, "ID sudah digunakan!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
         }
 
         // Validasi username unik
@@ -195,9 +176,11 @@ public class SignInView extends JFrame {
 
         // Buat user baru berdasarkan role
         if (role.equals("Admin")) {
+            String id = DataBaseAdmin.generateAdminId();
             Admin admin = new Admin(role,id, user, pass, nama, noHp);
             LoginView.users.add(admin);
         } else {
+            String id = DatabasePenyetor.generatePenyetorId();
             Penyetor penyetor = new Penyetor(role,id, user, pass, nama, noHp);
             LoginView.users.add(penyetor);
         }
