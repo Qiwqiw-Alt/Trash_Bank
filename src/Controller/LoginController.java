@@ -4,10 +4,9 @@ import Service.LoginService;
 
 public class LoginController {
 
-    private static LoginService loginService;
+    private static LoginService loginService = new LoginService();
 
     public LoginController() {
-        this.loginService = new LoginService();
     }
 
     public static Object login(String username, String password) {

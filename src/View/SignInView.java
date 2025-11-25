@@ -111,12 +111,12 @@ public class SignInView extends JFrame {
         rightPanel.add(noHpLabel);
 
         noHpField = new JTextField();
-        noHpField.setBounds(60, 310, 330, 35);
+        noHpField.setBounds(60, 450, 330, 35);
         rightPanel.add(noHpField);
 
         // BUTTON
         registerButton = new JButton("Register");
-        registerButton.setBounds(60, 460, 145, 40);
+        registerButton.setBounds(60, 500, 145, 40);
         registerButton.setBackground(new Color(0x59AC77));
         registerButton.setForeground(Color.WHITE);
         registerButton.setFont(new Font("Fredoka", Font.BOLD, 15));
@@ -124,7 +124,7 @@ public class SignInView extends JFrame {
         rightPanel.add(registerButton);
 
         backButton = new JButton("Back");
-        backButton.setBounds(245, 460, 145, 40);
+        backButton.setBounds(245, 500, 145, 40);
         backButton.setBackground(new Color(0x59AC77));
         backButton.setForeground(Color.WHITE);
         backButton.setFont(new Font("Fredoka", Font.BOLD, 15));
