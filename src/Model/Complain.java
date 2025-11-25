@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Complain {
 
@@ -43,10 +44,16 @@ public class Complain {
     public LocalDate getTanggal() { return tanggal; }
     public Status getStatus() { return status; }
     public String getTanggapanAdmin() { return tanggapanAdmin; }
+    public String getFormattedTime() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return tanggal.format(format);
+    }
 
     public void setStatus(Status status) {
         this.status = status;
     }
+    
+    
 
     public void setTanggapanAdmin(String tanggapanAdmin) {
         this.tanggapanAdmin = tanggapanAdmin;
