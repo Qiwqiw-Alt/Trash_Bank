@@ -49,6 +49,11 @@ public class Complain {
         return tanggal.format(format);
     }
 
+    public void setTanggal(LocalDate time) {
+        this.tanggal = time;
+
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
