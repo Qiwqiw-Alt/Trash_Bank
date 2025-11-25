@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 
 public class DatabaseReward {
@@ -38,11 +39,19 @@ public class DatabaseReward {
     }
 
 
-    ArrayList<Reward> loadData() {
-        ArrayList<Reward> list = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(DATA_REWARD))) {
+    public ArrayList<Reward> loadData() {
+        listReward.clear();
+        File file = new File(DATA_REWARD);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            if (!file.exists()) {
+                return listReward;
+            }
+            
             String line;
             while ((line = br.readLine()) != null) {
+
+                if (line.trim().isEmpty()) {continue;}
 
                 String[] data = line.split(delim);
                 if (data.length >= 5) {
@@ -58,11 +67,10 @@ public class DatabaseReward {
                 }
 
             }
-            return list;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return list;
         }
+        return listReward;
     }
 
     public void saveData() {

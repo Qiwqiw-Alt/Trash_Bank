@@ -7,11 +7,12 @@ import Model.Admin;
 
 public class DataBaseAdmin {
     private static ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
+    private static final String DATA_ADMIN = "src\\Database\\Admin\\data.txt";
     // private static Scanner input = new Scanner(System.in);
 
     public static void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);
-        writeData("src/Database/Admin/data.txt");
+        writeData();
     }
 
     //filepath = src/Database/Admin/data.txt
@@ -31,9 +32,9 @@ public class DataBaseAdmin {
         return String.format("UA%03d", next); // UA001, UA002, dst
     }
 
-    public static ArrayList<Admin> loadData(String filepath) {
+    public static ArrayList<Admin> loadData() {
         daftarSemuaAdmin.clear();
-        File file = new File(filepath);
+        File file = new File(DATA_ADMIN);
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
             if (!file.exists()) {
@@ -72,8 +73,8 @@ public class DataBaseAdmin {
     }
 
     //Tulis data
-    public static void writeData(String filepath){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
+    public static void writeData(){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_ADMIN))) {
 
             for (Admin admin : daftarSemuaAdmin) {
                 String data = admin.getIdAdmin() + "|" +

@@ -8,15 +8,16 @@ import java.util.ArrayList;
 public class DatabaseItemTransaksi {
 
     private ArrayList<ItemTransaksi> daftarItem = new ArrayList<>();
+    private static final String DATA_TRANSAKSI = "src\\Database\\ItemTransaksi\\itemtransaksi.txt";
     private final String delim = "\\|";
 
     public void addItem(ItemTransaksi it) {
         daftarItem.add(it);
     }
 
-    public ArrayList<ItemTransaksi> loadData(String filepath) {
+    public ArrayList<ItemTransaksi> loadData() {
         daftarItem.clear();
-        File file = new File(filepath);
+        File file = new File(DATA_TRANSAKSI);
 
         try {
             if (!file.exists()) {
@@ -50,8 +51,8 @@ public class DatabaseItemTransaksi {
         return daftarItem;
     }
 
-    public void writeData(String filepath) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+    public void writeData() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_TRANSAKSI))) {
 
             for (ItemTransaksi it : daftarItem) {
                 bw.write(

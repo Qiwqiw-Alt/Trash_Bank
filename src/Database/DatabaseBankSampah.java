@@ -7,9 +7,11 @@ import java.util.ArrayList;
 
 public class DatabaseBankSampah {
     private ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
+    private static final String DATA_BANK_SAMPAH = "src\\Database\\DataBankSampah\\databanksampah.txt";
 
     public void addBankSampah(BankSampah bankSampahBaru) { // untuk nambah bank sampah yang dipakai di SignIn
         daftarSemuaBankSampah.add(bankSampahBaru);
+        writeData();
     }
 
     // filepath = src/Database/BankSampah/data.txt
@@ -30,13 +32,13 @@ public class DatabaseBankSampah {
         return String.format("BS%03d", next); // UA001, UA002, dst
     }
 
-    public ArrayList<BankSampah> loadData(String filepath) {
+    public ArrayList<BankSampah> loadData() {
         daftarSemuaBankSampah.clear();
-        File file = new File(filepath);
+        File file = new File(DATA_BANK_SAMPAH);
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             if (!file.exists()) {
-                throw new IOException("File" + filepath + "tidak ada");
+                throw new IOException("File" + DATA_BANK_SAMPAH + "tidak ada");
             }
 
             String line;
@@ -59,8 +61,8 @@ public class DatabaseBankSampah {
     }
 
     // Tulis data
-    public void writeData(String filepath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
+    public void writeData() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_BANK_SAMPAH))) {
 
             for (BankSampah bankSampah : daftarSemuaBankSampah) {
                 String data = bankSampah.getIdBank() + "|" +

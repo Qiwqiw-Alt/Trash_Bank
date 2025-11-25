@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class DatabaseSampah {
 
     private ArrayList<Sampah> daftarSampah = new ArrayList<>();
-    private static final String DATA_SAMPAH = "src/Database/Sampah/sampah.txt";
+    private static final String DATA_SAMPAH = "src\\Database\\Sampah\\sampah.txt";
     private final String delim = "\\|";
 
     public void addSampah(Sampah s) {
