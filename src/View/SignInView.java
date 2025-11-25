@@ -1,15 +1,21 @@
 package View;
 
+package Service;
+
 import javax.swing.*;
 
-import Controller.SignInController;
+import Model.Admin;
+import Model.Penyetor;
+import Model.User;
 
 import java.awt.*;
 
 public class SignInView extends JFrame {
+
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField namaField;
+    private JTextField idField;
     private JTextField noHpField;
     private JComboBox<String> roleBox;
     private ImageIcon image = new ImageIcon("recycle-bin.png");
@@ -17,7 +23,7 @@ public class SignInView extends JFrame {
 
     public SignInView() {
         setTitle("Sign Up - Bank Sampah");
-        setSize(800, 600); 
+        setSize(800, 700); // Diperbesar untuk menampung field tambahan
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -35,7 +41,7 @@ public class SignInView extends JFrame {
         // ==============================
         JPanel leftPanel = new JPanel(null);
         leftPanel.setBackground(new Color(0x59AC77));
-        leftPanel.setBounds(0, 0, 350, 600);
+        leftPanel.setBounds(0, 0, 350, 700);
 
         JLabel titleLeft = new JLabel("Create Account", SwingConstants.CENTER);
         titleLeft.setFont(new Font("Fredoka", Font.BOLD, 26));
@@ -60,63 +66,72 @@ public class SignInView extends JFrame {
         // ==============================
         JPanel rightPanel = new JPanel(null);
         rightPanel.setBackground(Color.WHITE);
-        rightPanel.setBounds(350, 0, 450, 600);
+        rightPanel.setBounds(350, 0, 450, 700);
 
         JLabel titleRight = new JLabel("Buat Akun Baru");
         titleRight.setFont(new Font("Fredoka", Font.BOLD, 26));
-        titleRight.setBounds(110, 40, 300, 40);
+        titleRight.setBounds(110, 30, 300, 40);
         rightPanel.add(titleRight);
 
         // LABEL & INPUT
         JLabel roleLabel = new JLabel("Daftar Sebagai:");
-        roleLabel.setBounds(60, 120, 200, 25);
+        roleLabel.setBounds(60, 90, 200, 25);
         roleLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(roleLabel);
 
         roleBox = new JComboBox<>(new String[]{"Admin", "Penyetor"});
-        roleBox.setBounds(60, 150, 330, 35);
+        roleBox.setBounds(60, 120, 330, 35);
         roleBox.setFont(new Font("Fredoka", Font.PLAIN, 14));
         rightPanel.add(roleBox);
 
+        JLabel idLabel = new JLabel("ID:");
+        idLabel.setBounds(60, 170, 200, 25);
+        idLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
+        rightPanel.add(idLabel);
+
+        idField = new JTextField();
+        idField.setBounds(60, 200, 330, 35);
+        rightPanel.add(idField);
+
         JLabel namaLabel = new JLabel("Nama Lengkap:");
-        namaLabel.setBounds(60, 200, 200, 25);
+        namaLabel.setBounds(60, 250, 200, 25);
         namaLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(namaLabel);
 
         namaField = new JTextField();
-        namaField.setBounds(60, 230, 330, 35);
+        namaField.setBounds(60, 280, 330, 35);
         rightPanel.add(namaField);
 
-        JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(60, 280, 200, 25);
-        userLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(userLabel);
-
-        usernameField = new JTextField();
-        usernameField.setBounds(60, 310, 330, 35);
-        rightPanel.add(usernameField);
-
-        JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(60, 360, 200, 25);
-        passLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(passLabel);
-
-        passwordField = new JPasswordField();
-        passwordField.setBounds(60, 390, 330, 35);
-        rightPanel.add(passwordField);
-
-        JLabel noHpLabel = new JLabel("Nomor HP:");
-        noHpLabel.setBounds(60, 420, 200, 35);
+        JLabel noHpLabel = new JLabel("No. HP:");
+        noHpLabel.setBounds(60, 330, 200, 25);
         noHpLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
         rightPanel.add(noHpLabel);
 
         noHpField = new JTextField();
-        noHpField.setBounds(60, 450, 330, 35);
+        noHpField.setBounds(60, 360, 330, 35);
         rightPanel.add(noHpField);
+
+        JLabel userLabel = new JLabel("Username:");
+        userLabel.setBounds(60, 410, 200, 25);
+        userLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
+        rightPanel.add(userLabel);
+
+        usernameField = new JTextField();
+        usernameField.setBounds(60, 440, 330, 35);
+        rightPanel.add(usernameField);
+
+        JLabel passLabel = new JLabel("Password:");
+        passLabel.setBounds(60, 490, 200, 25);
+        passLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
+        rightPanel.add(passLabel);
+
+        passwordField = new JPasswordField();
+        passwordField.setBounds(60, 520, 330, 35);
+        rightPanel.add(passwordField);
 
         // BUTTON
         registerButton = new JButton("Register");
-        registerButton.setBounds(60, 500, 145, 40);
+        registerButton.setBounds(60, 580, 145, 40);
         registerButton.setBackground(new Color(0x59AC77));
         registerButton.setForeground(Color.WHITE);
         registerButton.setFont(new Font("Fredoka", Font.BOLD, 15));
@@ -124,7 +139,7 @@ public class SignInView extends JFrame {
         rightPanel.add(registerButton);
 
         backButton = new JButton("Back");
-        backButton.setBounds(245, 500, 145, 40);
+        backButton.setBounds(245, 580, 145, 40);
         backButton.setBackground(new Color(0x59AC77));
         backButton.setForeground(Color.WHITE);
         backButton.setFont(new Font("Fredoka", Font.BOLD, 15));
@@ -145,29 +160,48 @@ public class SignInView extends JFrame {
     }
 
     // ==============================
-    // LOGIC PENDAFTARAN (TIDAK DIUBAH)
+    // LOGIC PENDAFTARAN (DIPERBAIKI)
     // ==============================
     private void registerUser() {
         String role = roleBox.getSelectedItem().toString();
+        String id = idField.getText();
         String nama = namaField.getText();
+        String noHp = noHpField.getText();
         String user = usernameField.getText();
         String pass = String.valueOf(passwordField.getPassword());
-        String noHp = noHpField.getText();
 
-        if (nama.isEmpty() || user.isEmpty() || pass.isEmpty() || noHp.isEmpty()) {
+        if (id.isEmpty() || nama.isEmpty() || noHp.isEmpty() || user.isEmpty() || pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua data!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (SignInController.getService().isUsernameTaken(user)) {
-            JOptionPane.showMessageDialog(this, "Username sudah dipakai!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        // Validasi ID unik
+        for (User u : LoginView.users) {
+            if (u instanceof Admin && ((Admin) u).getIdAdmin().equals(id)) {
+                JOptionPane.showMessageDialog(this, "ID sudah digunakan!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (u instanceof Penyetor && ((Penyetor) u).getIdPenyetor().equals(id)) {
+                JOptionPane.showMessageDialog(this, "ID sudah digunakan!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
 
+        // Validasi username unik
+        for (User u : LoginView.users) {
+            if (u.getUsername().equals(user)) {
+                JOptionPane.showMessageDialog(this, "Username sudah dipakai!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        // Buat user baru berdasarkan role
         if (role.equals("Admin")) {
-            SignInController.getService().registerAdmin(role, nama, user, pass, noHp);
+            Admin admin = new Admin(id, user, pass, nama, noHp);
+            LoginView.users.add(admin);
         } else {
-            SignInController.getService().registerPenyetor(role, nama, user, pass, noHp);
+            Penyetor penyetor = new Penyetor(id, user, pass, nama, noHp);
+            LoginView.users.add(penyetor);
         }
 
         JOptionPane.showMessageDialog(this, "Akun berhasil dibuat!");
