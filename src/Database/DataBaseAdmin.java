@@ -2,7 +2,6 @@ package Database;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import Model.Admin;
 
@@ -50,18 +49,19 @@ public class DataBaseAdmin {
                 if(line.isEmpty()) continue;
 
                 String[] parts = line.split(delim);
-                if (parts.length >= 6) {
-                    Admin adminBaru = new Admin(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                if (parts.length >= 7) {
+                    Admin adminBaru = new Admin(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
                     if(!parts[5].equalsIgnoreCase("null")){
                         adminBaru.setIdBankSampah(parts[5]);
                     }
                     daftarSemuaAdmin.add(adminBaru);
                     // 0 = ID
-                    // 1 = username biasa
-                    // 2 = password
-                    // 3 = nama admin
-                    // 4 = no hp
+                    // 1 = role
+                    // 2 = username biasa
+                    // 3 = password
+                    // 4 = nama admin
+                    // 5 = no hp
                 }
             }
             return daftarSemuaAdmin;
@@ -78,6 +78,7 @@ public class DataBaseAdmin {
 
             for (Admin admin : daftarSemuaAdmin) {
                 String data = admin.getIdAdmin() + "|" +
+                        admin.getRole() + "|" +
                         admin.getUsername() + "|" +
                         admin.getPassword() + "|" +
                         admin.getNamaAdmin() + "|" +

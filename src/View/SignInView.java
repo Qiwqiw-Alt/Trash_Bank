@@ -3,8 +3,6 @@ package View;
 import javax.swing.*;
 
 import Controller.SignInController;
-import Database.DataBaseAdmin.*;
-import Controller.SignInController.*;
 
 import java.awt.*;
 
@@ -167,9 +165,9 @@ public class SignInView extends JFrame {
         }
 
         if (role.equals("Admin")) {
-            SignInController.getService().registerAdmin(nama, user, pass, noHp);
+            SignInController.getService().registerAdmin(role, nama, user, pass, noHp);
         } else {
-            SignInController.getService().registerPenyetor(nama, user, pass, noHp);
+            SignInController.getService().registerPenyetor(role, nama, user, pass, noHp);
         }
 
         JOptionPane.showMessageDialog(this, "Akun berhasil dibuat!");

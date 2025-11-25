@@ -49,8 +49,8 @@ public class DatabasePenyetor {
                 line = line.trim();
 
                 String[] parts = line.split(delim);
-                if (parts.length >= 6) {
-                    Penyetor penyetorBaru = new Penyetor(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                if (parts.length >= 7) {
+                    Penyetor penyetorBaru = new Penyetor(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
                     // 0 = ID
                     // 1 = username biasa
                     // 2 = password
@@ -75,6 +75,7 @@ public class DatabasePenyetor {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
             for (Penyetor penyetor : daftarSemuaPenyetor) {
                 String data = penyetor.getIdPenyetor() + "|" +
+                        penyetor.getRole() + "|" +
                         penyetor.getUsername() + "|" +
                         penyetor.getPassword() + "|" +
                         penyetor.getNamaLengkap() + "|" +
