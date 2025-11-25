@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class DatabaseBankSampah {
     private ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
 
-    public void addBankSampah(BankSampah bankSampahBaru){ // untuk nambah bank sampah yang dipakai di SignIn
+    public void addBankSampah(BankSampah bankSampahBaru) { // untuk nambah bank sampah yang dipakai di SignIn
         daftarSemuaBankSampah.add(bankSampahBaru);
     }
 
-    //filepath = src/Database/BankSampah/data.txt
+    // filepath = src/Database/BankSampah/data.txt
     // Load/baca data sebelum Sign In dan Login
     String delim = "\\|";
 
@@ -22,7 +22,8 @@ public class DatabaseBankSampah {
         for (BankSampah a : daftarSemuaBankSampah) {
             String id = a.getIdBank().substring(2); // ambil bagian angkanya
             int num = Integer.parseInt(id);
-            if (num > max) max = num;
+            if (num > max)
+                max = num;
         }
 
         int next = max + 1;
@@ -33,12 +34,11 @@ public class DatabaseBankSampah {
         daftarSemuaBankSampah.clear();
         File file = new File(filepath);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))){
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             if (!file.exists()) {
                 throw new IOException("File" + filepath + "tidak ada");
             }
 
-            
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -58,7 +58,7 @@ public class DatabaseBankSampah {
         }
     }
 
-    //Tulis data
+    // Tulis data
     public void writeData(String filepath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
 

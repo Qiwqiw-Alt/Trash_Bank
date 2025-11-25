@@ -21,6 +21,8 @@ public class Complain {
     private Status status;
     private String tanggapanAdmin;
 
+    public Complain() {}
+
     public Complain(String idComplain, String idPenyetor, String idBank, String judul, String isi) {
         this.idComplain = idComplain;
         this.idPenyetor = idPenyetor;

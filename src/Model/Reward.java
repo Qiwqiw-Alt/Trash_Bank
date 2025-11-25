@@ -7,7 +7,7 @@ public class Reward {
     private double poinTukar;
     private int stok;
 
-    public Reward(String idReward, String namaHadiah, String deskripsi, int poinTukar, int stok) {
+    public Reward(String idReward, String namaHadiah, String deskripsi, double poinTukar, int stok) {
         this.idReward = idReward;
         this.namaHadiah = namaHadiah;
         this.deskripsi = deskripsi;

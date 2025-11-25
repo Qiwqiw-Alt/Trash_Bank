@@ -8,6 +8,8 @@ public class Admin extends User {
     private String noHp;
     private String idBankSampah;
 
+
+
     public Admin(String idAdmin, String username, String password, String namaAdmin, String noHp) {
         super(username, password);
         this.idAdmin = idAdmin;
