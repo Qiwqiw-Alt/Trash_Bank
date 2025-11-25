@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 public class DatabaseTransaksi {
 
-    private ArrayList<Transaksi> daftarTransaksi = new ArrayList<>();
+    private ArrayList<Transaksi> daftarTransaksi;
+    private static final String DATA_TRANSAKSI = "src\\database\\Transaksi\\logs.txt";
     private final String delim = "\\|";
+
 
     public void addTransaksi(Transaksi t) {
         daftarTransaksi.add(t);
@@ -27,9 +29,9 @@ public class DatabaseTransaksi {
         return String.format("TRX%03d", max + 1);
     }
 
-    public ArrayList<Transaksi> loadData(String filepath) {
+    public ArrayList<Transaksi> loadData() {
         daftarTransaksi.clear();
-        File file = new File(filepath);
+        File file = new File(DATA_TRANSAKSI);
 
         try {
             if (!file.exists()) {
@@ -73,8 +75,8 @@ public class DatabaseTransaksi {
         return daftarTransaksi;
     }
 
-    public void writeData(String filepath) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+    public void writeData() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_TRANSAKSI))) {
 
             for (Transaksi t : daftarTransaksi) {
                 bw.write(
