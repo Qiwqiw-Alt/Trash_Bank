@@ -1,7 +1,4 @@
 package Model;
-
-import Database.DataBaseAdmin;
-
 public class Admin extends User {
     private String idAdmin;
     private String namaAdmin;

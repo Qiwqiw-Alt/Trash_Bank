@@ -2,13 +2,10 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Objects;
 
 import Controller.LoginController;
 import Model.Admin;
 import Model.Penyetor;
-import Model.User;
 
 public class LoginView extends JFrame {
 

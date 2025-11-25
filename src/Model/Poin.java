@@ -1,6 +1,5 @@
 package Model;
 
-import java.time.LocalDate;
 
 public class Poin {
     public static int konversiKePoin(double totalHarga) {

@@ -3,8 +3,6 @@ package View;
 import javax.swing.*;
 
 import Controller.SignInController;
-import Database.DataBaseAdmin.*;
-import Controller.SignInController.*;
 
 import java.awt.*;
 
