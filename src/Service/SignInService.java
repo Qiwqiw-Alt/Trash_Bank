@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class SignInService {
 
     public boolean isUsernameTaken(String username) {
-        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData("src/Database/Penyetor/data.txt");
+        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
         for (Penyetor u : penyetor) {
             if (u.getUsername().equals(username)) return true;
         }
 
-        ArrayList<Admin> admin = DataBaseAdmin.loadData("src/Database/Admin/data.txt");
+        ArrayList<Admin> admin = DataBaseAdmin.loadData();
         for (Admin u : admin) {
             if (u.getUsername().equals(username)) return true;
         }
