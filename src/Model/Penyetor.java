@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Penyetor extends User {
 
     private String idPenyetor;
+    private String role;
     private String namaLengkap;
     private String noHp;
     private String idBankSampah;
@@ -13,9 +14,10 @@ public class Penyetor extends User {
     private int totalSetoran = 0;
     private ArrayList<String> riwayatTransaksi;
 
-    public Penyetor(String idPenyetor, String username, String password, String namaLengkap, String noHp) {
+    public Penyetor(String idPenyetor, String role, String username, String password, String namaLengkap, String noHp) {
         super(username, password);
         this.idPenyetor = idPenyetor;
+        this.role = role;
         this.namaLengkap = namaLengkap;
         this.noHp = noHp;
         this.idBankSampah = null;
@@ -80,5 +82,9 @@ public class Penyetor extends User {
 
     public void setIdBankSampah(String idBankSampah) {
         this.idBankSampah = idBankSampah;
+    }
+
+     public String getRole(){
+        return this.role;
     }
 }
