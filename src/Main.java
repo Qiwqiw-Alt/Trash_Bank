@@ -1,7 +1,9 @@
-import View.SignInView;
+import java.lang.management.LockInfo;
+
+import View.LoginView;
 
 public class Main {
     public static void main(String[] args) {
-        new SignInView().setVisible(true);
+        new LoginView().setVisible(true);
     }
 }

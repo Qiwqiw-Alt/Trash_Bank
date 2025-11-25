@@ -4,10 +4,10 @@ import Service.SignInService;
 
 public class SignInController {
 
-    private static SignInService service;
+    private static SignInService service = new SignInService(); 
 
     public SignInController() {
-        this.service = new SignInService();
+        // Kosongkan atau hapus constructor ini jika tidak dipakai
     }
 
     public static SignInService getService() {
