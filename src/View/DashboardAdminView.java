@@ -17,7 +17,6 @@ public class DashboardAdminView extends JFrame {
     private BankSampah currentBankSampah;
     private JPanel contentPanel;
    
-    
     // Constants
     private final Color GREEN_PRIMARY = new Color(0, 128, 0); 
     private final Color GREEN_HOVER = new Color(0, 150, 0); 
@@ -25,8 +24,15 @@ public class DashboardAdminView extends JFrame {
     public DashboardAdminView(Admin user, String IdBankSampah) {
         this.currentUser = user;
         this.IdBankSampah = IdBankSampah;
-        currentBankSampah = BankSampahController.getBankSampah(this.IdBankSampah);
-        String namaBank = (currentBankSampah != null) ? currentBankSampah.getNamaBank() : "Bank Sampah App";
+        
+        // Cek apakah Admin punya bank sampah
+        if (this.IdBankSampah != null) {
+             currentBankSampah = BankSampahController.getBankSampah(this.IdBankSampah);
+        } else {
+             currentBankSampah = null;
+        }
+
+        String namaBank = (currentBankSampah != null) ? currentBankSampah.getNamaBank() : "Bank Sampah (Belum Ada)";
 
         setTitle("Dashboard Admin - " + namaBank);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,12 +41,13 @@ public class DashboardAdminView extends JFrame {
         setResizable(true); 
 
         initLayout();
+ 
         if(currentBankSampah == null){
-            switchPanel("CreateBank");
+   
+            switchPanel("EmptyState"); 
         } else {
             switchPanel("Home");
         }
-     
     }
 
     private void initLayout() {
@@ -54,7 +61,6 @@ public class DashboardAdminView extends JFrame {
         contentPanel.setBackground(Color.WHITE);
         add(contentPanel, BorderLayout.CENTER);
     }
-
 
     private JPanel createSidebar() {
         JPanel panel = new JPanel();
@@ -73,9 +79,11 @@ public class DashboardAdminView extends JFrame {
         panel.add(logoPanel);
 
         // Menu Items
+        
+        // Tombol Create Bank Sampah (Hanya muncul jika bank null)
         if (currentBankSampah == null) {
             panel.add(createMenuLabel("Buat Bank Sampah", "CreateBank"));
-            panel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
+            panel.add(Box.createRigidArea(new Dimension(0, 10))); 
         }
 
         panel.add(createMenuLabel("Home", "Home"));
@@ -97,20 +105,32 @@ public class DashboardAdminView extends JFrame {
     }
 
     public void switchPanel(String menuName) {
-        if(currentBankSampah == null){
-            boolean isAllowed = menuName.equals("Logout") || menuName.equals("Profil") || menuName.equals("Create Bank");
+        
+        // --- LOGIKA GATEKEEPER (PEMBATASAN AKSES) ---
+        if(currentBankSampah == null) {
+            // Daftar menu yang BOLEH diakses
+            boolean isAllowed = menuName.equals("Logout") || 
+                                menuName.equals("Profil") || 
+                                menuName.equals("CreateBank") || 
+                                menuName.equals("EmptyState"); // Tambahkan ini agar panel peringatan bisa tampil
         
             if (!isAllowed) {
+                // Pesan Error jika menekan tombol lain
                 JOptionPane.showMessageDialog(this, 
-                    "Anda belum berada/membuat bank sampah, silahkan membuat bank sampah terlebih dahulu.", 
+                    "Anda belum membuat akun bank sampah, silahkan buat terlebih dahulu.", 
                     "Akses Ditolak", 
                     JOptionPane.WARNING_MESSAGE);
-                return; 
+                return; // Stop, jangan ganti panel
             }
         }
+        
         JPanel nextPanel = null;
 
         switch (menuName) {
+            case "EmptyState":
+                // Panel Putih Peringatan
+                nextPanel = new View.AdminPanels.NoBankViewPanel(this);
+                break;
             case "CreateBank":
                 nextPanel = new View.AdminPanels.CreateBankSampahPanel(this, currentUser); 
                 break;
@@ -121,10 +141,9 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.ProfilAdminPanel(currentUser);
                 break;
             case "ListMember":
-                nextPanel = new View.AdminPanels.ListMemberPanel();
+                nextPanel = new View.AdminPanels.ListMemberPanel(currentUser, currentBankSampah);
                 break;
             case "GivePoin":
-                // Butuh bankSampah untuk catat ID Bank di transaksi
                 nextPanel = new View.AdminPanels.InputSetoranPanel(currentBankSampah); 
                 break;
             case "AddSampah":
@@ -134,7 +153,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.ManajemenRewardPanel();
                 break;
             case "Komplain":
-                nextPanel = new View.AdminPanels.EvaluasiKomplainPanel(currentUser);
+                nextPanel = new View.AdminPanels.EvaluasiKomplainPanel(currentUser, currentBankSampah);
                 break;
             case "Logout":
                 new LoginView().setVisible(true);
@@ -156,9 +175,9 @@ public class DashboardAdminView extends JFrame {
         
         setTitle("Dashboard Admin - " + newBank.getNamaBank());
         
-        // Refresh Sidebar (agar menu Create hilang, atau layout terupdate)
-        getContentPane().remove(0); // Hapus sidebar lama (posisi index 0 di BorderLayout)
-        add(createSidebar(), BorderLayout.WEST); // Tambah sidebar baru
+        // Refresh Sidebar (agar menu Create hilang)
+        getContentPane().remove(0); 
+        add(createSidebar(), BorderLayout.WEST); 
         
         // Pindah ke Home
         switchPanel("Home");
@@ -166,7 +185,7 @@ public class DashboardAdminView extends JFrame {
         revalidate();
     }
 
-    // ... (Helper method createMenuLabel & createSectionTitle sama seperti sebelumnya) ...
+    // ... (Method createMenuLabel dan createSectionTitle tetap sama) ...
     private JPanel createMenuLabel(String text, String command) {
         JPanel btn = new JPanel(new BorderLayout());
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class DatabaseSampah {
 
-    private ArrayList<Sampah> daftarSampah = new ArrayList<>();
+    private static ArrayList<Sampah> daftarSampah = new ArrayList<>();
     private static final String DATA_SAMPAH = "src\\Database\\Sampah\\sampah.txt";
-    private final String delim = "\\|";
+    private static final String delim = "\\|";
 
     public void addSampah(Sampah s) {
         daftarSampah.add(s);
@@ -27,9 +27,13 @@ public class DatabaseSampah {
         return String.format("SP%03d", max + 1);
     }
 
-    public ArrayList<Sampah> loadData() {
+    public static ArrayList<Sampah> loadData(){
+        return loadData(DATA_SAMPAH);
+    }
+
+    public static ArrayList<Sampah> loadData(String filePath) {
         daftarSampah.clear();
-        File file = new File(DATA_SAMPAH);
+        File file = new File(filePath);
 
         try {
             if (!file.exists()) {
@@ -61,8 +65,12 @@ public class DatabaseSampah {
         return daftarSampah;
     }
 
-    public void writeData() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_SAMPAH))) {
+    public static void writeData(){
+        writeData(DATA_SAMPAH);
+    }
+
+    public static void writeData(String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
 
             for (Sampah s : daftarSampah) {
                 bw.write(s.getIdSampah() + "|" + s.getJenis() + "|" + s.getHargaPerKg());

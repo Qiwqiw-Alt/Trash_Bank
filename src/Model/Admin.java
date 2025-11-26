@@ -6,7 +6,7 @@ public class Admin extends User {
     private String noHp;
     private String idBankSampah;
 
-    public Admin(String role, String idAdmin, String username, String password, String namaAdmin, String noHp) {
+    public Admin(String idAdmin, String role, String username, String password, String namaAdmin, String noHp) {
         super(username, password);
         this.role = role;
         this.idAdmin = idAdmin;

@@ -14,8 +14,6 @@ public class BankSampahService {
                       return bs;
             }
         }
-
-
         return null;
     }
 }
