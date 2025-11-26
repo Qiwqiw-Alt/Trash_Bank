@@ -25,6 +25,7 @@ public class DashboardAdminView extends JFrame {
     public DashboardAdminView(Admin user, String IdBankSampah) {
         this.currentUser = user;
         this.IdBankSampah = IdBankSampah;
+        currentBankSampah = BankSampahController.getBankSampah(this.IdBankSampah);
         String namaBank = (currentBankSampah != null) ? currentBankSampah.getNamaBank() : "Bank Sampah App";
 
         setTitle("Dashboard Admin - " + namaBank);
@@ -52,20 +53,6 @@ public class DashboardAdminView extends JFrame {
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
         add(contentPanel, BorderLayout.CENTER);
-
-        // Default Page
-        switchPanel("Home");
-    }
-
-    private void setMenuEnabled(JPanel menu, boolean enabled) {
-        menu.setEnabled(enabled);
-        for (Component comp : menu.getComponents()) {
-            comp.setEnabled(enabled);
-        }
-
-        if (!enabled) {
-            menu.setBackground(new Color(120, 120, 120)); // warna abu2
-        }
     }
 
 
@@ -86,6 +73,11 @@ public class DashboardAdminView extends JFrame {
         panel.add(logoPanel);
 
         // Menu Items
+        if (currentBankSampah == null) {
+            panel.add(createMenuLabel("Buat Bank Sampah", "CreateBank"));
+            panel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
+        }
+
         panel.add(createMenuLabel("Home", "Home"));
         panel.add(createMenuLabel("Edit Profil", "Profil"));
         panel.add(createSectionTitle("MANAJEMEN USER"));
@@ -101,17 +93,27 @@ public class DashboardAdminView extends JFrame {
         panel.add(Box.createVerticalGlue());
         panel.add(createMenuLabel("Logout", "Logout"));
 
-        boolean hasBank = (currentBankSampah != null);
-
-   
-
-     return panel;
+        return panel;
     }
 
     public void switchPanel(String menuName) {
+        if(currentBankSampah == null){
+            boolean isAllowed = menuName.equals("Logout") || menuName.equals("Profil") || menuName.equals("Create Bank");
+        
+            if (!isAllowed) {
+                JOptionPane.showMessageDialog(this, 
+                    "Anda belum berada/membuat bank sampah, silahkan membuat bank sampah terlebih dahulu.", 
+                    "Akses Ditolak", 
+                    JOptionPane.WARNING_MESSAGE);
+                return; 
+            }
+        }
         JPanel nextPanel = null;
 
         switch (menuName) {
+            case "CreateBank":
+                nextPanel = new View.AdminPanels.CreateBankSampahPanel(this, currentUser); 
+                break;
             case "Home":
                 nextPanel = new View.AdminPanels.AdminHomePanel(currentUser);
                 break;
@@ -146,6 +148,22 @@ public class DashboardAdminView extends JFrame {
             contentPanel.revalidate();
             contentPanel.repaint();
         }
+    }
+
+    public void onBankCreatedSuccess(BankSampah newBank) {
+        this.currentBankSampah = newBank;
+        this.IdBankSampah = newBank.getIdBank();
+        
+        setTitle("Dashboard Admin - " + newBank.getNamaBank());
+        
+        // Refresh Sidebar (agar menu Create hilang, atau layout terupdate)
+        getContentPane().remove(0); // Hapus sidebar lama (posisi index 0 di BorderLayout)
+        add(createSidebar(), BorderLayout.WEST); // Tambah sidebar baru
+        
+        // Pindah ke Home
+        switchPanel("Home");
+        
+        revalidate();
     }
 
     // ... (Helper method createMenuLabel & createSectionTitle sama seperti sebelumnya) ...
