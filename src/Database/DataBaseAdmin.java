@@ -8,7 +8,7 @@ import Model.Admin;
 public class DataBaseAdmin {
     private static ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
     private static final String DATA_ADMIN = "src\\Database\\Admin\\data.txt";
-    // private static Scanner input = new Scanner(System.in);
+
 
     public static void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);

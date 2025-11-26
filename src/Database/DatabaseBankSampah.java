@@ -46,10 +46,11 @@ public class DatabaseBankSampah {
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 String[] parts = line.split(delim);
-                if (parts.length >= 2) {
-                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1]));
+                if (parts.length >= 3) {
+                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1], parts[2]));
                     // 0 = idBank
                     // 1 = nama bank
+                    // 2 = alamat bank
                 }
             }
             return daftarSemuaBankSampah;
@@ -66,7 +67,8 @@ public class DatabaseBankSampah {
 
             for (BankSampah bankSampah : daftarSemuaBankSampah) {
                 String data = bankSampah.getIdBank() + "|" +
-                        bankSampah.getNamaBank();
+                        bankSampah.getNamaBank() + "|" +
+                        bankSampah.getAlamat();
 
                 writer.write(data);
                 writer.newLine();
