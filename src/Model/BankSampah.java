@@ -6,6 +6,7 @@ import java.util.List;
 public class BankSampah {
     private String idBank;
     private String namaBankSampah;
+    private String alamat;
 
     private Admin admin;
     private ArrayList<Penyetor> daftarPenyetor;
@@ -16,9 +17,10 @@ public class BankSampah {
     private String filePenyetor;
     private String fileTransaksi;
 
-    public BankSampah(String idBank, String namaBank) {
+    public BankSampah(String idBank, String namaBank, String alamat) {
         this.idBank = idBank;
         this.namaBankSampah = namaBank;
+        this.alamat = alamat;
 
         this.daftarPenyetor = new ArrayList<>();
         this.daftarKategoriSampah = new ArrayList<>();
@@ -65,6 +67,12 @@ public class BankSampah {
     public String getIdBank() { return idBank; }
     public String getNamaBank() { return namaBankSampah; }
     public Admin getAdmin() { return admin; }
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+    public String getAlamat(){
+        return this.alamat;
+    }
 
     public String getFileAdmin() { return fileAdmin; }
     public String getFilePenyetor() { return filePenyetor; }
