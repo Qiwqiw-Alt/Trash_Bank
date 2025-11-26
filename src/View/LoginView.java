@@ -213,8 +213,6 @@ public class LoginView extends JFrame {
 
     }
 
-
-
     // ===========================
     // LOGIC LOGIN (TIDAK DIUBAH)
     // ===========================
@@ -237,10 +235,16 @@ public class LoginView extends JFrame {
         // USER DITEMUKAN → CEK TYPE
         if (user instanceof Admin) {
             Admin admin = (Admin) user;
+            
+            String idBank = admin.getIdBankSampah();
+            if (idBank != null && idBank.equalsIgnoreCase("null")) {
+                idBank = null;
+            }
+
             JOptionPane.showMessageDialog(this,
                     "Login berhasil sebagai ADMIN: " + admin.getNamaAdmin());
 
-            new DashboardAdminView(admin).setVisible(true);
+            new DashboardAdminView(admin, idBank).setVisible(true);
             dispose();
             return;
         }

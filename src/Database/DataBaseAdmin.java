@@ -53,8 +53,8 @@ public class DataBaseAdmin {
                 if (parts.length >= 7) {
                     Admin adminBaru = new Admin(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
-                    if(!parts[5].equalsIgnoreCase("null")){
-                        adminBaru.setIdBankSampah(parts[5]);
+                    if(!parts[6].equalsIgnoreCase("null")){
+                        adminBaru.setIdBankSampah(parts[6]);
                     }
                     daftarSemuaAdmin.add(adminBaru);
                     // 0 = ID
@@ -63,6 +63,7 @@ public class DataBaseAdmin {
                     // 3 = password
                     // 4 = nama admin
                     // 5 = no hp
+                    // 6 = idBankSampah
                 }
             }
             return daftarSemuaAdmin;

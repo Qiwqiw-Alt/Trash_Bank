@@ -51,13 +51,9 @@ public class DatabasePenyetor {
                 String[] parts = line.split(delim);
                 if (parts.length >= 7) {
                     Penyetor penyetorBaru = new Penyetor(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
-                    // 0 = ID
-                    // 1 = username biasa
-                    // 2 = password
-                    // 3 = nama lengkap
-                    // 4 = no hp
-                    if(!parts[5].equalsIgnoreCase("null")){
-                        penyetorBaru.setIdBankSampah(parts[5]);
+                    
+                    if(!parts[6].equalsIgnoreCase("null")){
+                        penyetorBaru.setIdBankSampah(parts[6]);
                     }
                     daftarSemuaPenyetor.add(penyetorBaru);
                 }
