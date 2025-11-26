@@ -3,12 +3,6 @@ package View;
 import javax.swing.*;
 
 import Controller.SignInController;
-import Database.DataBaseAdmin;
-import Database.DatabasePenyetor;
-import Model.Admin;
-import Model.Penyetor;
-import Model.User;
-import Database.DataBaseAdmin.*;
 
 import java.awt.*;
 

@@ -4,8 +4,8 @@ import javax.swing.JPanel;
 
 import Model.Admin;
 
-public class EvaluasiKomplain extends JPanel{
-    public EvaluasiKomplain(Admin admin){
+public class EvaluasiKomplainPanel extends JPanel{
+    public EvaluasiKomplainPanel(Admin admin){
 
     }
 }

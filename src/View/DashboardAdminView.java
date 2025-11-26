@@ -2,8 +2,10 @@ package View;
 
 import Model.Admin;
 import Model.BankSampah;
-import View.AdminPanels.*; // Import folder panel baru
 import javax.swing.*;
+
+import Controller.BankSampahController;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,28 +13,33 @@ import java.awt.event.MouseEvent;
 public class DashboardAdminView extends JFrame {
     
     private Admin currentUser;
-    private BankSampah bankSampah;
+    private String IdBankSampah;
+    private BankSampah currentBankSampah;
     private JPanel contentPanel;
+   
     
     // Constants
     private final Color GREEN_PRIMARY = new Color(0, 128, 0); 
-    private final Color GREEN_HOVER = new Color(0, 150, 0);
+    private final Color GREEN_HOVER = new Color(0, 150, 0); 
 
-    public DashboardAdminView(Admin user) {
-        this(user, null);
-    }
-
-    public DashboardAdminView(Admin user, BankSampah bankSampah) {
+    public DashboardAdminView(Admin user, String IdBankSampah) {
         this.currentUser = user;
-        this.bankSampah = bankSampah;
-        
-        String namaBank = (bankSampah != null) ? bankSampah.getNamaBank() : "Bank Sampah App";
+        this.IdBankSampah = IdBankSampah;
+        String namaBank = (currentBankSampah != null) ? currentBankSampah.getNamaBank() : "Bank Sampah App";
+
         setTitle("Dashboard Admin - " + namaBank);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
+        setResizable(true); 
 
         initLayout();
+        if(currentBankSampah == null){
+            switchPanel("CreateBank");
+        } else {
+            switchPanel("Home");
+        }
+     
     }
 
     private void initLayout() {
@@ -49,6 +56,18 @@ public class DashboardAdminView extends JFrame {
         // Default Page
         switchPanel("Home");
     }
+
+    private void setMenuEnabled(JPanel menu, boolean enabled) {
+        menu.setEnabled(enabled);
+        for (Component comp : menu.getComponents()) {
+            comp.setEnabled(enabled);
+        }
+
+        if (!enabled) {
+            menu.setBackground(new Color(120, 120, 120)); // warna abu2
+        }
+    }
+
 
     private JPanel createSidebar() {
         JPanel panel = new JPanel();
@@ -82,7 +101,11 @@ public class DashboardAdminView extends JFrame {
         panel.add(Box.createVerticalGlue());
         panel.add(createMenuLabel("Logout", "Logout"));
 
-        return panel;
+        boolean hasBank = (currentBankSampah != null);
+
+   
+
+     return panel;
     }
 
     public void switchPanel(String menuName) {
@@ -100,7 +123,7 @@ public class DashboardAdminView extends JFrame {
                 break;
             case "GivePoin":
                 // Butuh bankSampah untuk catat ID Bank di transaksi
-                nextPanel = new View.AdminPanels.InputSetoranPanel(bankSampah); 
+                nextPanel = new View.AdminPanels.InputSetoranPanel(currentBankSampah); 
                 break;
             case "AddSampah":
                 nextPanel = new View.AdminPanels.ManajemenSampahPanel();
