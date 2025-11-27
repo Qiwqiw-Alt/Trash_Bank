@@ -109,7 +109,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.ManajemenRewardPanel();
                 break;
             case "Komplain":
-                nextPanel = new View.AdminPanels.EvaluasiKomplainPanel(currentUser);
+                nextPanel = new View.AdminPanels.EvaluasiKomplain(currentUser);
                 break;
             case "Logout":
                 new LoginView().setVisible(true);
