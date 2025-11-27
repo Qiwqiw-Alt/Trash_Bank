@@ -16,4 +16,8 @@ public class LoginController {
     public static boolean isUserAvilable(String userID){
         return loginService.isUserAvilable(userID);
     }
+
+    public static Object getUser(String userId){
+        return loginService.getUserById(userId);
+    }
 }
