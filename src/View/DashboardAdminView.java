@@ -233,7 +233,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.ManajemenSampahPanel();
                 break;
             case "AddReward":
-                nextPanel = new View.AdminPanels.ManajemenRewardPanel();
+                nextPanel = new View.AdminPanels.ManajemenRewardPanel(currentBankSampah);
                 break;
             case "Komplain":
                 nextPanel = new View.AdminPanels.EvaluasiKomplainPanel(currentUser, currentBankSampah);
