@@ -48,11 +48,11 @@ public class DatabaseComplain {
                                     data[4]); // isi
                     baru.setTanggal(LocalDate.parse(data[5], format));
                     Complain.Status status = Complain.Status.valueOf(data[6]);
+                    baru.setStatus(status);
                     baru.setTanggapanAdmin(data[7]);
                 }
             }
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println("Error : " + e.getMessage());
         }
         return getAllDaftarComplain();
