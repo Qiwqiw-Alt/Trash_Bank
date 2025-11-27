@@ -68,17 +68,43 @@ public class DashboardAdminView extends JFrame {
         panel.setBackground(GREEN_PRIMARY);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        // Logo
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        // --- 1. LOGO AREA ---
+        JPanel logoPanel = new JPanel();
+        logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
         logoPanel.setBackground(GREEN_PRIMARY);
-        JLabel logo = new JLabel("BANK SAMPAH ADMIN", SwingConstants.CENTER);
-        logo.setFont(new Font("Arial", Font.BOLD, 18));
-        logo.setForeground(Color.WHITE);
-        logo.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
-        logoPanel.add(logo);
-        panel.add(logoPanel);
+        logoPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 20, 0)); // Padding atas bawah
 
-        // Menu Items
+        JLabel logoIcon = new JLabel("♻", SwingConstants.CENTER); // Ikon recycle
+        logoIcon.setFont(new Font("Segoe UI Emoji", Font.BOLD, 40));
+        logoIcon.setForeground(Color.WHITE);
+        logoIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel logoText = new JLabel("BANK SAMPAH", SwingConstants.CENTER);
+        logoText.setFont(new Font("SansSerif", Font.BOLD, 20));
+        logoText.setForeground(Color.WHITE);
+        logoText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel logoSubText = new JLabel("ADMINISTRATOR", SwingConstants.CENTER);
+        logoSubText.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        logoSubText.setForeground(new Color(200, 255, 200));
+        logoSubText.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        logoPanel.add(logoIcon);
+        logoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        logoPanel.add(logoText);
+        logoPanel.add(logoSubText);
+        
+        panel.add(logoPanel);
+        
+        // Garis pemisah di bawah logo
+        JSeparator separator = new JSeparator();
+        separator.setMaximumSize(new Dimension(220, 1));
+        separator.setForeground(new Color(255, 255, 255, 100));
+        separator.setBackground(new Color(255, 255, 255, 50));
+        panel.add(separator);
+        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Jarak setelah garis
+
+        // --- 2. MENU ITEMS ---
         
         // Tombol Create Bank Sampah (Hanya muncul jika bank null)
         if (currentBankSampah == null) {
@@ -88,20 +114,77 @@ public class DashboardAdminView extends JFrame {
 
         panel.add(createMenuLabel("Home", "Home"));
         panel.add(createMenuLabel("Edit Profil", "Profil"));
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(createSectionTitle("MANAJEMEN USER"));
         panel.add(createMenuLabel("Lihat Penyetor", "ListMember"));
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(createSectionTitle("TRANSAKSI"));
         panel.add(createMenuLabel("Input Setoran", "GivePoin"));
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(createSectionTitle("DATA MASTER"));
         panel.add(createMenuLabel("Jenis Sampah", "AddSampah"));
         panel.add(createMenuLabel("Reward", "AddReward"));
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(createSectionTitle("LAINNYA"));
         panel.add(createMenuLabel("Evaluasi Komplain", "Komplain"));
         
-        panel.add(Box.createVerticalGlue());
-        panel.add(createMenuLabel("Logout", "Logout"));
+        // --- 3. FOOTER (LOGOUT) ---
+        panel.add(Box.createVerticalGlue()); // Dorong ke bawah
+        
+        JSeparator footerSep = new JSeparator();
+        footerSep.setMaximumSize(new Dimension(220, 1));
+        footerSep.setForeground(new Color(255, 255, 255, 100));
+        panel.add(footerSep);
+        
+        panel.add(createMenuLabel("🚪  Logout", "Logout"));
+        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Jarak bawah
 
         return panel;
+    }
+
+    // Method helper untuk membuat Label Menu lebih rapi
+    private JPanel createMenuLabel(String text, String command) {
+        JPanel btn = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 12)); // Layout kiri, gap icon-teks
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50)); // Tinggi tombol konsisten
+        btn.setBackground(GREEN_PRIMARY);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        JLabel lbl = new JLabel(text);
+        lbl.setForeground(Color.WHITE);
+        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 15)); // Font lebih modern
+        
+        btn.add(lbl);
+
+        // Hover Effect yang lebih halus
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) { switchPanel(command); }
+            public void mouseEntered(MouseEvent e) { 
+                btn.setBackground(GREEN_HOVER); 
+                lbl.setFont(new Font("Segoe UI", Font.BOLD, 15)); // Bold saat hover
+            }
+            public void mouseExited(MouseEvent e) { 
+                btn.setBackground(GREEN_PRIMARY); 
+                lbl.setFont(new Font("Segoe UI", Font.PLAIN, 15)); // Normal lagi
+            }
+        });
+        return btn;
+    }
+
+    // Method helper untuk judul Section
+    private JLabel createSectionTitle(String title) {
+        JLabel lbl = new JLabel(title);
+        lbl.setFont(new Font("SansSerif", Font.BOLD, 11));
+        lbl.setForeground(new Color(180, 255, 180)); // Warna hijau sangat muda
+        // Padding: Atas, Kiri, Bawah, Kanan
+        lbl.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 0)); 
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // Wrapper agar alignment works di BoxLayout
+        lbl.setMaximumSize(new Dimension(Integer.MAX_VALUE, lbl.getPreferredSize().height + 10));
+        return lbl;
     }
 
     public void switchPanel(String menuName) {
@@ -141,7 +224,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.ProfilAdminPanel(currentUser);
                 break;
             case "ListMember":
-                nextPanel = new View.AdminPanels.ListMemberPanel(currentUser, currentBankSampah);
+                nextPanel = new View.AdminPanels.ListMemberPanel(currentBankSampah);
                 break;
             case "GivePoin":
                 nextPanel = new View.AdminPanels.InputSetoranPanel(currentBankSampah); 
@@ -185,32 +268,4 @@ public class DashboardAdminView extends JFrame {
         revalidate();
     }
 
-    // ... (Method createMenuLabel dan createSectionTitle tetap sama) ...
-    private JPanel createMenuLabel(String text, String command) {
-        JPanel btn = new JPanel(new BorderLayout());
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        btn.setBackground(GREEN_PRIMARY);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        JLabel lbl = new JLabel("   " + text);
-        lbl.setForeground(Color.WHITE);
-        lbl.setFont(new Font("Arial", Font.PLAIN, 14));
-        btn.add(lbl, BorderLayout.CENTER);
-
-        btn.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) { switchPanel(command); }
-            public void mouseEntered(MouseEvent e) { btn.setBackground(GREEN_HOVER); }
-            public void mouseExited(MouseEvent e) { btn.setBackground(GREEN_PRIMARY); }
-        });
-        return btn;
-    }
-
-    private JLabel createSectionTitle(String title) {
-        JLabel lbl = new JLabel("  " + title);
-        lbl.setFont(new Font("Arial", Font.BOLD, 11));
-        lbl.setForeground(new Color(200, 255, 200));
-        lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 0));
-        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
-        return lbl;
-    }
 }
