@@ -1,5 +1,6 @@
 package Database;
 
+import Model.Admin;
 import Model.Transaksi;
 
 import java.io.*;
@@ -8,9 +9,9 @@ import java.util.ArrayList;
 
 public class DatabaseTransaksi {
 
-    private ArrayList<Transaksi> daftarTransaksi;
+    private static ArrayList<Transaksi> daftarTransaksi;
     private static final String DATA_TRANSAKSI = "src\\database\\Transaksi\\logs.txt";
-    private final String delim = "\\|";
+    private static final String delim = "\\|";
 
 
     public void addTransaksi(Transaksi t) {
@@ -29,9 +30,13 @@ public class DatabaseTransaksi {
         return String.format("TRX%03d", max + 1);
     }
 
-    public ArrayList<Transaksi> loadData() {
+    public static ArrayList<Transaksi> loadData(){
+        return loadData(DATA_TRANSAKSI);
+    }
+
+    public static ArrayList<Transaksi> loadData(String filePath) {
         daftarTransaksi.clear();
-        File file = new File(DATA_TRANSAKSI);
+        File file = new File(filePath);
 
         try {
             if (!file.exists()) {
@@ -75,8 +80,12 @@ public class DatabaseTransaksi {
         return daftarTransaksi;
     }
 
-    public void writeData() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_TRANSAKSI))) {
+    public static void writeData(){
+        writeData(DATA_TRANSAKSI);
+    }
+
+    public static void writeData(String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
 
             for (Transaksi t : daftarTransaksi) {
                 bw.write(

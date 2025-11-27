@@ -7,8 +7,8 @@ import Model.Admin;
 
 public class DataBaseAdmin {
     private static ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
-    private static final String DATA_ADMIN = "src\\Database\\Admin\\data.txt";
-    // private static Scanner input = new Scanner(System.in);
+    private static final String DATA_ADMIN = "src\\Database\\Admin\\dataSemuaAdmin.txt";
+
 
     public static void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);
@@ -32,9 +32,13 @@ public class DataBaseAdmin {
         return String.format("UA%03d", next); // UA001, UA002, dst
     }
 
-    public static ArrayList<Admin> loadData() {
+    public static ArrayList<Admin> loadData(){
+        return loadData(DATA_ADMIN);
+    }
+
+    public static ArrayList<Admin> loadData(String filePath) {
         daftarSemuaAdmin.clear();
-        File file = new File(DATA_ADMIN);
+        File file = new File(filePath);
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
             if (!file.exists()) {
@@ -53,8 +57,8 @@ public class DataBaseAdmin {
                 if (parts.length >= 7) {
                     Admin adminBaru = new Admin(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
-                    if(!parts[5].equalsIgnoreCase("null")){
-                        adminBaru.setIdBankSampah(parts[5]);
+                    if(!parts[6].equalsIgnoreCase("null")){
+                        adminBaru.setIdBankSampah(parts[6]);
                     }
                     daftarSemuaAdmin.add(adminBaru);
                     // 0 = ID
@@ -63,6 +67,7 @@ public class DataBaseAdmin {
                     // 3 = password
                     // 4 = nama admin
                     // 5 = no hp
+                    // 6 = idBankSampah
                 }
             }
             return daftarSemuaAdmin;
@@ -75,7 +80,11 @@ public class DataBaseAdmin {
 
     //Tulis data
     public static void writeData(){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_ADMIN))) {
+        writeData(DATA_ADMIN);
+    }
+    
+    public static void writeData(String filePath){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 
             for (Admin admin : daftarSemuaAdmin) {
                 String data = admin.getIdAdmin() + "|" +

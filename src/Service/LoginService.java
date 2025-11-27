@@ -21,6 +21,20 @@ public class LoginService {
         return false;
     }
 
+
+    public boolean isUserAvilable(String userID){
+        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
+        for (Penyetor u : penyetor) {
+            if (u.getIdPenyetor().equals(userID) && u.getIdBankSampah() == null) return true;
+        }
+
+        ArrayList<Admin> admin = DataBaseAdmin.loadData();
+        for (Admin u : admin) {
+            if (u.getIdAdmin().equals(userID) && u.getIdBankSampah() == null) return true;
+        }
+        return false;
+    }
+
     public Object loginUser(String username, String password) {
         // cek admin
         ArrayList<Admin> admins = DataBaseAdmin.loadData();

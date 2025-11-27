@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DatabasePenyetor {
     private static ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
-    private static final String DATA_PENYETOR = "src\\Database\\Penyetor\\data.txt";
+    private static final String DATA_PENYETOR = "src\\Database\\Penyetor\\dataSemuaPenyetor.txt";
 
     public static void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn
         daftarSemuaPenyetor.add(penyetorBaru);
@@ -31,9 +31,13 @@ public class DatabasePenyetor {
         return String.format("UP%03d", next); // UP001, UP002, dst
     }
 
-    public static ArrayList<Penyetor> loadData() {
+    public static ArrayList<Penyetor> loadData(){
+        return loadData(DATA_PENYETOR);
+    }
+
+    public static ArrayList<Penyetor> loadData(String filePath) {
         daftarSemuaPenyetor.clear();
-        File file = new File(DATA_PENYETOR);
+        File file = new File(filePath);
 
         try {
             if (!file.exists()) {
@@ -51,13 +55,9 @@ public class DatabasePenyetor {
                 String[] parts = line.split(delim);
                 if (parts.length >= 7) {
                     Penyetor penyetorBaru = new Penyetor(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
-                    // 0 = ID
-                    // 1 = username biasa
-                    // 2 = password
-                    // 3 = nama lengkap
-                    // 4 = no hp
-                    if(!parts[5].equalsIgnoreCase("null")){
-                        penyetorBaru.setIdBankSampah(parts[5]);
+                    
+                    if(!parts[6].equalsIgnoreCase("null")){
+                        penyetorBaru.setIdBankSampah(parts[6]);
                     }
                     daftarSemuaPenyetor.add(penyetorBaru);
                 }
@@ -73,7 +73,11 @@ public class DatabasePenyetor {
 
     //Tulis data
     public static void writeData(){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_PENYETOR))) {
+        writeData(DATA_PENYETOR);
+    }
+
+    public static void writeData(String filePath){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Penyetor penyetor : daftarSemuaPenyetor) {
                 String data = penyetor.getIdPenyetor() + "|" +
                         penyetor.getRole() + "|" +

@@ -6,19 +6,19 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DatabaseBankSampah {
-    private ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
+    private static ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
     private static final String DATA_BANK_SAMPAH = "src\\Database\\DataBankSampah\\databanksampah.txt";
 
-    public void addBankSampah(BankSampah bankSampahBaru) { // untuk nambah bank sampah yang dipakai di SignIn
+    public static void addBankSampah(BankSampah bankSampahBaru) { // untuk nambah bank sampah yang dipakai di SignIn
         daftarSemuaBankSampah.add(bankSampahBaru);
         writeData();
     }
 
     // filepath = src/Database/BankSampah/data.txt
     // Load/baca data sebelum Sign In dan Login
-    String delim = "\\|";
+    static String delim = "\\|";
 
-    public String generateBankId() {
+    public static String generateBankId() {
         int max = 0;
 
         for (BankSampah a : daftarSemuaBankSampah) {
@@ -32,7 +32,7 @@ public class DatabaseBankSampah {
         return String.format("BS%03d", next); // UA001, UA002, dst
     }
 
-    public ArrayList<BankSampah> loadData() {
+    public static ArrayList<BankSampah> loadData() {
         daftarSemuaBankSampah.clear();
         File file = new File(DATA_BANK_SAMPAH);
 
@@ -46,10 +46,11 @@ public class DatabaseBankSampah {
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 String[] parts = line.split(delim);
-                if (parts.length >= 2) {
-                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1]));
+                if (parts.length >= 3) {
+                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1], parts[2]));
                     // 0 = idBank
                     // 1 = nama bank
+                    // 2 = alamat bank
                 }
             }
             return daftarSemuaBankSampah;
@@ -61,12 +62,13 @@ public class DatabaseBankSampah {
     }
 
     // Tulis data
-    public void writeData() {
+    public static void writeData() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_BANK_SAMPAH))) {
 
             for (BankSampah bankSampah : daftarSemuaBankSampah) {
                 String data = bankSampah.getIdBank() + "|" +
-                        bankSampah.getNamaBank();
+                        bankSampah.getNamaBank() + "|" +
+                        bankSampah.getAlamat();
 
                 writer.write(data);
                 writer.newLine();
