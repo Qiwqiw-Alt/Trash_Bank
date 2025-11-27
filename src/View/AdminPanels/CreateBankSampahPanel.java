@@ -3,7 +3,6 @@ package View.AdminPanels;
 import Model.Admin;
 import Model.BankSampah;
 import View.DashboardAdminView; // Import view utama untuk callback
-import View.LoginView; // Import untuk akses list bank sampah global (simulasi database)
 
 import javax.swing.*;
 
@@ -11,9 +10,7 @@ import Database.DataBaseAdmin;
 import Database.DatabaseBankSampah;
 
 import java.awt.*;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class CreateBankSampahPanel extends JPanel {
 
