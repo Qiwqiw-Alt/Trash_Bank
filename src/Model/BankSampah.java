@@ -71,7 +71,6 @@ public class BankSampah {
         this.daftarKategoriSampah = DatabaseSampah.loadData(fileDaftarSampah);
     }
 
-
     public void tambahPenyetor(Penyetor p){
         daftarPenyetor.add(p);
     }

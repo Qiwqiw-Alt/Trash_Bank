@@ -96,4 +96,23 @@ public class DatabasePenyetor {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
     }
+
+    public static boolean assignUserToBank(String userId, String idBank) {
+        ArrayList<Penyetor> list = loadData(); // Load global data
+        boolean found = false;
+        
+        for (Penyetor p : list) {
+            if (p.getIdPenyetor().equals(userId)) {
+                p.setIdBankSampah(idBank); // UPDATE ID BANK DI SINI
+                found = true;
+                break;
+            }
+        }
+        
+        if (found) {
+            writeData(); // SIMPAN PERUBAHAN KE FILE GLOBAL
+            return true;
+        }
+        return false;
+    }
 }
