@@ -1,7 +1,6 @@
 package Database;
 
 import Model.PenukaranReward;
-import Model.Reward;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
