@@ -1,28 +1,12 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import Model.Penyetor;
 import Model.BankSampah;
-import Model.Sampah;
-import Model.ItemTransaksi;
-import Model.Transaksi;
-import View.PenyetorPanels.KeluhanPanel;
-import View.PenyetorPanels.ProfilPenyetorPanel;
-import View.PenyetorPanels.RiwayatTransaksiPanel;
-import View.PenyetorPanels.SetorSampahPanel;
-import View.PenyetorPanels.TukarPoinPanel;
-import Model.Reward;
-import Model.Complain;
-import Model.PenukaranReward;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class DashboardPenyetorView extends JFrame {
     private Penyetor currentUser;
@@ -34,7 +18,7 @@ public class DashboardPenyetorView extends JFrame {
     // Icon & Style Constants
     private final Color GREEN_PRIMARY = new Color(0, 128, 0); 
     private final Color GREEN_LIGHT = new Color(200, 240, 200); 
-    private final Color TEXT_DARK = new Color(50, 50, 50);
+    // private final Color TEXT_DARK = new Color(50, 50, 50);
 
     public DashboardPenyetorView(Penyetor user){
         this.currentUser = user;
