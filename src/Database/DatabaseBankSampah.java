@@ -88,4 +88,10 @@ public class DatabaseBankSampah {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
     }
+
+    public static void addBankSampah(BankSampah bankSampahBaru){ 
+        ArrayList<BankSampah> currentList = loadData();
+        currentList.add(bankSampahBaru);
+        writeData(currentList);
+    }
 }

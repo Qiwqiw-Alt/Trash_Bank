@@ -69,6 +69,10 @@ public class DataBaseAdmin {
 
         return listHasil; 
     }
+
+    public static void writeData(ArrayList<Admin> listAdmin){
+        writeData(listAdmin, DATA_ADMIN_GLOBAL);
+    }
     
     public static void writeData(ArrayList<Admin> listAdmin, String filePath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -91,6 +95,10 @@ public class DataBaseAdmin {
         } catch (IOException e) {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
+    }
+
+    public static void addMin(Admin newAdmin){
+        addMin(newAdmin, DATA_ADMIN_GLOBAL);
     }
 
     public static void addMin(Admin newAdmin, String filePath){
