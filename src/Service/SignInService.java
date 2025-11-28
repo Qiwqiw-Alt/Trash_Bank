@@ -28,7 +28,7 @@ public class SignInService {
         DataBaseAdmin.loadData();
         String id = DataBaseAdmin.generateAdminId();
         Admin admin = new Admin(id, role, user, pass, nama, noHp);
-        DataBaseAdmin.addAdmin(admin, DataBaseAdmin.getFinalPath());
+        DataBaseAdmin.addAdmin(admin);
     }
 
     public void registerPenyetor(String role, String nama, String user, String pass, String noHp) {
