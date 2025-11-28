@@ -206,6 +206,15 @@ public class DashboardAdminView extends JFrame {
                 return; // Stop, jangan ganti panel
             }
         }
+        else { 
+            if (menuName.equals("CreateBank")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Anda sudah memiliki akun bank sampah!", 
+                    "Akses Ditolak", 
+                    JOptionPane.WARNING_MESSAGE);
+                return; // Stop
+            }
+        }
         
         JPanel nextPanel = null;
 
