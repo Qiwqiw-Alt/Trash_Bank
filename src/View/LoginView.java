@@ -262,6 +262,5 @@ public class LoginView extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
-        // new DashboardView(u).setVisible(true); // Baris ini dihapus/diperbaiki karena sebelumnya salah
     }
 }

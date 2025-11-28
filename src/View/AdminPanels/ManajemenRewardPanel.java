@@ -29,7 +29,7 @@ public class ManajemenRewardPanel extends JPanel {
     // Styling
     private final Color GREEN_PRIMARY = new Color(0, 128, 0);
     private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 18);
-    private final Font FONT_TEXT = new Font("Segoe UI", Font.PLAIN, 14);
+    // private final Font FONT_TEXT = new Font("Segoe UI", Font.PLAIN, 14);
 
     public ManajemenRewardPanel(BankSampah bankSampah){
         this.currentBank = bankSampah;
