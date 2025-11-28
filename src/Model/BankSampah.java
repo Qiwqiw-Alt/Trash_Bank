@@ -17,12 +17,14 @@ public class BankSampah {
     private ArrayList<Penyetor> daftarPenyetor;
     private ArrayList<Sampah> daftarKategoriSampah;
     private ArrayList<Transaksi> daftarTransaksi;
+    private ArrayList<Reward> daftarReward;
 
 
     private String fileAdmin;
     private String filePenyetor;
     private String fileTransaksi;
     private String fileDaftarSampah;
+    private String fileDaftarReward;
 
     public BankSampah(String idBank, String namaBank, String alamat) {
         this.idBank = idBank;
@@ -37,79 +39,21 @@ public class BankSampah {
         this.filePenyetor = "src\\Database\\Penyetor\\penyetor_" + idBank + ".txt";
         this.fileTransaksi = "src\\Database\\Transaksi\\trx_" + idBank + ".txt";
         this.fileDaftarSampah = "src\\Database\\Sampah\\dfsampah_" + idBank + ".txt";
-    }
-
-    public void writeDataAdmin(){
-        DataBaseAdmin.writeData(fileAdmin);
-    }
-
-    public void loadDataAdmin(){
-        this.daftarPenyetor = DatabasePenyetor.loadData(fileAdmin);
-    }
-
-    public void writeDataPenyetor(){
-        DataBaseAdmin.writeData(filePenyetor);
-    }
-
-    public void loadDataPenyetor(){
-        this.daftarPenyetor = DatabasePenyetor.loadData(filePenyetor);
-    }
-
-    public void writeDataTransaksi(){
-        DataBaseAdmin.writeData(fileTransaksi);
-    }
-
-    public void loadDataTransaksi(){
-        this.daftarTransaksi = DatabaseTransaksi.loadData(fileTransaksi);
-    }
-
-    public void writeDataSampah(){
-        DataBaseAdmin.writeData(fileDaftarSampah);
-    }
-
-    public void loadDataSampah(){
-        this.daftarKategoriSampah = DatabaseSampah.loadData(fileDaftarSampah);
-    }
-
-    public void tambahPenyetor(Penyetor p){
-        daftarPenyetor.add(p);
-    }
-
-    public Penyetor cariPenyetor(String username) {
-        for (Penyetor p : daftarPenyetor) {
-            if (p.getUsername().equals(username)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<Penyetor> getDaftarPenyetor(){
-        return daftarPenyetor;
-    }
-
-    public void tambahKategoriSampah(Sampah s) {
-        daftarKategoriSampah.add(s);
-    }
-
-    public ArrayList<Sampah> getDaftarSampah() {
-        return daftarKategoriSampah;
-    }
-
-    public void tambahTransaksi(Transaksi t) {
-        daftarTransaksi.add(t);
-    }
-
-    public List<Transaksi> getDaftarTransaksi() {
-        return daftarTransaksi;
+        this.fileDaftarReward = "src\\Database\\Reward\\dfreward_" + idBank + ".txt";
     }
 
     public String getIdBank() { return idBank; }
     public String getNamaBank() { return namaBankSampah; }
+    public void setNamaBank(String namaBank){
+        this.namaBankSampah = namaBank;
+    }
+
     public Admin getAdmin() { return admin; }
+
     public void setAlamat(String alamat) {
         this.alamat = alamat;
     }
+
     public String getAlamat(){
         return this.alamat;
     }
@@ -118,4 +62,8 @@ public class BankSampah {
     public String getFilePenyetor() { return filePenyetor; }
     public String getFileTransaksi() { return fileTransaksi; }
     public String getFilDaftarSampah() { return fileDaftarSampah; }
+    public String getFileReward() { return fileDaftarReward; }
+
+    public ArrayList<Penyetor> getDaftarPenyetor() { return daftarPenyetor; }
+    public void setDaftarPenyetor(ArrayList<Penyetor> daftarPenyetor) { this.daftarPenyetor = daftarPenyetor; }
 }

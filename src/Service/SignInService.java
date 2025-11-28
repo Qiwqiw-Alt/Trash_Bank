@@ -28,13 +28,13 @@ public class SignInService {
         DataBaseAdmin.loadData();
         String id = DataBaseAdmin.generateAdminId();
         Admin admin = new Admin(id, role, user, pass, nama, noHp);
-        DataBaseAdmin.addAdmin(admin);
+        DataBaseAdmin.addAdmin(admin, DataBaseAdmin.getFinalPath());
     }
 
     public void registerPenyetor(String role, String nama, String user, String pass, String noHp) {
         DatabasePenyetor.loadData();
         String id = DatabasePenyetor.generatePenyetorId();
         Penyetor penyetor = new Penyetor(id, role, user, pass, nama, noHp);
-        DatabasePenyetor.addPenyetor(penyetor);
+        DatabasePenyetor.addPenyetor(penyetor, DatabasePenyetor.getFinalPath());
     }
 }

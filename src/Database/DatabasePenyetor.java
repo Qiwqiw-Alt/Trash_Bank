@@ -9,9 +9,13 @@ public class DatabasePenyetor {
     private static ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
     private static final String DATA_PENYETOR = "src\\Database\\Penyetor\\dataSemuaPenyetor.txt";
 
-    public static void addPenyetor(Penyetor penyetorBaru){ // untuk nambah penyetor yang dipakai di SignIn
+    public static void addPenyetor(Penyetor penyetorBaru, String filePath){ // untuk nambah penyetor yang dipakai di SignIn
         daftarSemuaPenyetor.add(penyetorBaru);
-        writeData();
+        writeData(filePath);
+    }
+
+    public static String getFinalPath(){
+        return DATA_PENYETOR;
     }
 
     //filepath = src/Database/Penyetor/data.txt
