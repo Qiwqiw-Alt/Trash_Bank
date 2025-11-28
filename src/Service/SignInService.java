@@ -19,7 +19,6 @@ public class SignInService {
         for (Admin u : admin) {
             if (u.getUsername().equals(username)) return true;
         }
-        
 
         return false;
     }
@@ -28,7 +27,7 @@ public class SignInService {
         DataBaseAdmin.loadData();
         String id = DataBaseAdmin.generateAdminId();
         Admin admin = new Admin(id, role, user, pass, nama, noHp);
-        DataBaseAdmin.addAdmin(admin);
+        DataBaseAdmin.addMin(admin);
     }
 
     public void registerPenyetor(String role, String nama, String user, String pass, String noHp) {
