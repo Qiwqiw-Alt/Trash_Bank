@@ -9,10 +9,13 @@ public class DataBaseAdmin {
     private static ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
     private static final String DATA_ADMIN = "src\\Database\\Admin\\dataSemuaAdmin.txt";
 
-
-    public static void addAdmin(Admin adminBaru){ // untuk nambah admin yang dipakai di SignIn
+    public static void addAdmin(Admin adminBaru, String filePath){ // untuk nambah admin yang dipakai di SignIn
         daftarSemuaAdmin.add(adminBaru);
-        writeData();
+        writeData(filePath);
+    }
+
+    public static String getFinalPath(){
+        return DATA_ADMIN;
     }
 
     //filepath = src/Database/Admin/data.txt

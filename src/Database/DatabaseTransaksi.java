@@ -14,8 +14,9 @@ public class DatabaseTransaksi {
     private static final String delim = "\\|";
 
 
-    public void addTransaksi(Transaksi t) {
+    public void addTransaksi(Transaksi t, String filePath) {
         daftarTransaksi.add(t);
+        writeData(filePath);
     }
 
     public String generateTransaksiId() {

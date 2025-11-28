@@ -160,46 +160,48 @@ public class ListMemberPanel extends JPanel {
             return;
         }
 
-        // 1. Cek Logic Ketersediaan
+        // 1. Cek Ketersediaan
         if (LoginController.isUserAvilable(targetId)) {
             
-            // 2. Konfirmasi
             int confirm = JOptionPane.showConfirmDialog(this, 
-                "Tambahkan User ID: " + targetId + " ?",
+                "Tambahkan User ID: " + targetId + " ke database lokal bank ini?",
                 "Konfirmasi", JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                // 3. Update Database Global
-                boolean success = DatabasePenyetor.assignUserToBank(targetId, currentBank.getIdBank());
+                // 2. Update Database Global (Agar tidak diambil bank lain)
+                boolean globalSuccess = DatabasePenyetor.assignUserToBank(targetId, currentBank.getIdBank());
                 
-                if (success) {
-                    JOptionPane.showMessageDialog(this, "Berhasil menambahkan anggota!");
-                    tfUserId.setText(""); // Reset form
-                    refreshTable();       // Update tabel kanan otomatis
+                if (globalSuccess) {
+                    // --- TAMBAHAN PENTING: SIMPAN KE FILE LOKAL BANK ---
+                    
+                    // Ambil object user lengkap dari Controller
+                    Object userObj = LoginController.getUser(targetId);
+                    
+                    if (userObj instanceof Penyetor) {
+                        Penyetor p = (Penyetor) userObj;
+                        // Pastikan ID Bank di object sudah terisi sebelum disimpan
+                        p.setIdBankSampah(currentBank.getIdBank());
+                        
+                        // Tulis ke file khusus: src/Database/Penyetor/member_BSxxx.txt
+                        DatabasePenyetor.addMemberToBankFile(p, currentBank.getIdBank());
+                        
+                        JOptionPane.showMessageDialog(this, "Berhasil menambahkan anggota!");
+                        tfUserId.setText(""); 
+                        refreshTable(); // Refresh tabel dari file lokal
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Gagal update database.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Gagal update database global.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
-            // --- LOGIKA JIKA USER TIDAK VALID (Else dari isUserAvilable) ---
-            
-            // Kita cek alasannya kenapa tidak available supaya pesan error-nya jelas
+            // --- LOGIKA ERROR HANDLING (Sama seperti sebelumnya) ---
             Object user = LoginController.getUser(targetId);
-            
             if (user == null) {
-                JOptionPane.showMessageDialog(this, 
-                    "ID Penyetor '" + targetId + "' tidak ditemukan di sistem.", 
-                    "Data Tidak Ditemukan", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ID Penyetor tidak ditemukan.", "Data Tidak Ditemukan", JOptionPane.WARNING_MESSAGE);
             } else if (user instanceof Penyetor) {
-                // Kalau user ada, berarti dia sudah punya bank sampah lain (idBank != null)
-                JOptionPane.showMessageDialog(this, 
-                    "Penyetor ini sudah tergabung di Bank Sampah lain.", 
-                    "Gagal Menambahkan", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Penyetor ini sudah tergabung di Bank Sampah lain.", "Gagal", JOptionPane.WARNING_MESSAGE);
             } else {
-                // Kalau user ada tapi bukan Penyetor (misal ID Admin)
-                JOptionPane.showMessageDialog(this, 
-                    "ID tersebut terdaftar sebagai Admin, bukan Penyetor.", 
-                    "Tipe Akun Salah", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ID tersebut bukan Penyetor (Admin).", "Salah Tipe", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -209,20 +211,16 @@ public class ListMemberPanel extends JPanel {
      * dan menampilkannya di tabel sebelah kanan.
      */
     private void refreshTable() {
-        // 1. Bersihkan data lama di tabel
+        // 1. Bersihkan tabel
         tableModel.setRowCount(0);
 
-        // 2. Load SEMUA data penyetor dari file global (data.txt)
-        List<Penyetor> allPenyetor = DatabasePenyetor.loadData();
-
-        // 3. FILTER: Hanya ambil penyetor yang ID Bank-nya sama dengan Bank ini
+        // 2. Load data LANGSUNG dari file khusus bank ini (member_BSxxx.txt)
         if (currentBank != null && currentBank.getIdBank() != null) {
-            List<Penyetor> myMembers = allPenyetor.stream()
-                .filter(p -> p.getIdBankSampah() != null && 
-                             p.getIdBankSampah().equals(currentBank.getIdBank()))
-                .collect(Collectors.toList());
+            
+            // Panggil method loadMemberByBank yang sudah kita buat di DatabasePenyetor
+            List<Penyetor> myMembers = DatabasePenyetor.loadMemberByBank(currentBank.getIdBank());
 
-            // 4. Masukkan hasil filter ke dalam Tabel Model
+            // 3. Masukkan ke tabel
             for (Penyetor p : myMembers) {
                 tableModel.addRow(new Object[]{
                     p.getIdPenyetor(),

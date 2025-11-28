@@ -11,8 +11,9 @@ public class DatabaseSampah {
     private static final String DATA_SAMPAH = "src\\Database\\Sampah\\sampah.txt";
     private static final String delim = "\\|";
 
-    public void addSampah(Sampah s) {
+    public void addSampah(Sampah s, String filePath) {
         daftarSampah.add(s);
+        writeData(filePath);
     }
 
     public String generateSampahId() {

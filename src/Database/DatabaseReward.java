@@ -11,20 +11,20 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class DatabaseReward {
-    private ArrayList<Reward> listReward;
+    private static ArrayList<Reward> listReward;
     private static final String DATA_REWARD = "src\\Database\\Reward\\reward.txt";
-    String delim = "\\|";
+    static String delim = "\\|";
 
     public DatabaseReward() {
         this.listReward = loadData();
     }
 
-    public void addReward(Reward rewardBaru) {
+    public static void addReward(Reward rewardBaru, String filePath) {
         listReward.add(rewardBaru);
-        saveData();
+        writeData(filePath);
     }
 
-    public String generateRewardId() {
+    public static String generateRewardId() {
         int max = 0;
 
         for (Reward reward : listReward) {
@@ -35,13 +35,15 @@ public class DatabaseReward {
 
         int next = max + 1;
         return String.format("R%03d", next);
-
     }
 
+    public static ArrayList<Reward> loadData(){
+        return loadData(DATA_REWARD);
+    }
 
-    public ArrayList<Reward> loadData() {
+    public static ArrayList<Reward> loadData(String filePath) {
         listReward.clear();
-        File file = new File(DATA_REWARD);
+        File file = new File(filePath);
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             if (!file.exists()) {
@@ -71,10 +73,15 @@ public class DatabaseReward {
             System.out.println(e.getMessage());
         }
         return listReward;
+
     }
 
-    public void saveData() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_REWARD))) {
+    public static void writeData(){
+        writeData(DATA_REWARD);
+    }
+
+    public static void writeData(String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             
             for (Reward reward : listReward) {
                 String data = reward.getIdReward() + "|" +
