@@ -5,7 +5,6 @@ import Model.Transaksi;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseTransaksi {
     private static final String DATA_TRANSAKSI_GLOBAL = "src\\database\\Transaksi\\logs.txt";
