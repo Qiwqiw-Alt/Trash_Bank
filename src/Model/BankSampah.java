@@ -1,12 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import Database.DataBaseAdmin;
-import Database.DatabasePenyetor;
-import Database.DatabaseSampah;
-import Database.DatabaseTransaksi;
 
 public class BankSampah {
     private String idBank;
@@ -18,7 +12,6 @@ public class BankSampah {
     private ArrayList<Sampah> daftarKategoriSampah;
     private ArrayList<Transaksi> daftarTransaksi;
     private ArrayList<Reward> daftarReward;
-
 
     private String fileAdmin;
     private String filePenyetor;
@@ -66,7 +59,7 @@ public class BankSampah {
     public String getFileTransaksi() { return fileTransaksi; }
     public String getFilDaftarSampah() { return fileDaftarSampah; }
     public String getFileReward() { return fileDaftarReward; }
+    public String getFileComplain() { return fileDaftarComplain; }
 
-    public ArrayList<Penyetor> getDaftarPenyetor() { return daftarPenyetor; }
-    public void setDaftarPenyetor(ArrayList<Penyetor> daftarPenyetor) { this.daftarPenyetor = daftarPenyetor; }
+    
 }
