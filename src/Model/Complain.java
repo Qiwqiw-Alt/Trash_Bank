@@ -8,7 +8,7 @@ public class Complain {
     public enum Status {
         SEDANG_DITINJAU,
         DITERIMA,
-        DITOLAK
+        DITOLAK, PENDING
     }
 
     private String idComplain;
