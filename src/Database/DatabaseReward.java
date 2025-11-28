@@ -102,4 +102,35 @@ public class DatabaseReward {
         list.add(rewardBaru);
         writeData(list, filePath);
     }
+
+    public static void updateReward(Reward rewardBaru, String filePath) {
+        ArrayList<Reward> list = loadData(filePath);
+        boolean found = false;
+
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getIdReward().equals(rewardBaru.getIdReward())){
+                list.set(i, rewardBaru);
+                found = true;
+                break;
+            }
+        }
+
+        if(found) {
+            writeData(list, filePath);
+        }
+    }
+
+    public static void deleteReward(String idReward, String filePath) {
+        ArrayList<Reward> list = loadData(filePath);
+        ArrayList<Reward> newList = new ArrayList<>();
+
+        for (Reward r : list) {
+            // Masukkan ke list baru KECUALI yang id-nya mau dihapus
+            if (!r.getIdReward().equals(idReward)) {
+                newList.add(r);
+            }
+        }
+
+        writeData(newList, filePath);
+    }
 }

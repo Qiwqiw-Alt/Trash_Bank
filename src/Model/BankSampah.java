@@ -36,7 +36,7 @@ public class BankSampah {
     public String getFileAdmin() { return fileAdmin; }
     public String getFilePenyetor() { return filePenyetor; }
     public String getFileTransaksi() { return fileTransaksi; }
-    public String getFilDaftarSampah() { return fileDaftarSampah; }
+    public String getFileDaftarSampah() { return fileDaftarSampah; }
     public String getFileReward() { return fileDaftarReward; }
     public String getFileComplain() { return fileDaftarComplain; }
 }

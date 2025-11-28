@@ -13,7 +13,7 @@ public class DatabaseSampah {
         return DATA_SAMPAH_GLOBAL;
     }
 
-    public String generateSampahId() {
+    public static String generateSampahId() {
         ArrayList<Sampah> listSampah = loadData();
 
         int max = 0;
@@ -88,6 +88,37 @@ public class DatabaseSampah {
         ArrayList<Sampah> list = loadData(filePath);
         list.add(s);
         writeData(list, filePath);
+    }
+
+    public static void updateSampah(Sampah sampahBaru, String filePath) {
+        ArrayList<Sampah> list = loadData(filePath);
+        boolean found = false;
+
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getIdSampah().equals(sampahBaru.getIdSampah())){
+                list.set(i, sampahBaru);
+                found = true;
+                break;
+            }
+        }
+
+        if(found) {
+            writeData(list, filePath);
+        }
+    }
+
+    public static void deleteSampah(String idSampah, String filePath) {
+        ArrayList<Sampah> list = loadData(filePath);
+        ArrayList<Sampah> newList = new ArrayList<>();
+
+        for (Sampah s : list) {
+            // Masukkan ke list baru KECUALI yang id-nya mau dihapus
+            if (!s.getIdSampah().equals(idSampah)) {
+                newList.add(s);
+            }
+        }
+
+        writeData(newList, filePath);
     }
 
 }
