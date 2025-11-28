@@ -23,6 +23,16 @@ public class DashboardPenyetorView extends JFrame {
     public DashboardPenyetorView(Penyetor user){
         this.currentUser = user;
         this.bankSampah = null;
+
+        String namaBank = "Bank Sampah App";
+        setTitle("Dashboard Penyetor - " + namaBank);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        setLocationRelativeTo(null);
+        setResizable(true); 
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        
+        initLayout();
     }
 
     public DashboardPenyetorView(Penyetor user, BankSampah bankSampah) {
