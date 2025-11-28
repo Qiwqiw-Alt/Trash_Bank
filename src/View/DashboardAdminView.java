@@ -27,7 +27,7 @@ public class DashboardAdminView extends JFrame {
         
         // Cek apakah Admin punya bank sampah
         if (this.IdBankSampah != null) {
-             currentBankSampah = BankSampahController.getBankSampah(this.IdBankSampah);
+             currentBankSampah = BankSampahController.getService().getObjBankSampah(this.IdBankSampah);
         } else {
              currentBankSampah = null;
         }
@@ -227,7 +227,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.CreateBankSampahPanel(this, currentUser); 
                 break;
             case "Home":
-                nextPanel = new View.AdminPanels.AdminHomePanel(currentUser);
+                nextPanel = new View.AdminPanels.AdminHomePanel(currentUser, currentBankSampah);
                 break;
             case "Profil":
                 nextPanel = new View.AdminPanels.ProfilAdminPanel(currentUser);

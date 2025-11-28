@@ -57,8 +57,6 @@ public class Complain {
     public void setStatus(Status status) {
         this.status = status;
     }
-    
-    
 
     public void setTanggapanAdmin(String tanggapanAdmin) {
         this.tanggapanAdmin = tanggapanAdmin;
