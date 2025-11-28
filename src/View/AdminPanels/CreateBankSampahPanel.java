@@ -116,7 +116,7 @@ public class CreateBankSampahPanel extends JPanel {
                 break;
             }
         }
-    DataBaseAdmin.writeData();
+        DataBaseAdmin.writeData();
         // 5. Tampilkan Pesan Sukses
         JOptionPane.showMessageDialog(this, "Bank Sampah '" + nama + "' berhasil dibuat!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
 

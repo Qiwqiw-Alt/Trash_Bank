@@ -6,37 +6,33 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DatabasePenyetor {
-    private static ArrayList<Penyetor> daftarSemuaPenyetor = new ArrayList<Penyetor>();
+    private static String DELIM = "\\|";
     private static final String DATA_PENYETOR = "src\\Database\\Penyetor\\dataSemuaPenyetor.txt";
 
-    public static void addPenyetor(Penyetor penyetorBaru, String filePath){ // untuk nambah penyetor yang dipakai di SignIn
-        daftarSemuaPenyetor.add(penyetorBaru);
-        writeData(filePath);
-    }
+    // public static void addPenyetor(Penyetor penyetorBaru, String filePath){ // untuk nambah penyetor yang dipakai di SignIn
+    //     daftarSemuaPenyetor.add(penyetorBaru);
+    //     writeData(filePath);
+    // }
 
-    public static String getFinalPath(){
-        return DATA_PENYETOR;
-    }
-
-    //filepath = src/Database/Penyetor/data.txt
-    // Load/baca data sebelum Sign In dan Login
-    static String delim = "\\|";
+    // public static String getFinalPath(){
+    //     return DATA_PENYETOR;
+    // }
 
     public static String generatePenyetorId() {
+        ArrayList<Penyetor> allData = loadData(DATA_PENYETOR);
         int max = 0;
 
-        for (Penyetor a : daftarSemuaPenyetor) {
-            String id = a.getIdPenyetor().substring(2); // ambil bagian angkanya
-            int num = Integer.parseInt(id);
-            if (num > max) max = num;
+        for (Penyetor p : allData) {
+            try {
+                String idStr = p.getIdPenyetor().substring(2); // Ambil angka setelah "UP"
+                int num = Integer.parseInt(idStr);
+                if (num > max) max = num;
+            } catch (NumberFormatException e) {
+                continue; 
+            }
         }
 
-        int next = max + 1;
-        return String.format("UP%03d", next); // UP001, UP002, dst
-    }
-
-    public static ArrayList<Penyetor> loadData(){
-        return loadData(DATA_PENYETOR);
+        return String.format("UP%03d", max + 1); // UP001, UP002, dst
     }
 
     public static ArrayList<Penyetor> loadData(String filePath) {

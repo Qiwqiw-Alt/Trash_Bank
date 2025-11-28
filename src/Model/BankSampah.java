@@ -25,6 +25,7 @@ public class BankSampah {
     private String fileTransaksi;
     private String fileDaftarSampah;
     private String fileDaftarReward;
+    private String fileDaftarComplain;
 
     public BankSampah(String idBank, String namaBank, String alamat) {
         this.idBank = idBank;
@@ -40,6 +41,8 @@ public class BankSampah {
         this.fileTransaksi = "src\\Database\\Transaksi\\trx_" + idBank + ".txt";
         this.fileDaftarSampah = "src\\Database\\Sampah\\dfsampah_" + idBank + ".txt";
         this.fileDaftarReward = "src\\Database\\Reward\\dfreward_" + idBank + ".txt";
+        this.fileDaftarComplain = "src\\Database\\Complain\\dfcompalain_" + idBank + ".txt";
+
     }
 
     public String getIdBank() { return idBank; }

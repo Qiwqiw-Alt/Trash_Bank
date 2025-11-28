@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class ListMemberPanel extends JPanel {
 
@@ -182,8 +182,8 @@ public class ListMemberPanel extends JPanel {
                         // Pastikan ID Bank di object sudah terisi sebelum disimpan
                         p.setIdBankSampah(currentBank.getIdBank());
                         
-                        // Tulis ke file khusus: src/Database/Penyetor/member_BSxxx.txt
-                        DatabasePenyetor.addMemberToBankFile(p, currentBank.getIdBank());
+                        String filePath = "src\\Database\\Penyetor\\penyetor_" + currentBank.getIdBank() + ".txt"; ;
+                        DatabasePenyetor.addPenyetor(p, filePath);
                         
                         JOptionPane.showMessageDialog(this, "Berhasil menambahkan anggota!");
                         tfUserId.setText(""); 
@@ -218,7 +218,8 @@ public class ListMemberPanel extends JPanel {
         if (currentBank != null && currentBank.getIdBank() != null) {
             
             // Panggil method loadMemberByBank yang sudah kita buat di DatabasePenyetor
-            List<Penyetor> myMembers = DatabasePenyetor.loadMemberByBank(currentBank.getIdBank());
+            String filePath = "src\\Database\\Penyetor\\penyetor_" + currentBank.getIdBank() + ".txt";
+            List<Penyetor> myMembers = DatabasePenyetor.loadData(filePath);
 
             // 3. Masukkan ke tabel
             for (Penyetor p : myMembers) {

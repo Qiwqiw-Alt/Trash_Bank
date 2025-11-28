@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SignInService {
 
     public boolean isUsernameTaken(String username, String role) {
-        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData();
+        ArrayList<Penyetor> penyetor = DatabasePenyetor.loadData("src\\Database\\Penyetor\\dataSemuaPenyetor.txt");
         for (Penyetor u : penyetor) {
             if (u.getUsername().equals(username)) return true;
         }
@@ -35,6 +35,7 @@ public class SignInService {
         DatabasePenyetor.loadData();
         String id = DatabasePenyetor.generatePenyetorId();
         Penyetor penyetor = new Penyetor(id, role, user, pass, nama, noHp);
-        DatabasePenyetor.addPenyetor(penyetor, DatabasePenyetor.getFinalPath());
+        String filePathGlobal = "src\\Database\\Penyetor\\dataSemuaPenyetor.txt";
+        DatabasePenyetor.addPenyetor(penyetor, filePathGlobal);
     }
 }
