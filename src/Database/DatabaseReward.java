@@ -11,92 +11,95 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class DatabaseReward {
-    private static ArrayList<Reward> listReward;
-    private static final String DATA_REWARD = "src\\Database\\Reward\\reward.txt";
-    static String delim = "\\|";
-
-    public DatabaseReward() {
-        this.listReward = loadData();
-    }
-
-    public static void addReward(Reward rewardBaru, String filePath) {
-        listReward.add(rewardBaru);
-        writeData(filePath);
-    }
+    private static final String DATA_REWARD_GLOBAL = "src\\Database\\Reward\\reward.txt";
+    private static String DELIM = "\\|";
 
     public static String generateRewardId() {
+        ArrayList<Reward> list = loadData();
+        
         int max = 0;
-
-        for (Reward reward : listReward) {
-            String id = reward.getIdReward().substring(1);
-            int num = Integer.parseInt(id);
-            if (num > max) max = num;
+        for (Reward reward : list) {
+            try {
+                String id = reward.getIdReward().substring(1);
+                int num = Integer.parseInt(id);
+                if (num > max) max = num;
+            } catch (Exception e) {
+                continue;
+            }
         }
-
-        int next = max + 1;
-        return String.format("R%03d", next);
+        return String.format("R%03d", max + 1);
     }
 
-    public static ArrayList<Reward> loadData(){
-        return loadData(DATA_REWARD);
+    public static ArrayList<Reward> loadData() {
+        return loadData(DATA_REWARD_GLOBAL);
     }
-
+   
     public static ArrayList<Reward> loadData(String filePath) {
-        listReward.clear();
+        ArrayList<Reward> listHasil = new ArrayList<>();
         File file = new File(filePath);
+        
+        // Buat folder parent jika belum ada
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             if (!file.exists()) {
-                return listReward;
+                file.createNewFile();
+                return listHasil;
             }
             
             String line;
             while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
 
-                if (line.trim().isEmpty()) {continue;}
-
-                String[] data = line.split(delim);
+                String[] data = line.split(DELIM);
                 if (data.length >= 5) {
                     Reward loadReward = new Reward(
-                            data[0], // untuk id
+                            data[0], // id
                             data[1], // nama hadiah
                             data[2], // deskripsi
-                            (int) Double.parseDouble(data[3]), // poin tukar
+                            (int) Double.parseDouble(data[3]), // poin tukar (handle double/int safe)
                             Integer.parseInt(data[4]) // stok
                     );
-
-                    listReward.add(loadReward);
+                    listHasil.add(loadReward);
                 }
-
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error Load Reward: " + e.getMessage());
         }
-        return listReward;
-
+        return listHasil;
     }
 
-    public static void writeData(){
-        writeData(DATA_REWARD);
+   public static void writeData(ArrayList<Reward> listReward) {
+        writeData(listReward, DATA_REWARD_GLOBAL);
     }
 
-    public static void writeData(String filePath) {
+    public static void writeData(ArrayList<Reward> listReward, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             
             for (Reward reward : listReward) {
                 String data = reward.getIdReward() + "|" +
-                        reward.getNamaHadiah() + "|" +
-                        reward.getDeskripsi() + "|" +
-                        reward.getPoinTukar() + "|" + 
-                        reward.getStok() + "\n";
+                              reward.getNamaHadiah() + "|" +
+                              reward.getDeskripsi() + "|" +
+                              reward.getPoinTukar() + "|" + 
+                              reward.getStok(); 
+                              // \n dihapus di sini, diganti bw.newLine() agar support semua OS
 
                 bw.write(data);
+                bw.newLine();
             }
-            System.out.println("--- Data Reward Berhasil disimpan ke file ---");
+            System.out.println("--- Data Reward Berhasil disimpan ke file: " + filePath + " ---");
 
-        } catch (Exception e) {
-            System.out.println("Error: Gagal menyimpan data reward ke file. " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error Write Reward: " + e.getMessage());
         }
     }
 
+    public static void addReward(Reward rewardBaru, String filePath) {
+        ArrayList<Reward> list = loadData(filePath);
+        list.add(rewardBaru);
+        writeData(list, filePath);
+    }
 }

@@ -6,105 +6,97 @@ import java.util.ArrayList;
 import Model.Admin;
 
 public class DataBaseAdmin {
-    private static ArrayList<Admin> daftarSemuaAdmin = new ArrayList<Admin>();
-    private static final String DATA_ADMIN = "src\\Database\\Admin\\dataSemuaAdmin.txt";
-
-    public static void addAdmin(Admin adminBaru, String filePath){ // untuk nambah admin yang dipakai di SignIn
-        daftarSemuaAdmin.add(adminBaru);
-        writeData(filePath);
-    }
-
-    public static String getFinalPath(){
-        return DATA_ADMIN;
-    }
-
-    //filepath = src/Database/Admin/data.txt
-    // Load/baca data sebelum Sign In dan Login
-    static String delim = "\\|";
+    private static final String DATA_ADMIN_GLOBAL = "src\\Database\\Admin\\dataSemuaAdmin.txt";
+    private static String DELIM = "\\|";
 
     public static String generateAdminId() {
+        ArrayList<Admin> allData = loadData(DATA_ADMIN_GLOBAL);
         int max = 0;
 
-        for (Admin a : daftarSemuaAdmin) {
-            String id = a.getIdAdmin().substring(2); // ambil bagian angkanya
-            int num = Integer.parseInt(id);
-            if (num > max) max = num;
+        for (Admin a : allData) {
+            try {
+                String idStr = a.getIdAdmin().substring(2); // Ambil angka setelah "UP"
+                int num = Integer.parseInt(idStr);
+                if (num > max) max = num;
+            } catch (NumberFormatException e) {
+                continue; // Skip jika format ID salah
+            }
         }
 
-        int next = max + 1;
-        return String.format("UA%03d", next); // UA001, UA002, dst
+        return String.format("UA%03d", max + 1); // UA001, UA002, dst
     }
 
     public static ArrayList<Admin> loadData(){
-        return loadData(DATA_ADMIN);
+        return loadData(DATA_ADMIN_GLOBAL);
     }
 
     public static ArrayList<Admin> loadData(String filePath) {
-        daftarSemuaAdmin.clear();
+        ArrayList<Admin> listHasil = new ArrayList<>();
         File file = new File(filePath);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))){
-            if (!file.exists()) {
-                System.out.println("File tidak ditemukan, membuat file baru.");
-                file.createNewFile();
-                return daftarSemuaAdmin;
-            }
-            
-            String line;
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
 
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                return listHasil; 
+            }
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if(line.isEmpty()) continue;
+                if (line.isEmpty()) continue;
 
-                String[] parts = line.split(delim);
-                if (parts.length >= 7) {
+                String[] parts = line.split(DELIM);
+                if (parts.length >= 6) {
                     Admin adminBaru = new Admin(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
-                    if(!parts[6].equalsIgnoreCase("null")){
+                    if (parts.length > 6 && !parts[6].equalsIgnoreCase("null")) {
                         adminBaru.setIdBankSampah(parts[6]);
                     }
-                    daftarSemuaAdmin.add(adminBaru);
-                    // 0 = ID
-                    // 1 = role
-                    // 2 = username biasa
-                    // 3 = password
-                    // 4 = nama admin
-                    // 5 = no hp
-                    // 6 = idBankSampah
+        
+                    listHasil.add(adminBaru);
                 }
             }
-            return daftarSemuaAdmin;
-
+            br.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return daftarSemuaAdmin;
+            System.err.println("Error Load Admin: " + e.getMessage());
         }
-    }
 
-    //Tulis data
-    public static void writeData(){
-        writeData(DATA_ADMIN);
+        return listHasil; 
     }
     
-    public static void writeData(String filePath){
+    public static void writeData(ArrayList<Admin> listAdmin, String filePath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 
-            for (Admin admin : daftarSemuaAdmin) {
+            for (Admin admin : listAdmin) {
+                String idBank = (admin.getIdBankSampah() == null) ? "null" : admin.getIdBankSampah();
+
                 String data = admin.getIdAdmin() + "|" +
-                        admin.getRole() + "|" +
-                        admin.getUsername() + "|" +
-                        admin.getPassword() + "|" +
-                        admin.getNamaAdmin() + "|" +
-                        admin.getNohp() + "|" +
-                        (admin.getIdBankSampah() == null ? "null" : admin.getIdBankSampah());
+                              admin.getRole() + "|" +
+                              admin.getUsername() + "|" +
+                              admin.getPassword() + "|" +
+                              admin.getNamaAdmin() + "|" +
+                              admin.getNohp() + "|" +
+                              idBank;
 
                 writer.write(data);
                 writer.newLine();
             }
-            System.out.println("--- Data berhasil disimpan ke file ---");
-
+            System.out.println("Data Admin berhasil disimpan ke: " + filePath);
         } catch (IOException e) {
             System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
         }
     }
+
+    public static void addMin(Admin newAdmin, String filePath){
+        ArrayList<Admin> currentList = loadData(filePath);
+        currentList.add(newAdmin);
+        writeData(currentList, filePath);
+    }
+
 }

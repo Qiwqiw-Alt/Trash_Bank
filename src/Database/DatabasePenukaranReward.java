@@ -2,76 +2,124 @@ package Database;
 
 import Model.PenukaranReward;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabasePenukaranReward {
-    private ArrayList<PenukaranReward> listTransaksiPenukaranReward;
-    private static final String DATA_PENUKARAN_REWARD = "src/Database/DataPenukaranReward/dataPenukaran.txt";
-    private final String delim = "\\|";
+    private static final String DATA_PENUKARAN_REWARD_GLOBAL = "src\\Database\\DataPenukaranReward\\dataPenukaran.txt";
+    private static final String DELIM = "\\|";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public void addReward(PenukaranReward transaksiPenukaranBaru) {
-        listTransaksiPenukaranReward.add(transaksiPenukaranBaru);
-        saveData();
+    public static String getFinalPath(){
+        return DATA_PENUKARAN_REWARD_GLOBAL;
     }
 
-    public ArrayList<PenukaranReward> loadData() {
-        listTransaksiPenukaranReward.clear();
-        File file = new File(DATA_PENUKARAN_REWARD);
+    // --- GENERATE ID ---
+    public static String generatePenukaranId() {
+        // Load data fresh
+        ArrayList<PenukaranReward> list = loadData();
 
-        if (!file.exists()) {
-            return listTransaksiPenukaranReward;
+        int max = 0;
+        for (PenukaranReward pr : list) {
+            try {
+                // Asumsi ID: PR001 -> ambil substring mulai index 2
+                String angka = pr.getIdPenukaran().substring(2);
+                int num = Integer.parseInt(angka);
+                if (num > max) max = num;
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        return String.format("PR%03d", max + 1);
+    }
+
+    public static ArrayList<PenukaranReward> loadData() {
+        return loadData(DATA_PENUKARAN_REWARD_GLOBAL);
+    }
+
+    // --- LOAD DATA (Core - Stateless) ---
+    public static ArrayList<PenukaranReward> loadData(String filePath) {
+        ArrayList<PenukaranReward> listHasil = new ArrayList<>();
+        File file = new File(filePath);
+        
+        // Buat folder parent jika belum ada
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            if (!file.exists()) {
+                file.createNewFile();
+                return listHasil;
+            }
+
             String line;
-
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty())
-                    continue;
+                if (line.trim().isEmpty()) continue;
 
-                String[] data = line.split(delim);
+                String[] data = line.split(DELIM);
                 if (data.length >= 4) {
-
                     PenukaranReward baru = new PenukaranReward(
-                            data[0], //id penukaran
+                            data[0], // id penukaran
                             data[1], // id reward
-                            data[2]); // id penyetor
-                    baru.setTanggalPenukaran(LocalDate.parse(data[3], format)); // tanggal penukaran
+                            data[2]  // id penyetor
+                    );
+                    
+                    // Parsing tanggal aman
+                    try {
+                        baru.setTanggalPenukaran(LocalDate.parse(data[3], FORMATTER));
+                    } catch (Exception e) {
+                        baru.setTanggalPenukaran(LocalDate.now());
+                    }
+                    
+                    listHasil.add(baru);
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Error " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error Load Penukaran: " + e.getMessage());
         }
-        return getDaftarPenukaranReward();
+        return listHasil;
     }
 
-    public void saveData() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_PENUKARAN_REWARD))) {
-            for (PenukaranReward penukaranReward : listTransaksiPenukaranReward) {
+    // --- WRITE DATA (Overload Default) ---
+    public static void writeData(List<PenukaranReward> listPenukaran) {
+        writeData(listPenukaran, DATA_PENUKARAN_REWARD_GLOBAL);
+    }
+
+    // --- WRITE DATA (Core - Stateless) ---
+    public static void writeData(List<PenukaranReward> listPenukaran, String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            
+            for (PenukaranReward pr : listPenukaran) {
+                // Pastikan format tanggal konsisten saat disimpan
+                String tglStr = pr.getFormattedTime();
+
                 bw.write(
-                    penukaranReward.getIdPenukaran() + "|" +
-                    penukaranReward.getIdReward() + "|" + 
-                    penukaranReward.getIdPenyetor() + "|" + 
-                    penukaranReward.getFormattedTime() + "\n"
+                    pr.getIdPenukaran() + "|" +
+                    pr.getIdReward() + "|" + 
+                    pr.getIdPenyetor() + "|" + 
+                    tglStr
                 );
+                bw.newLine();
             }
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println("Error : " + e.getMessage());
+            System.out.println("Data Penukaran tersimpan di: " + filePath);
+
+        } catch (IOException e) {
+            System.out.println("Error Write Penukaran: " + e.getMessage());
         }
     }
 
-    public ArrayList<PenukaranReward> getDaftarPenukaranReward() {
-        return listTransaksiPenukaranReward;
+    public static void addPenukaran(PenukaranReward transaksiBaru) {
+        addPenukaran(transaksiBaru, DATA_PENUKARAN_REWARD_GLOBAL);
     }
 
+    public static void addPenukaran(PenukaranReward transaksiBaru, String filePath) {
+        ArrayList<PenukaranReward> list = loadData(filePath);
+        list.add(transaksiBaru);
+        writeData(list, filePath);
+    }
 }

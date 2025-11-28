@@ -5,67 +5,76 @@ import Model.BankSampah;
 import java.io.*;
 import java.util.ArrayList;
 
+
 public class DatabaseBankSampah {
-    private static ArrayList<BankSampah> daftarSemuaBankSampah = new ArrayList<BankSampah>();
-    private static final String DATA_BANK_SAMPAH = "src\\Database\\DataBankSampah\\databanksampah.txt";
-
-    public static void addBankSampah(BankSampah bankSampahBaru) { // untuk nambah bank sampah yang dipakai di SignIn
-        daftarSemuaBankSampah.add(bankSampahBaru);
-        writeData();
-    }
-
-    // filepath = src/Database/BankSampah/data.txt
-    // Load/baca data sebelum Sign In dan Login
-    static String delim = "\\|";
+    private static final String DATA_BANK_SAMPAH_GLOBAL = "src\\Database\\DataBankSampah\\databanksampah.txt";
+    private static String DELIM = "\\|";
 
     public static String generateBankId() {
+        // 1. Load data terbaru dari file (bukan dari memori static)
+        ArrayList<BankSampah> allData = loadData(); 
+        
         int max = 0;
-
-        for (BankSampah a : daftarSemuaBankSampah) {
-            String id = a.getIdBank().substring(2); // ambil bagian angkanya
-            int num = Integer.parseInt(id);
-            if (num > max)
-                max = num;
+        for (BankSampah b : allData) {
+            try {
+                // Ambil angka setelah "BS"
+                String idStr = b.getIdBank().substring(2); 
+                int num = Integer.parseInt(idStr);
+                if (num > max) max = num;
+            } catch (Exception e) {
+                continue; 
+            }
         }
-
-        int next = max + 1;
-        return String.format("BS%03d", next); // UA001, UA002, dst
+        return String.format("BS%03d", max + 1); // BS001, BS002, dst
     }
 
     public static ArrayList<BankSampah> loadData() {
-        daftarSemuaBankSampah.clear();
-        File file = new File(DATA_BANK_SAMPAH);
+        ArrayList<BankSampah> listHasil = new ArrayList<>();
+        File file = new File(DATA_BANK_SAMPAH_GLOBAL);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        File parentDir = file.getParentFile();
+       
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
+        try {
             if (!file.exists()) {
-                throw new IOException("File" + DATA_BANK_SAMPAH + "tidak ada");
+                file.createNewFile();
+                return listHasil; // Return list kosong, jangan throw error
             }
 
+            BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
-
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                String[] parts = line.split(delim);
+                if (line.isEmpty()) continue;
+
+                String[] parts = line.split(DELIM);
                 if (parts.length >= 3) {
-                    daftarSemuaBankSampah.add(new BankSampah(parts[0], parts[1], parts[2]));
+                    listHasil.add(new BankSampah(parts[0], parts[1], parts[2]));
                     // 0 = idBank
                     // 1 = nama bank
                     // 2 = alamat bank
                 }
             }
-            return daftarSemuaBankSampah;
-
+            br.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return daftarSemuaBankSampah;
+            System.err.println("Error Load Bank: " + e.getMessage());
         }
+        
+        return listHasil;
     }
 
     // Tulis data
-    public static void writeData() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_BANK_SAMPAH))) {
+    public static void writeData(ArrayList<BankSampah> listBank) {
+        writeData(listBank, DATA_BANK_SAMPAH_GLOBAL);
+    }
 
-            for (BankSampah bankSampah : daftarSemuaBankSampah) {
+    public static void writeData(ArrayList<BankSampah> listBank, String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_BANK_SAMPAH_GLOBAL))) {
+
+            for (BankSampah bankSampah : listBank) {
                 String data = bankSampah.getIdBank() + "|" +
                         bankSampah.getNamaBank() + "|" +
                         bankSampah.getAlamat();

@@ -1,61 +1,140 @@
 package Database;
 
 import Model.Complain;
+import Model.Complain.Status; // Pastikan import enum Status
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseComplain {
-    private ArrayList<Complain> listComplains;
-    private static final String DATA_COMPLAIN = "src/Database/Complain/datacomplain.txt";
-    private String delim = "|";
+    private static final String DATA_COMPLAIN_GLOBAL = "src\\Database\\Complain\\datacomplain.txt";
+    private static final String DELIM = "\\|"; 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public void addComplain(Complain complainBaru) {
-        listComplains.add(complainBaru);
+    public static String generateComplainId() {
+        ArrayList<Complain> list = loadData();
+        
+        int max = 0;
+        for (Complain c : list) {
+            try {
+                String angka = c.getIdComplain().substring(2);
+                int num = Integer.parseInt(angka);
+                if (num > max) max = num;
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        return String.format("CP%03d", max + 1);
     }
 
-    public ArrayList<Complain> getAllDaftarComplain() {
-        return listComplains;
+    // --- LOAD DATA (Overload Default) ---
+    public static ArrayList<Complain> loadData() {
+        return loadData(DATA_COMPLAIN_GLOBAL);
     }
 
-    public ArrayList<Complain> loadData() {
-        listComplains.clear();
-        File file = new File(DATA_COMPLAIN);
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    // --- LOAD DATA (Core - Stateless) ---
+    public static ArrayList<Complain> loadData(String filePath) {
+        ArrayList<Complain> listHasil = new ArrayList<>();
+        File file = new File(filePath);
+
+        // Buat folder jika belum ada
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             if (!file.exists()) {
-                throw new IOException("File Complain Belum ada");
+                file.createNewFile();
+                return listHasil;
             }
 
             String line;
-
             while ((line = br.readLine()) != null) {
-                line = line.trim();
-                String[] data = line.split(delim);
+                if (line.trim().isEmpty()) continue;
+
+                String[] data = line.split(DELIM); // Pakai \\|
 
                 if (data.length >= 8) {
-                    Complain baru = new Complain(
-                                    data[0], //id complain
-                                    data[1], // id penyetor
-                                    data[2], // id bank
-                                    data[3], // judul
-                                    data[4]); // isi
-                    baru.setTanggal(LocalDate.parse(data[5], format));
-                    Complain.Status status = Complain.Status.valueOf(data[6]);
-                    baru.setStatus(status);
-                    baru.setTanggapanAdmin(data[7]);
+                    Complain c = new Complain(
+                            data[0], // id complain
+                            data[1], // id penyetor
+                            data[2], // id bank
+                            data[3], // judul
+                            data[4]  // isi
+                    );
+                    
+                    // Parsing Tanggal
+                    try {
+                        c.setTanggal(LocalDate.parse(data[5], FORMATTER));
+                    } catch (Exception e) {
+                        c.setTanggal(LocalDate.now());
+                    }
+
+                    // Parsing Status (Enum)
+                    try {
+                        c.setStatus(Status.valueOf(data[6])); 
+                    } catch (Exception e) {
+                        c.setStatus(Status.PENDING); // Default jika error
+                    }
+
+                    // Tanggapan Admin
+                    // Cek jika tulisannya "null" string, ubah jadi null object/kosong
+                    if (data[7].equalsIgnoreCase("null")) {
+                        c.setTanggapanAdmin("-");
+                    } else {
+                        c.setTanggapanAdmin(data[7]);
+                    }
+
+                    listHasil.add(c);
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Error : " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error Load Complain: " + e.getMessage());
         }
-        return getAllDaftarComplain();
+        return listHasil;
     }
 
+    public static void writeData(List<Complain> listComplain) {
+        writeData(listComplain, DATA_COMPLAIN_GLOBAL);
+    }
+
+    public static void writeData(List<Complain> listComplain, String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            
+            for (Complain c : listComplain) {
+                String tglStr = c.getTanggal().format(FORMATTER);
+                
+                // Handle null pada tanggapan agar tidak error saat ditulis
+                String tanggapan = (c.getTanggapanAdmin() == null || c.getTanggapanAdmin().isEmpty()) 
+                                   ? "null" 
+                                   : c.getTanggapanAdmin();
+
+                String line = c.getIdComplain() + "|" +
+                              c.getIdPenyetor() + "|" +
+                              c.getIdBank() + "|" +
+                              c.getJudul() + "|" +
+                              c.getIsi() + "|" +
+                              tglStr + "|" +
+                              c.getStatus().name() + "|" + // Ambil nama ENUM (PENDING/SELESAI)
+                              tanggapan;
+
+                bw.write(line);
+                bw.newLine();
+            }
+            System.out.println("Data Complain tersimpan di: " + filePath);
+
+        } catch (IOException e) {
+            System.out.println("Error Write Complain: " + e.getMessage());
+        }
+    }
+
+    public static void addComplain(Complain complainBaru, String filePath) {
+        ArrayList<Complain> list = loadData(filePath);
+        list.add(complainBaru);
+        writeData(list, filePath);
+    }
 }

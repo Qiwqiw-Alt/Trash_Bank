@@ -6,20 +6,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DatabaseSampah {
+    private static final String DATA_SAMPAH_GLOBAL = "src\\Database\\Sampah\\sampah.txt";
+    private static final String DELIM = "\\|";
 
-    private static ArrayList<Sampah> daftarSampah = new ArrayList<>();
-    private static final String DATA_SAMPAH = "src\\Database\\Sampah\\sampah.txt";
-    private static final String delim = "\\|";
-
-    public void addSampah(Sampah s, String filePath) {
-        daftarSampah.add(s);
-        writeData(filePath);
+    public static String getFinalPath(){
+        return DATA_SAMPAH_GLOBAL;
     }
 
     public String generateSampahId() {
-        int max = 0;
+        ArrayList<Sampah> listSampah = loadData();
 
-        for (Sampah s : daftarSampah) {
+        int max = 0;
+        for (Sampah s : listSampah) {
             String angka = s.getIdSampah().substring(2);
             int num = Integer.parseInt(angka);
             if (num > max) max = num;
@@ -28,63 +26,68 @@ public class DatabaseSampah {
         return String.format("SP%03d", max + 1);
     }
 
-    public static ArrayList<Sampah> loadData(){
-        return loadData(DATA_SAMPAH);
+    public static ArrayList<Sampah> loadData() {
+        return loadData(DATA_SAMPAH_GLOBAL);
     }
 
     public static ArrayList<Sampah> loadData(String filePath) {
-        daftarSampah.clear();
+        ArrayList<Sampah> listHasil = new ArrayList<>();
         File file = new File(filePath);
 
-        try {
+        // Buat folder jika belum ada
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             if (!file.exists()) {
-                return daftarSampah;
+                file.createNewFile();
+                return listHasil;
             }
 
-            BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
-
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
 
-                String[] p = line.split(delim);
+                String[] p = line.split(DELIM);
                 if (p.length >= 3) {
                     String id = p[0];
                     String jenis = p[1];
                     double harga = Double.parseDouble(p[2]);
 
-                    daftarSampah.add(new Sampah(id, jenis, harga));
+                    listHasil.add(new Sampah(id, jenis, harga));
                 }
             }
-
-            br.close();
-
         } catch (IOException e) {
             System.out.println("Gagal load sampah: " + e.getMessage());
         }
 
-        return daftarSampah;
+        return listHasil;
     }
 
-    public static void writeData(){
-        writeData(DATA_SAMPAH);
+    public static void writeData(ArrayList<Sampah> listSampah){
+        writeData(listSampah, DATA_SAMPAH_GLOBAL);
     }
 
-    public static void writeData(String filePath) {
+    public static void writeData(ArrayList<Sampah> listSampah, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
 
-            for (Sampah s : daftarSampah) {
+            for (Sampah s : listSampah) {
                 bw.write(s.getIdSampah() + "|" + s.getJenis() + "|" + s.getHargaPerKg());
                 bw.newLine();
             }
+            System.out.println("Data Sampah tersimpan di: " + filePath);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Gagal simpan sampah: " + e.getMessage());
         }
     }
 
-    public ArrayList<Sampah> getDaftarSampah() {
-        return daftarSampah;
+    public static void addSampah(Sampah s, String filePath) {
+        ArrayList<Sampah> list = loadData(filePath);
+        list.add(s);
+        writeData(list, filePath);
     }
 
 }

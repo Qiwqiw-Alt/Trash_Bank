@@ -7,19 +7,10 @@ import java.util.ArrayList;
 
 public class DatabasePenyetor {
     private static String DELIM = "\\|";
-    private static final String DATA_PENYETOR = "src\\Database\\Penyetor\\dataSemuaPenyetor.txt";
-
-    // public static void addPenyetor(Penyetor penyetorBaru, String filePath){ // untuk nambah penyetor yang dipakai di SignIn
-    //     daftarSemuaPenyetor.add(penyetorBaru);
-    //     writeData(filePath);
-    // }
-
-    // public static String getFinalPath(){
-    //     return DATA_PENYETOR;
-    // }
+    private static final String DATA_PENYETOR_GLOBAL = "src\\Database\\Penyetor\\dataSemuaPenyetor.txt";
 
     public static String generatePenyetorId() {
-        ArrayList<Penyetor> allData = loadData(DATA_PENYETOR);
+        ArrayList<Penyetor> allData = loadData(DATA_PENYETOR_GLOBAL);
         int max = 0;
 
         for (Penyetor p : allData) {
@@ -35,15 +26,24 @@ public class DatabasePenyetor {
         return String.format("UP%03d", max + 1); // UP001, UP002, dst
     }
 
+    public static ArrayList<Penyetor> loadData(){
+        return loadData(DATA_PENYETOR_GLOBAL);
+    }
+
     public static ArrayList<Penyetor> loadData(String filePath) {
-        daftarSemuaPenyetor.clear();
+        ArrayList<Penyetor> listHasil = new ArrayList<>();
         File file = new File(filePath);
+
+        File parentDir = file.getParentFile();
+        if(parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
 
         try {
             if (!file.exists()) {
                 System.out.println("File tidak ditemukan, membuat file baru.");
                 file.createNewFile();
-                return daftarSemuaPenyetor;
+                return listHasil;
             }
 
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -52,65 +52,67 @@ public class DatabasePenyetor {
             while ((line = br.readLine()) != null) {
                 line = line.trim();
 
-                String[] parts = line.split(delim);
-                if (parts.length >= 7) {
+                String[] parts = line.split(DELIM);
+                if (parts.length >= 6) {
                     Penyetor penyetorBaru = new Penyetor(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
                     
                     if(!parts[6].equalsIgnoreCase("null")){
                         penyetorBaru.setIdBankSampah(parts[6]);
                     }
-                    daftarSemuaPenyetor.add(penyetorBaru);
+                    listHasil.add(penyetorBaru);
                 }
             }
             br.close();
-            return daftarSemuaPenyetor;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return daftarSemuaPenyetor;
+            System.out.println("Error Load Data: " + e.getMessage());
         }
+        return listHasil;
     }
 
     //Tulis data
-    public static void writeData(){
-        writeData(DATA_PENYETOR);
-    }
-
-    public static void writeData(String filePath){
+    public static void writeData(ArrayList<Penyetor> listData, String filePath){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (Penyetor penyetor : daftarSemuaPenyetor) {
-                String data = penyetor.getIdPenyetor() + "|" +
-                        penyetor.getRole() + "|" +
-                        penyetor.getUsername() + "|" +
-                        penyetor.getPassword() + "|" +
-                        penyetor.getNamaLengkap() + "|" +
-                        penyetor.getNoHp() + "|" +
-                        (penyetor.getIdBankSampah() == null ? "null" : penyetor.getIdBankSampah());;
+            for (Penyetor p : listData) {
+                String idBank = (p.getIdBankSampah() == null) ? "null" : p.getIdBankSampah();
+                
+                String line = p.getIdPenyetor() + "|" +
+                              p.getRole() + "|" +
+                              p.getUsername() + "|" +
+                              p.getPassword() + "|" +
+                              p.getNamaLengkap() + "|" +
+                              p.getNoHp() + "|" +
+                              idBank;
 
-                writer.write(data);
+                writer.write(line);
                 writer.newLine();
             }
-            System.out.println("--- Data berhasil disimpan ke file ---");
-
+            System.out.println("Data berhasil disimpan ke: " + filePath);
         } catch (IOException e) {
-            System.err.println("Error: Gagal menyimpan data ke file. " + e.getMessage());
+            System.err.println("Error Write Data: " + e.getMessage());
         }
     }
 
+    public static void addPenyetor(Penyetor penyetorBaru, String filePath) {
+        ArrayList<Penyetor> currentList = loadData(filePath);
+        currentList.add(penyetorBaru);
+        writeData(currentList, filePath);
+    }
+
     public static boolean assignUserToBank(String userId, String idBank) {
-        ArrayList<Penyetor> list = loadData(); // Load global data
+        ArrayList<Penyetor> globalList = loadData(DATA_PENYETOR_GLOBAL); // Load global data
         boolean found = false;
         
-        for (Penyetor p : list) {
+        for (Penyetor p : globalList) {
             if (p.getIdPenyetor().equals(userId)) {
-                p.setIdBankSampah(idBank); // UPDATE ID BANK DI SINI
+                p.setIdBankSampah(idBank); 
                 found = true;
                 break;
             }
         }
         
         if (found) {
-            writeData(); // SIMPAN PERUBAHAN KE FILE GLOBAL
+            writeData(globalList, DATA_PENYETOR_GLOBAL); 
             return true;
         }
         return false;
