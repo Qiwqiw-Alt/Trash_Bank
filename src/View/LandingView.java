@@ -10,7 +10,7 @@ public class LandingView extends JFrame {
     private JButton loginButton;
     private JButton startButton;
     private JScrollPane scrollPane;
-    private JPanel scrollableContent;
+    private JPanel scrollableContent; 
     private JPanel welcomeWrapper;
     private JPanel aboutWrapper;
 

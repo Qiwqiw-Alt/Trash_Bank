@@ -74,7 +74,7 @@ public class LoginView extends JFrame {
 
         // Header Bank Sampah
         JLabel headerLabel = new JLabel("BANK SAMPAH", SwingConstants.LEFT);
-        headerLabel.setFont(new Font("Fredoka", Font.BOLD, 24));
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
         headerLabel.setForeground(new Color(0x356A69)); // Warna Hijau Gelap
         headerLabel.setBorder(BorderFactory.createEmptyBorder(30, 30, 0, 0)); // Padding
         leftPanel.add(headerLabel, BorderLayout.NORTH);
@@ -93,7 +93,7 @@ public class LoginView extends JFrame {
 
         // Footer Text
         JLabel footerLabel = new JLabel("Starts for free and get attractive offers", SwingConstants.CENTER);
-        footerLabel.setFont(new Font("Fredoka", Font.BOLD, 16));
+        footerLabel.setFont(new Font("Arial", Font.BOLD, 16));
         footerLabel.setForeground(new Color(0x356A69));
         footerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0)); // Padding bawah
         leftPanel.add(footerLabel, BorderLayout.SOUTH);
@@ -113,7 +113,7 @@ public class LoginView extends JFrame {
 
         // Title
         JLabel title = new JLabel("Welcome back.", SwingConstants.LEFT);
-        title.setFont(new Font("Fredoka", Font.BOLD, 30));
+        title.setFont(new Font("Arial", Font.BOLD, 30));
         title.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -125,14 +125,14 @@ public class LoginView extends JFrame {
         subtitlePanel.setOpaque(false); // Agar background mengikuti rightPanel
         
         JLabel noAccountLabel = new JLabel("Don't have an account? "); 
-        noAccountLabel.setFont(new Font("Fredoka", Font.PLAIN, 14));
+        noAccountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         noAccountLabel.setForeground(Color.WHITE);
         subtitlePanel.add(noAccountLabel);
 
         // Teks "Sign up" yang dapat diklik (Link Teks)
         JLabel signupLink = new JLabel("Sign up"); 
-        signupLink.setFont(new Font("Fredoka", Font.BOLD, 14));
-        signupLink.setForeground(Color.WHITE);
+        signupLink.setFont(new Font("Arial", Font.BOLD, 14));
+        signupLink.setForeground(new Color(0x67AE6E));
         signupLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
         subtitlePanel.add(signupLink);
         
@@ -165,7 +165,7 @@ public class LoginView extends JFrame {
 
         // Login Button
         loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Fredoka", Font.BOLD, 14));
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(new Color(0x67AE6E)); // Warna Hijau
         loginButton.setForeground(Color.WHITE);
         loginButton.setFocusPainted(false);
@@ -180,7 +180,7 @@ public class LoginView extends JFrame {
 
         // Sign Up Button (Sebagai link di bawah)
         signupButton = new JButton("Sign up"); 
-        signupButton.setFont(new Font("Fredoka", Font.PLAIN, 14));
+        signupButton.setFont(new Font("Arial", Font.PLAIN, 14));
         signupButton.setForeground(new Color(0x67AE6E));
         signupButton.setBackground(new Color(0x356A69));
         signupButton.setBorderPainted(false);
@@ -214,7 +214,7 @@ public class LoginView extends JFrame {
     private void styleTextField(JTextField field) {
         field.setPreferredSize(new Dimension(25, 40));
         field.setBackground(Color.WHITE);
-        field.setFont(new Font("Fredoka", Font.PLAIN, 14));
+        field.setFont(new Font("Arial", Font.PLAIN, 14));
         field.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     }
 
