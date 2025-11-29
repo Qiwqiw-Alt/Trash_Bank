@@ -52,7 +52,7 @@ public class SetorSampahPanel extends JPanel {
         form.setOpaque(false);
 
         comboSampah = new JComboBox<>();
-        loadSampahToCombo();
+        loadSampahToCombo(bank);
 
         tfBerat = new JTextField();
 
@@ -119,8 +119,8 @@ public class SetorSampahPanel extends JPanel {
         add(main, BorderLayout.CENTER);
     }
 
-    private void loadSampahToCombo() {
-        ArrayList<Sampah> list = DatabaseSampah.loadData();
+    private void loadSampahToCombo(BankSampah bank) {
+        ArrayList<Sampah> list = DatabaseSampah.loadData(bank.getFileDaftarSampah());
         for (Sampah s : list)
             comboSampah.addItem(s);
     }
@@ -182,6 +182,7 @@ public class SetorSampahPanel extends JPanel {
 
 
         DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi());
+        
 
         JOptionPane.showMessageDialog(this, "Transaksi berhasil dikirim!");
 
