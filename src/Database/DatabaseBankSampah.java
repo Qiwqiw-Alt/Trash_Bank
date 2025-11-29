@@ -1,6 +1,7 @@
 package Database;
 
 import Model.BankSampah;
+import Model.Sampah;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -93,5 +94,22 @@ public class DatabaseBankSampah {
         ArrayList<BankSampah> currentList = loadData();
         currentList.add(bankSampahBaru);
         writeData(currentList);
+    }
+
+    public static void updateBankSampah(BankSampah bankSampahBaru) {
+        ArrayList<BankSampah> list = loadData();
+        boolean found = false;
+
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getIdBank().equals(bankSampahBaru.getIdBank())){
+                list.set(i, bankSampahBaru);
+                found = true;
+                break;
+            }
+        }
+
+        if(found) {
+            writeData(list);
+        }
     }
 }

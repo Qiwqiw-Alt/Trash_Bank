@@ -9,6 +9,7 @@ public class BankSampah {
     private String fileAdmin;
     private String filePenyetor;
     private String fileTransaksi;
+    private String fileItemSampahTransaksi;
     private String fileDaftarSampah;
     private String fileDaftarReward;
     private String fileDaftarComplain;
@@ -21,6 +22,7 @@ public class BankSampah {
         this.fileAdmin = "src\\Database\\Admin\\admin_" + idBank + ".txt";
         this.filePenyetor = "src\\Database\\Penyetor\\penyetor_" + idBank + ".txt";
         this.fileTransaksi = "src\\Database\\Transaksi\\trx_" + idBank + ".txt";
+        this.fileItemSampahTransaksi = "src\\Database\\ItemTransaksi\\ItmTrx_" + idBank + ".txt";
         this.fileDaftarSampah = "src\\Database\\Sampah\\dfsampah_" + idBank + ".txt";
         this.fileDaftarReward = "src\\Database\\Reward\\dfreward_" + idBank + ".txt";
         this.fileDaftarComplain = "src\\Database\\Complain\\dfcompalain_" + idBank + ".txt";
@@ -36,6 +38,7 @@ public class BankSampah {
     public String getFileAdmin() { return fileAdmin; }
     public String getFilePenyetor() { return filePenyetor; }
     public String getFileTransaksi() { return fileTransaksi; }
+    public String getFileItemTransaksi() {return fileItemSampahTransaksi; }
     public String getFileDaftarSampah() { return fileDaftarSampah; }
     public String getFileReward() { return fileDaftarReward; }
     public String getFileComplain() { return fileDaftarComplain; }

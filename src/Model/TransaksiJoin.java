@@ -1,21 +1,31 @@
 package Model;
 
 public class TransaksiJoin {
+    private String idTransaksiJoin;
     private String penyetorId;
     private String bankId;
     private boolean status;
     
-    public TransaksiJoin(Penyetor penyetor, String bankId, boolean status){
-        this.penyetorId = penyetor.getIdPenyetor();
+    public TransaksiJoin(String idTransaksiJoin, String penyetorId, String bankId, boolean status){
+        this.idTransaksiJoin = idTransaksiJoin;
+        this.penyetorId = penyetorId;
         this.bankId = bankId;
         this.status = status;
+    }
+
+    public String getIdTransaksiJoin(){
+        return this.idTransaksiJoin;
+    }
+
+    public void setIdTransksiJoin(String idTransaksiJoin){
+        this.idTransaksiJoin = idTransaksiJoin;
     }
 
     public String getIdPenyetor(){
         return this.penyetorId;
     }
 
-    public String bankId(){
+    public String getbankId(){
         return this.bankId;
     }
 

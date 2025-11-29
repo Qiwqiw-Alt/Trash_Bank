@@ -3,6 +3,7 @@ package View.AdminPanels;
 import Model.BankSampah;
 import Model.Penyetor;
 import Database.DatabasePenyetor;
+import Controller.ListMemberController;
 import Controller.LoginController;
 
 import javax.swing.*;
@@ -161,7 +162,7 @@ public class ListMemberPanel extends JPanel {
         }
 
         // 1. Cek Ketersediaan
-        if (LoginController.isUserAvilable(targetId)) {
+        if (ListMemberController.getService().isUserAvilable(targetId)) {
             
             int confirm = JOptionPane.showConfirmDialog(this, 
                 "Tambahkan User ID: " + targetId + " ke database lokal bank ini?",
@@ -175,7 +176,7 @@ public class ListMemberPanel extends JPanel {
                     // --- TAMBAHAN PENTING: SIMPAN KE FILE LOKAL BANK ---
                     
                     // Ambil object user lengkap dari Controller
-                    Object userObj = LoginController.getUser(targetId);
+                    Object userObj = ListMemberController.getService().getUserById(targetId);
                     
                     if (userObj instanceof Penyetor) {
                         Penyetor p = (Penyetor) userObj;
@@ -195,7 +196,7 @@ public class ListMemberPanel extends JPanel {
             }
         } else {
             // --- LOGIKA ERROR HANDLING (Sama seperti sebelumnya) ---
-            Object user = LoginController.getUser(targetId);
+            Object user = ListMemberController.getService().getUserById(targetId);
             if (user == null) {
                 JOptionPane.showMessageDialog(this, "ID Penyetor tidak ditemukan.", "Data Tidak Ditemukan", JOptionPane.WARNING_MESSAGE);
             } else if (user instanceof Penyetor) {

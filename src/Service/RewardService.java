@@ -24,4 +24,5 @@ public class RewardService {
         Reward newReward = new Reward(idReward, rewardName, rewardDesc, poin, stok);
         DatabaseReward.addReward(newReward, path);
     }
+
 }

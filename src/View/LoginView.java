@@ -193,7 +193,7 @@ public class LoginView extends JFrame {
             return;
         }
 
-        Object user = LoginController.login(username, password);
+        Object user = LoginController.getService().loginUser(username, password);
 
         if (user == null) {
             JOptionPane.showMessageDialog(this, "Username atau password salah!", "Error", JOptionPane.ERROR_MESSAGE);
