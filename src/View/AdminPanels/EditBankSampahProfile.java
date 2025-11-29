@@ -125,12 +125,9 @@ public class EditBankSampahProfile extends JPanel {
             "Simpan perubahan profil Bank Sampah?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            // 1. Update Object Model di Memori
             currentBank.setNamaBank(nama);
             currentBank.setAlamat(alamat);
 
-            // 2. Update ke File Database (Global)
-            // Method ini harus kamu tambahkan di DatabaseBankSampah
             DatabaseBankSampah.updateBankSampah(currentBank);
 
             JOptionPane.showMessageDialog(this, "Data Bank Sampah berhasil diperbarui!");

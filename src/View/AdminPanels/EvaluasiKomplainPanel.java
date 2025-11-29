@@ -205,7 +205,6 @@ public class EvaluasiKomplainPanel extends JPanel {
     private void handleUpdateStatus() {
         if (selectedIdComplain == null) return;
 
-        // 1. Ambil Status yang dipilih di ComboBox
         Complain.Status newStatus = (Complain.Status) cbStatus.getSelectedItem();
         String tanggapan = taTanggapanAdmin.getText();
 
@@ -214,16 +213,12 @@ public class EvaluasiKomplainPanel extends JPanel {
 
         if (confirm == JOptionPane.YES_OPTION) {
             
-            // --- TODO: PANGGIL DATABASE KAMU ---
-            // DatabaseComplain.updateComplainStatus(selectedIdComplain, newStatus, tanggapan, currentBank.getFileComplain());
             ComplainController.getService().updateComplain(selectedIdComplain, newStatus, tanggapan, currentBank);
 
             JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!");
-            
-            // Refresh tabel agar status baru terlihat
+           
             refreshTable();
             
-            // Reset form
             toggleForm(false);
             taTanggapanAdmin.setText("");
         }
@@ -231,7 +226,7 @@ public class EvaluasiKomplainPanel extends JPanel {
 
     private void refreshTable() {
         tableModel.setRowCount(0);
-        // DUMMY DATA (Ganti dengan loadData dari DB kamu nanti)
+
         this.listComplainCache = ComplainController.getService().daftarComplain(currentBank);
         for (Complain c : listComplainCache) {
             tableModel.addRow(new Object[]{
@@ -239,7 +234,7 @@ public class EvaluasiKomplainPanel extends JPanel {
                 c.getFormattedTime(), 
                 c.getIdPenyetor(), 
                 c.getJudul(), 
-                c.getStatus() // Akan tampil sebagai Teks Enum (PENDING, DLL)
+                c.getStatus().name() 
             });
         }
     }

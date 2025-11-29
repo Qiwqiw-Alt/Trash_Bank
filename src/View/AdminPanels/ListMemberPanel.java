@@ -300,8 +300,7 @@ public class ListMemberPanel extends JPanel {
     private void refreshTable() {
         tableModel.setRowCount(0);
         if (currentBank != null) {
-            String filePath = "src\\Database\\Penyetor\\penyetor_" + currentBank.getIdBank() + ".txt";
-            List<Penyetor> myMembers = DatabasePenyetor.loadData(filePath);
+            List<Penyetor> myMembers = DatabasePenyetor.loadData(currentBank.getFilePenyetor());
             for (Penyetor p : myMembers) {
                 tableModel.addRow(new Object[]{ p.getIdPenyetor(), p.getNamaLengkap(), p.getNoHp() });
             }
