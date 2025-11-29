@@ -43,7 +43,10 @@ public class Complain {
     public String getIsi() { return isi; }
     public LocalDate getTanggal() { return tanggal; }
     public Status getStatus() { return status; }
-    public String getTanggapanAdmin() { return tanggapanAdmin; }
+    public String getTanggapanAdmin() {
+            String result = tanggapanAdmin == "null" ? "-" : tanggapanAdmin ; 
+            return result;
+        }
     public String getFormattedTime() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return tanggal.format(format);
