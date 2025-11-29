@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import Database.DatabaseComplain;
@@ -47,7 +45,7 @@ public class KeluhanPanel extends JPanel {
 
       // Header
       JLabel header = new JLabel("Kirim Keluhan");
-      header.setFont(new Font("Segoe UI", Font.BOLD, 22));
+      header.setFont(new Font("Segoe UI", Font.BOLD, 26));
       header.setHorizontalAlignment(SwingConstants.CENTER);
       add(header, BorderLayout.NORTH);
 
@@ -60,7 +58,9 @@ public class KeluhanPanel extends JPanel {
       JPanel formPanel = new JPanel();
       formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
       formPanel.setBackground(Color.WHITE);
-      formPanel.setBorder(BorderFactory.createTitledBorder("Form Keluhan"));
+      formPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Form Keluhan"),
+            BorderFactory.createEmptyBorder(15, 15, 15, 15)));
 
       // Judul
       JLabel judulLabel = new JLabel("Judul Keluhan:");
@@ -69,7 +69,11 @@ public class KeluhanPanel extends JPanel {
       formPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
       judulField = new JTextField();
-      judulField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+      judulField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      judulField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+      judulField.setBorder(BorderFactory.createCompoundBorder(
+            judulField.getBorder(),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
       formPanel.add(judulField);
       formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
@@ -80,9 +84,14 @@ public class KeluhanPanel extends JPanel {
       formPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
       isiArea = new JTextArea(6, 30);
+      isiArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       isiArea.setLineWrap(true);
       isiArea.setWrapStyleWord(true);
+      isiArea.setBorder(BorderFactory.createCompoundBorder(
+            isiArea.getBorder(),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
       JScrollPane scrollPane = new JScrollPane(isiArea);
+      scrollPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
       formPanel.add(scrollPane);
       formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
@@ -93,12 +102,8 @@ public class KeluhanPanel extends JPanel {
       submitButton.setFocusPainted(false);
       submitButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
       submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-      submitButton.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            tambahComplain();
-         }
-      });
+      submitButton.setPreferredSize(new Dimension(150, 35));
+      submitButton.addActionListener(e -> tambahComplain());
       formPanel.add(submitButton);
 
       mainPanel.add(formPanel, BorderLayout.NORTH);
@@ -106,7 +111,9 @@ public class KeluhanPanel extends JPanel {
       // Panel riwayat
       JPanel riwayatPanel = new JPanel(new BorderLayout());
       riwayatPanel.setBackground(Color.WHITE);
-      riwayatPanel.setBorder(BorderFactory.createTitledBorder("Riwayat Keluhan Anda"));
+      riwayatPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Riwayat Keluhan Anda"),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
       tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status", "Tanggapan" }, 0) {
          @Override
@@ -117,14 +124,16 @@ public class KeluhanPanel extends JPanel {
 
       riwayatTable = new JTable(tableModel);
       riwayatTable.setFillsViewportHeight(true);
-      riwayatTable.setRowHeight(25);
+      riwayatTable.setRowHeight(30);
       riwayatTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
       riwayatTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
       for (int i = 0; i < riwayatTable.getColumnCount(); i++) {
          riwayatTable.getColumnModel().getColumn(i).setCellRenderer(new TextAreaRenderer());
       }
 
       JScrollPane tableScroll = new JScrollPane(riwayatTable);
+      tableScroll.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
       riwayatPanel.add(tableScroll, BorderLayout.CENTER);
 
       mainPanel.add(riwayatPanel, BorderLayout.CENTER);
