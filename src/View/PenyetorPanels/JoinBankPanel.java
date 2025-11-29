@@ -2,81 +2,192 @@ package View.PenyetorPanels;
 
 import java.awt.BorderLayout;
 // import java.awt.Color;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 // import javax.swing.JButton;
 // import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 // import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
+import Database.DatabaseBankSampah;
+import Database.DatabasePenyetor;
+import Model.BankSampah;
 // import Model.BankSampah;
 import Model.Penyetor;
+import Service.BankSampahService;
 import View.DashboardPenyetorView;
 
-public class JoinBankPanel  extends JPanel {
-    private Penyetor currentUser;
-    private DashboardPenyetorView mainFrame;
-    
-    public JoinBankPanel(Penyetor user, DashboardPenyetorView mainFrame){
-        this.currentUser = user;
-        this.mainFrame = mainFrame; // Simpan referensi frame agar bisa di-refresh nanti
+public class JoinBankPanel extends JPanel {
+    Penyetor user;
+    JPanel mainContent;
+    ArrayList<BankSampah> listBankSampah;
+    DashboardPenyetorView mainFrame;
 
-        // Setup Layout Dasar Panel
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        // Panggil fungsi untuk mengisi komponen UI
-        initUI();
+    public JoinBankPanel(Penyetor User, DashboardPenyetorView mainFrame) {
+        this.user = User;
+        this.mainFrame = mainFrame;
+        listBankSampah = DatabaseBankSampah.loadData();
+
+        initLayout();
     }
 
-    private void initUI(){
+    public void initLayout() {
+        setLayout(new BorderLayout());
+        setBackground(new Color(245, 245, 245));
+
+        JPanel mainContent = new JPanel();
+        mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
+        mainContent.setBackground(new Color(245, 245, 245));
+        mainContent.setBorder(new EmptyBorder(20, 30, 20, 30));
+
+        JPanel wrapper = new JPanel();
+        wrapper.setLayout(new BorderLayout());
+        wrapper.setBackground(new Color(245, 245, 245));
+        wrapper.setBorder(new EmptyBorder(20, 30, 20, 30));
+
+        wrapper.add(headerSection(), BorderLayout.NORTH);
+        wrapper.add(mainSection(), BorderLayout.CENTER);
+
+        add(wrapper, BorderLayout.CENTER);
 
     }
 
-    // private JPanel createBankCard(BankSampah bank) {
-    //     JPanel card = new JPanel(new BorderLayout());
-    //     card.setBorder(BorderFactory.createTitledBorder(bank.getNamaBank()));
-    //     card.setBackground(new Color(245, 255, 245));
+    public JScrollPane mainSection() {
+        JPanel main = new JPanel();
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+        main.setBackground(new Color(245, 245, 245));
 
-    //     // Info Bank
-    //     // JTextArea info = new JTextArea("Alamat: " + bank.getAlamat());
-    //     // info.setEditable(false);
-    //     // info.setLineWrap(true);
-    //     // info.setWrapStyleWord(true);
-    //     // info.setOpaque(false);
-    //     // info.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    //     // card.add(info, BorderLayout.CENTER);
+        for (BankSampah bankSampah : listBankSampah) {
+            main.add(createCard(bankSampah));
+            main.add(Box.createVerticalStrut(15)); // spasi antar kartu
+        }
 
-    //     // Tombol Gabung
-    //     JButton btnJoin = new JButton("Gabung Sini");
-    //     btnJoin.setBackground(new Color(0, 128, 0));
-    //     btnJoin.setForeground(Color.WHITE);
+        JScrollPane scroll = new JScrollPane(main);
+        scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+        return scroll; // ✔ return scroll, bukan panel
+
+    }
+
+    public JPanel headerSection() {
+        JPanel main = new JPanel();
+        main.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        main.setBackground(new Color(245, 245, 245));
+        setAlignmentX(Component.CENTER_ALIGNMENT);
+        setMaximumSize(new Dimension(Short.MAX_VALUE, 20));
+
+        JLabel title = new JLabel();
+        title.setText("SELAMAT DATANG DI APLIKASI BANK SAMPAH, SILAHKAN BERGABUNG KE BANK!");
+        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setForeground(Color.BLACK);
+
+        main.add(title);
+
+        return main;
+    }
+
+    public JPanel createCard(BankSampah bank) {
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BorderLayout(20, 0)); // Spasi horizontal 20px
+        cardPanel.setBackground(Color.WHITE);
+
+        // Padding dan Border halus
+        cardPanel.setBorder(
+                BorderFactory.createCompoundBorder(
+                        new LineBorder(new Color(220, 220, 220), 1, true), // Border abu-abu tipis dengan sudut membulat
+                        new EmptyBorder(15, 20, 15, 20)));
+
+        // --- Konten Teks (Kiri) ---
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.setOpaque(false); // Transparan
+        textPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Label Nama Bank
+        JLabel title = new JLabel();
+        title.setText(bank.getNamaBank());
+        title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setForeground(new Color(50, 50, 50));
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Label Alamat
+        JLabel alamat = new JLabel();
+        alamat.setText(bank.getAlamat());
+        alamat.setFont(new Font("Arial", Font.PLAIN, 12));
+        alamat.setForeground(new Color(100, 100, 100));
+        alamat.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        textPanel.add(title);
+        textPanel.add(Box.createVerticalStrut(5)); // Spasi kecil
+        textPanel.add(alamat);
+
+        // --- Tombol (Kanan) ---
+        JPanel buttonWrapper = new JPanel();
+        buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        buttonWrapper.setOpaque(false);
+
+        JButton joinButton = new JButton();
+        joinButton.setText("Gabung Bank");
+        joinButton.setFont(new Font("Arial", Font.BOLD, 12));
+
+        // Desain Tombol Modern (Warna Hijau Khas Bank Sampah)
+        joinButton.setBackground(new Color(76, 175, 80)); // Hijau
+        joinButton.setForeground(Color.WHITE);
+        joinButton.setFocusPainted(false); // Hilangkan fokus aneh
+        joinButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(67, 160, 71), 1, true), // Border halus
+                new EmptyBorder(10, 15, 10, 15) // Padding
+        ));
+
+        joinButton.addActionListener(e -> {
+            joinBank(bank);
+        });
+
+        buttonWrapper.add(joinButton);
+
+        // Tambahkan ke CardPanel
+        cardPanel.add(textPanel, BorderLayout.CENTER); // Konten di tengah
+        cardPanel.add(buttonWrapper, BorderLayout.EAST); // Tombol di kanan
+
+        return cardPanel;
+    }
+
+    private void joinBank(BankSampah bank) {
+        ArrayList<Penyetor> listPenyetors = DatabasePenyetor.loadData();
         
-    //     // Aksi saat tombol ditekan
-    //     btnJoin.addActionListener(e -> aksiGabung(bank));
-        
-    //     card.add(btnJoin, BorderLayout.SOUTH);
-    //     return card;
-    // }
+        for (Penyetor penyetor : listPenyetors) {
+            if (penyetor.getIdPenyetor().equals(user.getIdPenyetor())) {
+                user.setIdBankSampah(bank.getIdBank());
+            }
+        }
 
-    // private void aksiGabung(BankSampah bank) {
-    //     int confirm = JOptionPane.showConfirmDialog(this, 
-    //         "Apakah Anda yakin ingin bergabung dengan " + bank.getNamaBank() + "?", 
-    //         "Konfirmasi Gabung", 
-    //         JOptionPane.YES_NO_OPTION);
+        boolean run = DatabasePenyetor.assignUserToBank(user.getIdPenyetor(), user.getIdBankSampah());
+        DatabasePenyetor.writeData(listPenyetors, bank.getFilePenyetor());
 
-    //     if (confirm == JOptionPane.YES_OPTION) {
-    //         // 1. Update data User
-    //         currentUser.setIdBankSampah(bank.getIdBank());
-            
-    //         // 2. Tampilkan pesan sukses
-    //         JOptionPane.showMessageDialog(this, 
-    //             "Selamat! Anda berhasil bergabung dengan " + bank.getNamaBank());
+        JOptionPane.showMessageDialog(this,
+                "Anda berhasil mendaftar ke " + bank.getNamaBank() + "!",
+                "Pendaftaran Berhasil",
+                JOptionPane.INFORMATION_MESSAGE);
 
-    //         // 3. REFRESH DASHBOARD (Penting!)
-    //         // Tutup frame lama, buka frame baru dengan data user yang sudah diupdate & bank yang dipilih
-    //         new DashboardPenyetorView(currentUser, bank).setVisible(true);
-    //         mainFrame.dispose(); // Hancurkan frame lama
-    //     }
-    // }
+        mainFrame.setBankSampah(bank);
+        return;
+    }
+
 }

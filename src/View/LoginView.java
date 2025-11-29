@@ -226,8 +226,8 @@ public class LoginView extends JFrame {
             JOptionPane.showMessageDialog(this,
                     "Login berhasil sebagai PENYETOR: " + p.getNamaLengkap());
 
-            new DashboardPenyetorView(p, bs).setVisible(true);
             dispose();
+            new DashboardPenyetorView(p).setVisible(true);
             return;
         }
     }
