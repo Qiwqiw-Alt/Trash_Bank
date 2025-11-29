@@ -1,12 +1,11 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 
 import java.awt.*;
 import Model.Penyetor;
 import Service.BankSampahService;
-import View.PenyetorPanels.JoinBankPanel;
+import Service.SetoranPenyetorService;
 import Model.BankSampah;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,7 +14,7 @@ public class DashboardPenyetorView extends JFrame {
     private Penyetor currentUser;
     private BankSampah bankSampah;
     private BankSampahService bss = new BankSampahService();
-    private String idBankSampah;
+    private SetoranPenyetorService sps = new SetoranPenyetorService();
 
     private JPanel contentPanel;
     private JPanel menuPanel;
@@ -28,6 +27,7 @@ public class DashboardPenyetorView extends JFrame {
     public DashboardPenyetorView(Penyetor user) {
         this.currentUser = user;
         this.bankSampah = bss.getObjBankSampah((user.getIdBankSampah()));
+
 
         String namaBank = bankSampah != null ? bankSampah.getNamaBank() : "Bank Sampah App";
         setTitle("Dashboard Penyetor - " + namaBank);

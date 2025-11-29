@@ -1,5 +1,6 @@
 package Model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Penyetor extends User {
@@ -10,9 +11,9 @@ public class Penyetor extends User {
     private String noHp;
     private String idBankSampah;
 
-    private int totalPoin = 0;
-    private int totalSetoran = 0;
-    private ArrayList<String> riwayatTransaksi;
+    private int totalPoin = 0; // -> total poin belum tahu
+    private int totalSetoran = 0; // -> dapat diambil dari size transaksi
+    private ArrayList<Transaksi> riwayatTransaksi;
 
     public Penyetor(String idPenyetor, String role, String username, String password, String namaLengkap, String noHp) {
         super(username, password);
@@ -64,11 +65,15 @@ public class Penyetor extends User {
         this.totalSetoran = totalSetoran;
     }
 
-    public ArrayList<String> getRiwayatTransaksi() {
+    public ArrayList<Transaksi> getRiwayatTransaksi() {
         return riwayatTransaksi;
     }
 
-    public void tambahTransaksi(String id_trx) {
+    public void setRiwayatTransaksi(ArrayList<Transaksi> listTransaksi) {
+        this.riwayatTransaksi = listTransaksi;
+    }
+
+    public void tambahTransaksi(Transaksi id_trx) {
         riwayatTransaksi.add(id_trx);
     }
 

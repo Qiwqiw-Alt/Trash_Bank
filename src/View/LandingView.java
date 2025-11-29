@@ -242,7 +242,5 @@ public class LandingView extends JFrame {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LandingView().setVisible(true));
-    }
+    
 }

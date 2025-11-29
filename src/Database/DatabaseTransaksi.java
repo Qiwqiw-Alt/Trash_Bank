@@ -1,6 +1,7 @@
 package Database;
 
 import Model.Transaksi.Status;
+import Model.Penyetor;
 import Model.Transaksi;
 
 import java.io.*;
@@ -38,6 +39,7 @@ public class DatabaseTransaksi {
     public static ArrayList<Transaksi> loadData() {
         return loadData(DATA_TRANSAKSI_GLOBAL);
     }
+
 
     public static ArrayList<Transaksi> loadData(String filePath) {
         ArrayList<Transaksi> listHasil = new ArrayList<>();
@@ -123,9 +125,9 @@ public class DatabaseTransaksi {
     }
 
     public static void addTransaksi(Transaksi t, String filePath) {
-        ArrayList<Transaksi> list = loadData(filePath);
-        list.add(t);
-        writeData(list, filePath);
+        ArrayList<Transaksi> list = loadData(filePath); // -> ambil data di file list item satu transaksi di bank
+        list.add(t); // -> tambah ke list saat ini
+        writeData(list, filePath); // -> tulis ke file item bank
     }
 
 }

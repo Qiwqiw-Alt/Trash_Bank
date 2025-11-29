@@ -61,6 +61,10 @@ public class Transaksi {
         return this.status;
     }
 
+    public void setItemTransaksi(ArrayList<ItemTransaksi> listItem) {
+        this.items = listItem;
+    }
+
     public String getIdTransaksi() { return idTransaksi; }
     public LocalDate getTanggal() { return tanggal; }
     public double getTotalBerat() { return totalBerat; }

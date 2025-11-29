@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Database.DatabaseItemTransaksi;
 import Database.DatabaseSampah;
 import Database.DatabaseTransaksi;
 
@@ -29,6 +30,7 @@ public class SetorSampahPanel extends JPanel {
     private double totalHarga = 0;
 
     private ArrayList<ItemTransaksi> listItems = new ArrayList<>();
+    private ArrayList<Transaksi> listTransaksi = new ArrayList<>();
 
     public SetorSampahPanel(Penyetor user, BankSampah bank) {
 
@@ -157,12 +159,15 @@ public class SetorSampahPanel extends JPanel {
         lbTotalHarga.setText("Total Harga: Rp " + totalHarga);
 
         // Tambah ke list item transaksi
-        listItems.add(new ItemTransaksi("TEMP", s.getIdSampah(), hargaPerKg, berat));
+        listItems.add(new ItemTransaksi("Belum ada", s.getIdSampah(), hargaPerKg, berat));
 
         tfBerat.setText("");
     }
 
     private void simpanTransaksi(Penyetor user, BankSampah bank) {
+
+        
+        listTransaksi = DatabaseTransaksi.loadData(bank.getFileTransaksi());
 
         if (listItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Belum ada item!");
@@ -176,15 +181,20 @@ public class SetorSampahPanel extends JPanel {
         trx.setTotalBerat(totalBerat);
         trx.setTotalHarga(totalHarga);
         trx.setStatus(Transaksi.Status.SEDANG_DITINJAU);
-
-        for (ItemTransaksi i : listItems)
+        for (ItemTransaksi i : listItems) {
             i.setIdTransaksi(newId);
+        }
+        trx.setItemTransaksi(listItems);
 
-
-        DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi());
+        listTransaksi.add(trx); //-> tambah transaski ke total semua transaksi yang terjadi
         
+        DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi()); // -> tulis ke file data transksi setiap bank, transaksi yang baru terjadi
+        DatabaseTransaksi.writeData(listTransaksi); // -> tulis ke file total transaski yang pernah terjadi di aplikasi 
+        DatabaseItemTransaksi.writeData(listItems, bank.getFileItemTransaksi()); // -> menulis item setiap transaksi ke file bank
+        DatabaseItemTransaksi.writeData(listItems); // -> menulis item transaksi ke file data keseluruhan transaksi yang terjadi di apliaski
 
         JOptionPane.showMessageDialog(this, "Transaksi berhasil dikirim!");
+        user.tambahSetoran(1);
 
         // Reset panel
         tableModel.setRowCount(0);
