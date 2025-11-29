@@ -2,7 +2,9 @@ package View.AdminPanels;
 
 import Model.BankSampah;
 import Model.Penyetor;
+import Model.TransaksiJoin;
 import Database.DatabasePenyetor;
+import Database.DatabaseRequestJoin;
 import Controller.ListMemberController;
 
 import javax.swing.*;
@@ -134,7 +136,7 @@ public class ListMemberPanel extends JPanel {
         panel.add(lblTitle, BorderLayout.NORTH);
 
         // Tabel Request
-        String[] cols = {"ID", "Nama Penyetor"};
+        String[] cols = {"ID Penyetor", "Nama Penyetor", "Status"}; 
         modelRequest = new DefaultTableModel(cols, 0) {
             @Override
             public boolean isCellEditable(int row, int col) { return false; }
@@ -235,30 +237,43 @@ public class ListMemberPanel extends JPanel {
 
         String userId = (String) modelRequest.getValueAt(row, 0);
         String userName = (String) modelRequest.getValueAt(row, 1);
+        
+        // Cek status sekarang agar tidak double action
+        String currentStatus = modelRequest.getValueAt(row, 2).toString();
+        if(currentStatus.equals("DITERIMA") || currentStatus.equals("DITOLAK")){
+             JOptionPane.showMessageDialog(this, "Request ini sudah diproses sebelumnya.");
+             return;
+        }
 
         if (isAccepted) {
             int confirm = JOptionPane.showConfirmDialog(this, 
-                "Terima " + userName + " (" + userId + ") menjadi anggota?",
-                "Konfirmasi Terima", JOptionPane.YES_NO_OPTION);
+                "Terima " + userName + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                prosesTambahMember(userId); // Pakai logic yang sama dengan manual add
-                JOptionPane.showMessageDialog(this, "Berhasil menerima anggota!");
+                // 1. Masukkan ke Member Sah (Lokal)
+                prosesTambahMember(userId); 
+                
+                // 2. Update Status di Database Request jadi DITERIMA
+                DatabaseRequestJoin.updateStatus(userId, TransaksiJoin.Status.DITERIMA, currentBank.getFileRequestJoin());
+                
+                JOptionPane.showMessageDialog(this, "Anggota Diterima!");
             }
         } else {
             int confirm = JOptionPane.showConfirmDialog(this, 
-                "Tolak permintaan " + userName + "?",
-                "Konfirmasi Tolak", JOptionPane.YES_NO_OPTION);
+                "Tolak permintaan " + userName + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                // Logic Tolak: Hapus request (Update DB Global set BankID = null atau status Rejected)
-                // TODO: Panggil Service untuk reject (Set ID Bank di user jadi null lagi)
+                // 1. Reset ID Bank user jadi null (Global)
                 DatabasePenyetor.assignUserToBank(userId, "null"); 
-                JOptionPane.showMessageDialog(this, "Permintaan ditolak.");
+                
+                // 2. Update Status di Database Request jadi DITOLAK
+                DatabaseRequestJoin.updateStatus(userId, TransaksiJoin.Status.DITOLAK, currentBank.getFileRequestJoin());
+
+                JOptionPane.showMessageDialog(this, "Permintaan Ditolak.");
             }
         }
         
-        refreshRequestTable();
+        refreshRequestTable(); // Tabel akan refresh dan status berubah
         refreshTable();
     }
 
@@ -272,8 +287,7 @@ public class ListMemberPanel extends JPanel {
                 Penyetor p = (Penyetor) userObj;
                 p.setIdBankSampah(currentBank.getIdBank());
                 
-                String filePath = "src\\Database\\Penyetor\\penyetor_" + currentBank.getIdBank() + ".txt";
-                DatabasePenyetor.addPenyetor(p, filePath);
+                DatabasePenyetor.addPenyetor(p, currentBank.getFilePenyetor());
                 
                 refreshTable();
                 refreshRequestTable();
@@ -297,41 +311,25 @@ public class ListMemberPanel extends JPanel {
     private void refreshRequestTable() {
         modelRequest.setRowCount(0);
         
-        // TODO: LOGIKA CARI REQUEST (Contoh Logic)
-        // Biasanya request adalah User yang ID Bank-nya = ID Bank Ini, 
-        // TAPI belum masuk ke file penyetor_BSxxx.txt (Database Lokal).
-        // Atau kamu bisa buat status khusus di Penyetor misal "PENDING".
+        // Load data dari database
+        ArrayList<TransaksiJoin> daftarTransaksiJoins = DatabaseRequestJoin.loadData(currentBank.getFileRequestJoin());
         
-        // Disini saya pakai simulasi dummy atau logic sederhana:
-        // Load Global, cari yang ID Banknya = Bank ini, tapi belum ada di Lokal.
-        
-        /* ArrayList<Penyetor> global = DatabasePenyetor.loadData(); // Load semua user
-        String myPath = "src\\Database\\Penyetor\\penyetor_" + currentBank.getIdBank() + ".txt";
-        ArrayList<Penyetor> local = DatabasePenyetor.loadData(myPath); // Load user yg sudah sah
-        
-        for (Penyetor p : global) {
-            // Jika dia milih bank ini
-            if (p.getIdBankSampah() != null && p.getIdBankSampah().equals(currentBank.getIdBank())) {
-                
-                // Cek apakah dia SUDAH ada di lokal?
-                boolean alreadyMember = false;
-                for (Penyetor loc : local) {
-                    if (loc.getIdPenyetor().equals(p.getIdPenyetor())) {
-                        alreadyMember = true;
-                        break;
-                    }
-                }
-                
-                // Jika BELUM ada di lokal, berarti dia statusnya REQUEST / PENDING
-                if (!alreadyMember) {
-                    modelRequest.addRow(new Object[]{ p.getIdPenyetor(), p.getNamaLengkap() });
-                }
+        for(TransaksiJoin tj : daftarTransaksiJoins){
+            
+            // Cari nama penyetor
+            Object userObj = ListMemberController.getService().getUserById(tj.getIdPenyetor());
+            String namaPenyetor = "Tidak Dikenal";
+            if (userObj instanceof Penyetor) {
+                namaPenyetor = ((Penyetor) userObj).getNamaLengkap();
             }
+
+            // MASUKKAN STATUS KE KOLOM KE-3
+            modelRequest.addRow(new Object[]{ 
+                tj.getIdPenyetor(), 
+                namaPenyetor,
+                tj.getStatusRequest() // Ini akan menampilkan: SEDANG_DITINJAU, DITERIMA, dll
+            });
         }
-        */
-        
-        // DUMMY UNTUK TEST TAMPILAN
-        modelRequest.addRow(new Object[]{"UP099", "Calon Member A"});
     }
 
     private void styleButton(JButton btn, Color bg) {
