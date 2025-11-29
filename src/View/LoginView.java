@@ -7,7 +7,9 @@ import Controller.LoginController;
 import java.awt.*;
 
 import Model.Admin;
+import Model.BankSampah;
 import Model.Penyetor;
+import Service.BankSampahService;
 
 public class LoginView extends JFrame {
 
@@ -46,7 +48,7 @@ public class LoginView extends JFrame {
         JPanel imageContainer = new JPanel(new GridBagLayout());
         imageContainer.setBackground(Color.WHITE);
         // Menggunakan path absolut yang Anda berikan
-        ImageIcon loginImage = new ImageIcon("D:\\proyek-pbo\\Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png");
+        ImageIcon loginImage = new ImageIcon("src\\Asset\\Image\\1010042-10 - Edited.png");
         // Ukuran gambar diskala 350x350
         Image img = loginImage.getImage();
         Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH);
@@ -217,10 +219,14 @@ public class LoginView extends JFrame {
 
         if (user instanceof Penyetor) {
             Penyetor p = (Penyetor) user;
+            BankSampahService bss = new BankSampahService();
+            BankSampah bs = bss.getObjBankSampah(p.getIdBankSampah());
+
+
             JOptionPane.showMessageDialog(this,
                     "Login berhasil sebagai PENYETOR: " + p.getNamaLengkap());
 
-            new DashboardPenyetorView(p).setVisible(true);
+            new DashboardPenyetorView(p, bs).setVisible(true);
             dispose();
             return;
         }

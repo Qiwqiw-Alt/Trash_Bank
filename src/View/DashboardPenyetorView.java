@@ -3,10 +3,10 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 import Model.Penyetor;
+import View.PenyetorPanels.JoinBankPanel;
 import Model.BankSampah;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 
 public class DashboardPenyetorView extends JFrame {
     private Penyetor currentUser;
@@ -14,39 +14,38 @@ public class DashboardPenyetorView extends JFrame {
 
     private JPanel contentPanel;
     private JPanel menuPanel;
-    
+
     // Icon & Style Constants
-    private final Color GREEN_PRIMARY = new Color(0, 128, 0); 
-    private final Color GREEN_LIGHT = new Color(200, 240, 200); 
+    private final Color GREEN_PRIMARY = new Color(0, 128, 0);
+    private final Color GREEN_LIGHT = new Color(200, 240, 200);
     // private final Color TEXT_DARK = new Color(50, 50, 50);
 
-    public DashboardPenyetorView(Penyetor user){
+    public DashboardPenyetorView(Penyetor user) {
         this.currentUser = user;
         this.bankSampah = null;
 
         String namaBank = "Bank Sampah App";
         setTitle("Dashboard Penyetor - " + namaBank);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         setLocationRelativeTo(null);
-        setResizable(true); 
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        
+        setResizable(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         initLayout();
     }
 
     public DashboardPenyetorView(Penyetor user, BankSampah bankSampah) {
         this.currentUser = user;
-        this.bankSampah = bankSampah; 
-        
+        this.bankSampah = bankSampah;
+
         String namaBank = bankSampah.getNamaBank() != null ? bankSampah.getNamaBank() : "Bank Sampah App";
         setTitle("Dashboard Penyetor - " + namaBank);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         setLocationRelativeTo(null);
-        setResizable(true); 
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        
+        setResizable(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         initLayout();
     }
 
@@ -56,11 +55,11 @@ public class DashboardPenyetorView extends JFrame {
         menuPanel = createSidebar();
         add(menuPanel, BorderLayout.WEST);
 
-        contentPanel = new JPanel(new BorderLayout());
+        contentPanel = new JPanel(new FlowLayout());
         contentPanel.setBackground(Color.white);
-        add(contentPanel, BorderLayout.CENTER);
+        add(contentPanel, FlowLayout.CENTER);
 
-        if(this.bankSampah == null){
+        if (this.bankSampah == null) {
             switchPanel("JoinBank");
         } else {
             switchPanel("Home");
@@ -82,7 +81,7 @@ public class DashboardPenyetorView extends JFrame {
         logo.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         logoPanel.add(logo);
         panel.add(logoPanel);
-        
+
         panel.add(new JSeparator());
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
@@ -119,7 +118,7 @@ public class DashboardPenyetorView extends JFrame {
         switch (menuName) {
             case "Home":
                 // Pastikan class ini ada di folder View/Panels/
-                nextPanel = new View.PenyetorPanels.PenyetorHomePanel(currentUser); 
+                nextPanel = new View.PenyetorPanels.PenyetorHomePanel(currentUser);
                 break;
             case "Profil":
                 nextPanel = new View.PenyetorPanels.ProfilPenyetorPanel(currentUser);
@@ -128,17 +127,17 @@ public class DashboardPenyetorView extends JFrame {
                 nextPanel = new View.PenyetorPanels.SetorSampahPanel(currentUser, bankSampah);
                 break;
             case "Riwayat":
-                nextPanel = new  View.PenyetorPanels.RiwayatTransaksiPanel(currentUser);
+                nextPanel = new View.PenyetorPanels.RiwayatTransaksiPanel(currentUser);
                 break;
             case "TukarPoin":
-                nextPanel = new  View.PenyetorPanels.TukarPoinPanel(currentUser);
+                nextPanel = new View.PenyetorPanels.TukarPoinPanel(currentUser);
                 break;
             case "Keluhan":
-                nextPanel = new  View.PenyetorPanels.KeluhanPanel(currentUser);
+                nextPanel = new View.PenyetorPanels.KeluhanPanel(currentUser);
                 break;
             case "JoinBank":
                 // Passing 'this' agar panel bisa merefresh frame ini setelah join
-                nextPanel = new  View.PenyetorPanels.JoinBankPanel(currentUser, this);
+                nextPanel = new View.PenyetorPanels.JoinBankPanel(currentUser, this);
                 break;
             case "Logout":
                 logoutAction();
@@ -182,7 +181,7 @@ public class DashboardPenyetorView extends JFrame {
         btnPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         btnPanel.setBackground(GREEN_PRIMARY);
         btnPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+
         JLabel label = new JLabel("   " + text);
         label.setFont(new Font("Arial", Font.PLAIN, 15));
         label.setForeground(Color.WHITE);
@@ -194,17 +193,29 @@ public class DashboardPenyetorView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 switchPanel(command);
             }
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 btnPanel.setBackground(GREEN_LIGHT);
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 btnPanel.setBackground(GREEN_PRIMARY);
             }
         };
-        
+
         btnPanel.addMouseListener(ma);
         return btnPanel;
-    }     
+    }
+
+
+    // ini nanti dipanggil sama join bank panel biar bisa balik ke sini lagi
+    public void setBankSampah(BankSampah bank) {
+        this.bankSampah = bank;
+        getContentPane().removeAll();
+        initLayout();
+        revalidate();
+        repaint();
+    }
 }

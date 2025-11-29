@@ -16,4 +16,9 @@ public class BankSampahService {
         }
         return null;
     }
+
+    public ArrayList<BankSampah> getAllBankSampah() {
+        return DatabaseBankSampah.loadData();
+    }
+
 }
