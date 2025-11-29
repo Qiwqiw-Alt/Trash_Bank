@@ -1,8 +1,6 @@
 package Database;
 
 import Model.BankSampah;
-import Model.Sampah;
-
 import java.io.*;
 import java.util.ArrayList;
 
