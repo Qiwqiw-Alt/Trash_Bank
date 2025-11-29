@@ -16,22 +16,17 @@ public class AdminHomePanel extends JPanel {
 
     private Admin currentUser;
     private BankSampah curreBankSampah;
-    // Jika kamu punya object BankSampah di sini, bisa ditambahkan fieldnya
-    // private BankSampah currentBank;
-
-    // --- Komponen UI yang butuh di-update datanya ---
+   
     private JLabel lblBankName;
     private JLabel lblAdminName;
     
     private JLabel lblTotalMemberVal;
     private JLabel lblTotalTrxVal;
-    private JLabel lblTotalSampahVal; // Total Kg semua sampah
+    private JLabel lblTotalSampahVal; 
     
-    private JPanel panelCategoryList; // Tempat menaruh list kategori
+    private JPanel panelCategoryList; 
 
-    // --- Styling ---
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    // private final Color GREEN_SOFT = new Color(209, 231, 221);
     private final Color WHITE = Color.WHITE;
     private final Font FONT_BIG = new Font("Segoe UI", Font.BOLD, 24);
     private final Font FONT_MED = new Font("Segoe UI", Font.BOLD, 16);
@@ -42,38 +37,33 @@ public class AdminHomePanel extends JPanel {
         this.curreBankSampah = bankSampah;
         
         initLayout();
-        loadData(); // Panggil fungsi untuk mengisi data dummy/database
+        loadData(); 
     }
 
     private void initLayout() {
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 245, 245)); // Background abu muda
+        setBackground(new Color(245, 245, 245)); 
         
-        // Bungkus dengan ScrollPane agar aman jika konten panjang
         JPanel mainContent = new JPanel();
         mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
         mainContent.setBackground(new Color(245, 245, 245));
         mainContent.setBorder(new EmptyBorder(20, 30, 20, 30));
 
-        // 1. HEADER SECTION
         mainContent.add(createHeaderSection());
-        mainContent.add(Box.createVerticalStrut(25)); // Jarak
+        mainContent.add(Box.createVerticalStrut(25)); 
 
-        // 2. CARDS SECTION (Ringkasan)
         mainContent.add(createSummaryCards());
         mainContent.add(Box.createVerticalStrut(25));
 
-        // 3. CATEGORY SECTION (Detail Sampah)
         mainContent.add(createCategorySection());
         mainContent.add(Box.createVerticalStrut(20));
 
-        // 4. REFRESH BUTTON (Opsional)
         JButton btnRefresh = new JButton("🔄 Refresh Data");
         btnRefresh.setBackground(Color.DARK_GRAY);
         btnRefresh.setForeground(Color.WHITE);
         btnRefresh.setFocusPainted(false);
         btnRefresh.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btnRefresh.addActionListener(e -> loadData()); // Action Listener Refresh
+        btnRefresh.addActionListener(e -> loadData()); 
         mainContent.add(btnRefresh);
 
         JScrollPane scrollPane = new JScrollPane(mainContent);
@@ -82,9 +72,6 @@ public class AdminHomePanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // ========================================================================
-    // UI COMPONENTS CREATION
-    // ========================================================================
 
     private JPanel createHeaderSection() {
         JPanel panel = new JPanel(new GridLayout(2, 1));
@@ -97,8 +84,7 @@ public class AdminHomePanel extends JPanel {
         lblAdminName.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         lblAdminName.setForeground(Color.GRAY);
 
-        // Baris 2: Nama Bank Sampah
-        lblBankName = new JLabel("Dashboard Bank Sampah"); // Nanti di-update loadData
+        lblBankName = new JLabel("Dashboard Bank Sampah");
         lblBankName.setFont(FONT_BIG);
         lblBankName.setForeground(new Color(33, 37, 41));
 
@@ -109,20 +95,20 @@ public class AdminHomePanel extends JPanel {
     }
 
     private JPanel createSummaryCards() {
-        JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0)); // 1 Baris, 3 Kolom, Jarak 20px
+        JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0));
         panel.setBackground(new Color(245, 245, 245));
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.setMaximumSize(new Dimension(Short.MAX_VALUE, 120)); // Tinggi fix
+        panel.setMaximumSize(new Dimension(Short.MAX_VALUE, 120));
 
-        // Card 1: Member
+      
         lblTotalMemberVal = new JLabel("0");
         panel.add(createSingleCard("Total Nasabah", lblTotalMemberVal, new Color(13, 110, 253))); // Biru
 
-        // Card 2: Transaksi
+      
         lblTotalTrxVal = new JLabel("0");
         panel.add(createSingleCard("Total Transaksi", lblTotalTrxVal, new Color(255, 193, 7))); // Kuning
 
-        // Card 3: Total Sampah
+        
         lblTotalSampahVal = new JLabel("0 Kg");
         panel.add(createSingleCard("Total Sampah Terkumpul", lblTotalSampahVal, GREEN_PRIMARY)); // Hijau
 

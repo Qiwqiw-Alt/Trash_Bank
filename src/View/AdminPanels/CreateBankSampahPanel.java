@@ -6,6 +6,7 @@ import View.DashboardAdminView; // Import view utama untuk callback
 
 import javax.swing.*;
 
+import Controller.CreateBankSampahController;
 import Database.DataBaseAdmin;
 import Database.DatabaseBankSampah;
 
@@ -100,13 +101,8 @@ public class CreateBankSampahPanel extends JPanel {
             return;
         }
 
-        // 1. Generate ID Bank Baru
-        // Menggunakan UUID simple atau counter dari size list
-        DatabaseBankSampah.loadData();
         String idBank = DatabaseBankSampah.generateBankId();
-        BankSampah newBank = new BankSampah(idBank, nama, alamat);
-        DatabaseBankSampah.loadData();
-        DatabaseBankSampah.addBankSampah(newBank);
+        CreateBankSampahController.getService().addBankSampah(idBank, nama, alamat);
 
         // 4. Update Admin (Hubungkan Admin dengan Bank ini)
         ArrayList<Admin> listAdmin = DataBaseAdmin.loadData();
@@ -123,7 +119,7 @@ public class CreateBankSampahPanel extends JPanel {
         // 6. PANGGIL METHOD DI PARENT FRAME UNTUK REFRESH DASHBOARD
         // Ini langkah krusial agar tampilan berubah dari form create ke dashboard menu
         if (parentFrame != null) {
-            parentFrame.onBankCreatedSuccess(newBank);
+            parentFrame.onBankCreatedSuccess(new BankSampah(idBank, idBank, alamat));
         }
     }
 }
