@@ -236,7 +236,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.ListMemberPanel(currentBankSampah);
                 break;
             case "GivePoin":
-                nextPanel = new View.AdminPanels.InputSetoranPanel(currentBankSampah); 
+                nextPanel = new View.AdminPanels.SetoranPenyetorPanel(currentBankSampah); 
                 break;
             case "AddSampah":
                 nextPanel = new View.AdminPanels.ManajemenSampahPanel(currentBankSampah);

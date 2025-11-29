@@ -4,7 +4,6 @@ import Model.BankSampah;
 import Model.Penyetor;
 import Database.DatabasePenyetor;
 import Controller.ListMemberController;
-import Controller.LoginController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
