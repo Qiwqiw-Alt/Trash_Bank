@@ -108,7 +108,7 @@ public class KeluhanPanel extends JPanel {
       riwayatPanel.setBackground(Color.WHITE);
       riwayatPanel.setBorder(BorderFactory.createTitledBorder("Riwayat Keluhan Anda"));
 
-      tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status" }, 0) {
+      tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status" , "Tanggapan"}, 0) {
          @Override
          public boolean isCellEditable(int row, int column) {
             return false; // read-only
@@ -162,7 +162,7 @@ public class KeluhanPanel extends JPanel {
       tableModel.setRowCount(0); // hapus data lama
       for (Complain c : daftarComplain) {
          if (c.getIdPenyetor().equals(user.getIdPenyetor())) {
-            tableModel.addRow(new Object[] { c.getIdComplain(), c.getJudul(), c.getIsi(), c.getStatus() });
+            tableModel.addRow(new Object[] { c.getIdComplain(), c.getJudul(), c.getIsi(), c.getStatus(), c.getTanggapanAdmin() });
          }
       }
    }
