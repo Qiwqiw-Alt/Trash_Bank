@@ -108,7 +108,7 @@ public class KeluhanPanel extends JPanel {
       riwayatPanel.setBackground(Color.WHITE);
       riwayatPanel.setBorder(BorderFactory.createTitledBorder("Riwayat Keluhan Anda"));
 
-      tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status" , "Tanggapan"}, 0) {
+      tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status", "Tanggapan" }, 0) {
          @Override
          public boolean isCellEditable(int row, int column) {
             return false; // read-only
@@ -120,6 +120,9 @@ public class KeluhanPanel extends JPanel {
       riwayatTable.setRowHeight(25);
       riwayatTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
       riwayatTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+      for (int i = 0; i < riwayatTable.getColumnCount(); i++) {
+         riwayatTable.getColumnModel().getColumn(i).setCellRenderer(new TextAreaRenderer());
+      }
 
       JScrollPane tableScroll = new JScrollPane(riwayatTable);
       riwayatPanel.add(tableScroll, BorderLayout.CENTER);
@@ -160,10 +163,47 @@ public class KeluhanPanel extends JPanel {
 
    private void loadRiwayatKeluhan() {
       tableModel.setRowCount(0); // hapus data lama
+      daftarComplain = DatabaseComplain.loadData(bank.getFileComplain());
       for (Complain c : daftarComplain) {
          if (c.getIdPenyetor().equals(user.getIdPenyetor())) {
-            tableModel.addRow(new Object[] { c.getIdComplain(), c.getJudul(), c.getIsi(), c.getStatus(), c.getTanggapanAdmin() });
+            tableModel.addRow(
+                  new Object[] { c.getIdComplain(), c.getJudul(), c.getIsi(), c.getStatus(), c.getTanggapanAdmin() });
          }
       }
+   }
+}
+
+class TextAreaRenderer extends JTextArea implements javax.swing.table.TableCellRenderer {
+   public TextAreaRenderer() {
+      setLineWrap(true);
+      setWrapStyleWord(true);
+      setOpaque(true);
+   }
+
+   @Override
+   public Component getTableCellRendererComponent(JTable table, Object value,
+         boolean isSelected, boolean hasFocus, int row, int column) {
+
+      setText(value != null ? value.toString() : "");
+      setFont(table.getFont());
+
+      // Mengatur warna background & foreground ketika diseleksi
+      if (isSelected) {
+         setBackground(table.getSelectionBackground());
+         setForeground(table.getSelectionForeground());
+      } else {
+         setBackground(table.getBackground());
+         setForeground(table.getForeground());
+      }
+
+      // Menyesuaikan tinggi row
+      int tableWidth = table.getColumnModel().getColumn(column).getWidth();
+      setSize(new Dimension(tableWidth, Short.MAX_VALUE));
+      int preferredHeight = getPreferredSize().height;
+      if (table.getRowHeight(row) != preferredHeight) {
+         table.setRowHeight(row, preferredHeight);
+      }
+
+      return this;
    }
 }

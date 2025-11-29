@@ -44,7 +44,7 @@ public class Complain {
     public LocalDate getTanggal() { return tanggal; }
     public Status getStatus() { return status; }
     public String getTanggapanAdmin() {
-            String result = tanggapanAdmin != null ? "-" : tanggapanAdmin ; 
+            String result = tanggapanAdmin == "null" ? "-" : tanggapanAdmin ; 
             return result;
         }
     public String getFormattedTime() {
