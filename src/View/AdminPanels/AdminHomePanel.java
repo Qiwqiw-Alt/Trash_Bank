@@ -8,13 +8,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import Controller.AdminHomePanelController;
-import Database.DatabaseBankSampah;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class AdminHomePanel extends JPanel {
@@ -36,7 +31,7 @@ public class AdminHomePanel extends JPanel {
 
     // --- Styling ---
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Color GREEN_SOFT = new Color(209, 231, 221);
+    // private final Color GREEN_SOFT = new Color(209, 231, 221);
     private final Color WHITE = Color.WHITE;
     private final Font FONT_BIG = new Font("Segoe UI", Font.BOLD, 24);
     private final Font FONT_MED = new Font("Segoe UI", Font.BOLD, 16);

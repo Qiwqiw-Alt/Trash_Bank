@@ -2,72 +2,68 @@ package Model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Transaksi {
+    public enum Status {
+        SEDANG_DITINJAU,
+        DITERIMA,
+        DITOLAK, PENDING;
+    }
+
     private String idTransaksi;
     private String idPenyetor;
     private String idBank;
+    private Status status;
 
-    private List<ItemTransaksi> items;
+    private ArrayList<ItemTransaksi> items;
     private LocalDate tanggal;
 
-    private int totalPoin;
     private double totalHarga;
+    private double totalBerat;
+
+    public Transaksi() {}
 
     public Transaksi(String idTransaksi, String idPenyetor, String idBank) {
         this.idTransaksi = idTransaksi;
         this.idPenyetor = idPenyetor;
         this.idBank = idBank;
-
-        this.items = new ArrayList<>();
+        this.status = Status.SEDANG_DITINJAU;
+        
         this.tanggal = LocalDate.now();
+        this.items = new ArrayList<>();
     }
 
     public void setTanggal(LocalDate tanggal) {
         this.tanggal = tanggal;
     }
 
+    public void setTotalBerat(double totalBerat) {
+        this.totalBerat = totalBerat;
+    }
+
     public void setTotalHarga(double totalHarga) {
         this.totalHarga = totalHarga;
-    }
-
-    public void setTotalPoin(int poin) {
-        this.totalPoin = poin;
-    }
-
-    public void tambahItem(ItemTransaksi item) {
-        items.add(item);
-        hitungTotal();
-    }
-
-    private void hitungTotal() {
-        totalHarga = 0;
-        for (ItemTransaksi i : items) {
-            totalHarga += i.getSubtotal();
-        }
-        totalPoin = Poin.konversiKePoin(totalHarga);
     }
 
     public String getIdPenyetor() {
         return this.idPenyetor;
     }
 
-    public void setIdPenyetor(String idPenyetor){
-        this.idPenyetor = idPenyetor;
-    }
-
     public String getIdBank() {
         return this.idBank;
     }
 
-    public void setIdBank(String idBank){
-        this.idBank = idBank;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus(){
+        return this.status;
     }
 
     public String getIdTransaksi() { return idTransaksi; }
     public LocalDate getTanggal() { return tanggal; }
+    public double getTotalBerat() { return totalBerat; }
     public double getTotalHarga() { return totalHarga; }
-    public int getTotalPoin() { return totalPoin; }
-    public List<ItemTransaksi> getItems() { return items; }
+    public ArrayList<ItemTransaksi> getItems() { return items; }
 }

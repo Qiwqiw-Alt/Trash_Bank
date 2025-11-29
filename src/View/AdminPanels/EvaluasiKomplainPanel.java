@@ -3,7 +3,6 @@ package View.AdminPanels;
 import Model.Admin;
 import Model.BankSampah;
 import Model.Complain;
-import Model.Complain.Status; // Import Enum Status
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

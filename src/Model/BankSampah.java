@@ -13,6 +13,7 @@ public class BankSampah {
     private String fileDaftarSampah;
     private String fileDaftarReward;
     private String fileDaftarComplain;
+    private String fileDaftarRequest;
 
     public BankSampah(String idBank, String namaBank, String alamat) {
         this.idBank = idBank;
@@ -25,7 +26,8 @@ public class BankSampah {
         this.fileItemSampahTransaksi = "src\\Database\\ItemTransaksi\\ItmTrx_" + idBank + ".txt";
         this.fileDaftarSampah = "src\\Database\\Sampah\\dfsampah_" + idBank + ".txt";
         this.fileDaftarReward = "src\\Database\\Reward\\dfreward_" + idBank + ".txt";
-        this.fileDaftarComplain = "src\\Database\\Complain\\dfcompalain_" + idBank + ".txt";
+        this.fileDaftarComplain = "src\\Database\\Complain\\dfcomplain_" + idBank + ".txt";
+        this.fileDaftarRequest = "src\\Database\\TransaksiJoin\\dfrequestJoin_" + idBank + ".txt";
     }
 
     public String getIdBank() { return idBank; }
@@ -42,4 +44,5 @@ public class BankSampah {
     public String getFileDaftarSampah() { return fileDaftarSampah; }
     public String getFileReward() { return fileDaftarReward; }
     public String getFileComplain() { return fileDaftarComplain; }
+    public String getFileRequestJoin() { return fileDaftarRequest; }
 }

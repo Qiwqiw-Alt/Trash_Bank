@@ -12,7 +12,6 @@ import Database.DatabaseTransaksi;
 import Model.Admin;
 import Model.BankSampah;
 import Model.ItemTransaksi;
-import Model.PenukaranReward;
 import Model.Penyetor;
 import Model.Sampah;
 import Model.Transaksi;

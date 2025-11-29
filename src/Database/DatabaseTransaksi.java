@@ -1,5 +1,6 @@
 package Database;
 
+import Model.Transaksi.Status;
 import Model.Transaksi;
 
 import java.io.*;
@@ -58,27 +59,32 @@ public class DatabaseTransaksi {
                 if (line.trim().isEmpty()) continue;
 
                 String[] p = line.split(DELIM);
-                if (p.length >= 6) {
+                if (p.length >= 7) {
                     String idTrx = p[0];
                     String idPenyetor = p[1];
                     String idBank = p[2];
-                    
 
-                    LocalDate tanggal;
+                    Transaksi trx = new Transaksi(idTrx, idPenyetor, idBank);
+
                     try {
-                        tanggal = LocalDate.parse(p[3]);
+                        trx.setStatus(Status.valueOf(p[3])); 
                     } catch (Exception e) {
-                        tanggal = LocalDate.now(); 
+                        trx.setStatus(Status.PENDING); // Default jika error
                     }
                     
-                    double totalHarga = Double.parseDouble(p[4]);
-                    int totalPoin = Integer.parseInt(p[5]);
+                    try {
+                        trx.setTanggal(LocalDate.parse(p[4]));
+                    } catch (Exception e) {
+                        trx.setTanggal(LocalDate.now()); 
+                    }
+                    
+                    double totalHarga = Double.parseDouble(p[5]);
+                    double totalBerat = Integer.parseInt(p[6]);
 
                     // Buat objek
-                    Transaksi trx = new Transaksi(idTrx, idPenyetor, idBank);
-                    trx.setTanggal(tanggal);
+                    
                     trx.setTotalHarga(totalHarga);
-                    trx.setTotalPoin(totalPoin);
+                    trx.setTotalBerat(totalBerat);
 
                     listHasil.add(trx);
                 }
@@ -102,9 +108,10 @@ public class DatabaseTransaksi {
                         t.getIdTransaksi() + "|" +
                         t.getIdPenyetor() + "|" +
                         t.getIdBank() + "|" +
+                        t.getStatus().name() + "|" +
                         t.getTanggal().toString() + "|" +
                         t.getTotalHarga() + "|" +
-                        t.getTotalPoin()
+                        t.getTotalBerat()
                 );
                 bw.newLine();
             }

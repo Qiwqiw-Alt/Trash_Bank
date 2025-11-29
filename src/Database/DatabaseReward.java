@@ -60,7 +60,7 @@ public class DatabaseReward {
                             data[0], // id
                             data[1], // nama hadiah
                             data[2], // deskripsi
-                            (int) Double.parseDouble(data[3]), // poin tukar (handle double/int safe)
+                            Double.parseDouble(data[3]), // poin tukar (handle double/int safe)
                             Integer.parseInt(data[4]) // stok
                     );
                     listHasil.add(loadReward);
@@ -83,7 +83,7 @@ public class DatabaseReward {
                 String data = reward.getIdReward() + "|" +
                               reward.getNamaHadiah() + "|" +
                               reward.getDeskripsi() + "|" +
-                              reward.getPoinTukar() + "|" + 
+                              reward.getHargaTukar() + "|" + 
                               reward.getStok(); 
                               // \n dihapus di sini, diganti bw.newLine() agar support semua OS
 

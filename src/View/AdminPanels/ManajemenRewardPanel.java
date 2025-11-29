@@ -316,7 +316,7 @@ public class ManajemenRewardPanel extends JPanel {
                 r.getIdReward(),
                 r.getNamaHadiah(),
                 r.getDeskripsi(),
-                r.getPoinTukar(),
+                r.getHargaTukar(),
                 r.getStok()
             });
         }

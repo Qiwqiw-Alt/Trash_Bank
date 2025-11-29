@@ -1,16 +1,22 @@
 package Model;
 
 public class TransaksiJoin {
+    public enum Status {
+        SEDANG_DITINJAU,
+        DITERIMA,
+        DITOLAK, PENDING
+    }
+
     private String idTransaksiJoin;
     private String penyetorId;
     private String bankId;
-    private boolean status;
+    private Status status;
     
-    public TransaksiJoin(String idTransaksiJoin, String penyetorId, String bankId, boolean status){
+    public TransaksiJoin(String idTransaksiJoin, String penyetorId, String bankId){
         this.idTransaksiJoin = idTransaksiJoin;
         this.penyetorId = penyetorId;
         this.bankId = bankId;
-        this.status = status;
+        this.status = Status.SEDANG_DITINJAU;
     }
 
     public String getIdTransaksiJoin(){
@@ -29,11 +35,11 @@ public class TransaksiJoin {
         return this.bankId;
     }
 
-    public boolean getStatusRequest(){
+    public Status getStatusRequest(){
         return this.status;
     }
 
-    public void setStatus(boolean status){
+    public void setStatus(Status status){
         this.status = status;
     }
 }
