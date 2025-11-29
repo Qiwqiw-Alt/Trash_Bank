@@ -309,7 +309,7 @@ public class ManajemenSampahPanel extends JPanel {
         try {
             Double.parseDouble(tfRharga.getText().trim());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Poin dan Stok harus angka!");
+            JOptionPane.showMessageDialog(this, "Harga dan Stok harus angka!");
             return false;
         }
         return true;
