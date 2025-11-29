@@ -79,7 +79,7 @@ public class DatabaseTransaksi {
                     }
                     
                     double totalHarga = Double.parseDouble(p[5]);
-                    double totalBerat = Integer.parseInt(p[6]);
+                    double totalBerat = Double.parseDouble(p[6]);
 
                     // Buat objek
                     

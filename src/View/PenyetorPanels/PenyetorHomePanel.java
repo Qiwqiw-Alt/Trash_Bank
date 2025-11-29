@@ -6,11 +6,15 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import Model.BankSampah;
 import Model.Penyetor;
 import Model.Transaksi;
+import Service.BankSampahService;
 import Database.DatabaseTransaksi;
 
 public class PenyetorHomePanel extends JPanel {
+
+    BankSampahService bss = new BankSampahService();
 
     public PenyetorHomePanel(Penyetor user) {
 
@@ -74,6 +78,8 @@ public class PenyetorHomePanel extends JPanel {
     // -------------------------
     private JPanel createTablePanel(Penyetor user) {
 
+        BankSampah bankUser = bss.getObjBankSampah(user.getIdBankSampah());
+
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(Color.WHITE);
         wrapper.setBorder(new CompoundBorder(
@@ -90,7 +96,7 @@ public class PenyetorHomePanel extends JPanel {
         String[] columns = {"ID Transaksi", "Tanggal", "Berat (kg)", "Harga (Rp)", "Status"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
-        ArrayList<Transaksi> allTransaksi = DatabaseTransaksi.loadData();
+        ArrayList<Transaksi> allTransaksi = DatabaseTransaksi.loadData(bankUser.getFileTransaksi());
         ArrayList<String> ids = user.getRiwayatTransaksi();
 
         for (Transaksi trx : allTransaksi) {

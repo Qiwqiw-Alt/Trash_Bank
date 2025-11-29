@@ -4,15 +4,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import Database.DatabaseTransaksi;
+import Model.BankSampah;
 import Model.Penyetor;
 import Model.Transaksi;
+import Service.BankSampahService;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class RiwayatTransaksiPanel extends JPanel {
 
+    BankSampah bank;
+    BankSampahService bss = new BankSampahService();
+
     public RiwayatTransaksiPanel(Penyetor user) {
+
+        bank = bss.getObjBankSampah(user.getIdBankSampah());
 
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245));
@@ -31,7 +38,7 @@ public class RiwayatTransaksiPanel extends JPanel {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        ArrayList<Transaksi> allTransaksi = DatabaseTransaksi.loadData();
+        ArrayList<Transaksi> allTransaksi = DatabaseTransaksi.loadData(bank.getFileTransaksi());
 
         boolean found = false;
 
