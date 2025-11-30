@@ -14,7 +14,7 @@ public class SignInView extends JFrame {
 //    private JTextField idField;
     private JTextField noHpField;
     private JComboBox<String> roleBox;
-    private ImageIcon image = new ImageIcon("recycle-bin.png");
+    private ImageIcon image = new ImageIcon("Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-bin.png");
     private JButton registerButton, backButton;
 
     public SignInView() {
@@ -53,7 +53,7 @@ public class SignInView extends JFrame {
     imageContainer.setBackground(Color.WHITE);
     
     // Placeholder untuk Gambar Ilustrasi (Anda bisa mengganti path ini)
-    ImageIcon signupImage = new ImageIcon("D:\\project PBO\\Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\"); // Ganti dengan gambar Sign Up
+    ImageIcon signupImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\"); // Ganti dengan gambar Sign Up
     Image img = signupImage.getImage();
     // Skala gambar lebih kecil karena panel lebih tinggi
     Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH); 
