@@ -1,7 +1,7 @@
-import View.LoginView;
+import View.LandingView;
 
 public class Main {
     public static void main(String[] args) {
-        new LoginView().setVisible(true);
+        new LandingView().setVisible(true);
     }
 }
