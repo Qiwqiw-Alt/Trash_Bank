@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
+import Database.DatabasePenukaranReward;
 import Database.DatabaseTransaksi;
 
 import java.awt.*;
@@ -27,12 +28,18 @@ public class PenyetorHomePanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245)); // soft grey
 
-
         this.listTransaksi = sps.getDaftarTransaksi(penyetor);
         user.setTotalSetoran(this.listTransaksi.size());
-        int totalPoin = DatabaseTransaksi.hitungPoinPenyetor(user);
-        user.setTotalPoin(totalPoin);
+        double totalPoinPendapatanTransaksi = DatabaseTransaksi.hitungPoinPenyetor(user);
+        double totalPoinPengeluranTukarReward = DatabasePenukaranReward.hitungPoinPenyetor(user);
+        double totalPoinUser = totalPoinPendapatanTransaksi - totalPoinPengeluranTukarReward;
 
+        if (totalPoinUser < 0) {
+            user.setTotalPoin(0);
+        } else {
+
+            user.setTotalPoin(totalPoinPendapatanTransaksi - totalPoinPengeluranTukarReward);
+        }
 
         // Panel utama berisi semuanya
         JPanel container = new JPanel();
@@ -90,7 +97,6 @@ public class PenyetorHomePanel extends JPanel {
     // -------------------------
 
     private JPanel createTablePanel(Penyetor user) {
-
 
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(Color.WHITE);

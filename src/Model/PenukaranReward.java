@@ -9,6 +9,7 @@ public class PenukaranReward {
     private String idReward;
     private String idPenyetor;
     private LocalDate tanggal;
+    private double poin;
 
     public PenukaranReward() {}
 
@@ -26,6 +27,8 @@ public class PenukaranReward {
     public void setTanggalPenukaran(LocalDate time) {
         this.tanggal = time;
     }
+    public double getPoin() {return poin;}
+    public void setPoint(double point) { this.poin = point;}
 
     public String getFormattedTime() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");

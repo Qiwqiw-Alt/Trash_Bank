@@ -10,7 +10,7 @@ public class Penyetor extends User {
     private String noHp;
     private String idBankSampah;
 
-    private int totalPoin = 0; // -> total poin belum tahu
+    private Double totalPoin = 0.0; // -> total poin belum tahu
     private int totalSetoran = 0; // -> dapat diambil dari size transaksi
     private ArrayList<Transaksi> riwayatTransaksi;
 
@@ -40,7 +40,7 @@ public class Penyetor extends User {
         this.noHp = noHp;
     }
 
-    public int getTotalPoin() {
+    public double getTotalPoin() {
         return totalPoin;
     }
 
@@ -48,7 +48,7 @@ public class Penyetor extends User {
         this.totalPoin += poin;
     }
 
-    public void setTotalPoin(int totalPoin) {
+    public void setTotalPoin(double totalPoin) {
         this.totalPoin = totalPoin;
     }
 
