@@ -15,11 +15,9 @@ public class Admin extends User {
         this.idBankSampah = null;
     }
 
-    // Setter and Getter namaAdmin
     public String getNamaAdmin() {return namaAdmin;}
     public void setNamaAdmin(String nama) {this.namaAdmin = nama;}
 
-    // Setter dan Getter nohp
     public String getNohp() {return this.noHp;}
     public void setNohp(String noHp) {this.noHp = noHp;}
 
