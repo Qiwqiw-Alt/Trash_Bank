@@ -6,22 +6,25 @@ import Database.DatabaseItemTransaksi;
 import Database.DatabaseTransaksi;
 import Model.BankSampah;
 import Model.ItemTransaksi;
+import Model.Penyetor;
 import Model.Transaksi;
 
 public class SetoranPenyetorService {
+    BankSampahService bss = new BankSampahService();
 
-    public ArrayList<Transaksi> daftarTransaksis(BankSampah bankSampah){
+    public ArrayList<Transaksi> daftarTransaksis(BankSampah bankSampah) {
         return DatabaseTransaksi.loadData(bankSampah.getFileTransaksi());
     }
 
-    public ArrayList<ItemTransaksi> daftarItemTransaksi(BankSampah bankSampah){
+    public ArrayList<ItemTransaksi> daftarItemTransaksi(BankSampah bankSampah) {
         return DatabaseItemTransaksi.loadData(bankSampah.getFileItemTransaksi());
     }
 
-    public Transaksi getTrxById(String idTrx, BankSampah bankSampah){
+    public Transaksi getTrxById(String idTrx, BankSampah bankSampah) {
         ArrayList<Transaksi> daftarTransaksi = DatabaseTransaksi.loadData(bankSampah.getFileTransaksi());
-        for(Transaksi trs : daftarTransaksi){
-            if(trs.getIdTransaksi().equals(idTrx));
+        for (Transaksi trs : daftarTransaksi) {
+            if (trs.getIdTransaksi().equals(idTrx))
+                ;
             return trs;
         }
         return null;
@@ -43,4 +46,20 @@ public class SetoranPenyetorService {
             Database.DatabaseTransaksi.writeData(list, bank.getFileTransaksi());
         }
     }
+
+    public ArrayList<Transaksi> getDaftarTransaksi(Penyetor user) {
+        BankSampah bank = bss.getObjBankSampah(user.getIdBankSampah());
+
+        ArrayList<Transaksi> list = daftarTransaksis(bank);
+        ArrayList<Transaksi> result = new ArrayList<>();
+
+        for (Transaksi transaksi : list) {
+            if (transaksi.getIdPenyetor().equals(user.getIdPenyetor())) {
+                result.add(transaksi);
+            }
+        }
+
+        return result;
+    }
+
 }

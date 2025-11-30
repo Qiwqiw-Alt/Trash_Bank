@@ -1,6 +1,5 @@
 package Database;
 
-import Model.Admin;
 import Model.Penyetor;
 
 import java.io.*;

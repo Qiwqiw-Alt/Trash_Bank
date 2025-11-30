@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -25,11 +24,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import Database.DatabaseBankSampah;
-import Database.DatabasePenyetor;
+import Database.DatabaseRequestJoin;
 import Model.BankSampah;
 // import Model.BankSampah;
 import Model.Penyetor;
-import Service.BankSampahService;
+import Model.TransaksiJoin;
 import View.DashboardPenyetorView;
 
 public class JoinBankPanel extends JPanel {
@@ -61,6 +60,8 @@ public class JoinBankPanel extends JPanel {
         wrapper.setBorder(new EmptyBorder(20, 30, 20, 30));
 
         wrapper.add(headerSection(), BorderLayout.NORTH);
+
+
         wrapper.add(mainSection(), BorderLayout.CENTER);
 
         add(wrapper, BorderLayout.CENTER);
@@ -170,23 +171,39 @@ public class JoinBankPanel extends JPanel {
     }
 
     private void joinBank(BankSampah bank) {
-        ArrayList<Penyetor> listPenyetors = DatabasePenyetor.loadData();
-        
-        for (Penyetor penyetor : listPenyetors) {
-            if (penyetor.getIdPenyetor().equals(user.getIdPenyetor())) {
-                user.setIdBankSampah(bank.getIdBank());
-            }
-        }
+        ArrayList<TransaksiJoin> dafTransaksiJoins = DatabaseRequestJoin.loadData();
 
-        boolean run = DatabasePenyetor.assignUserToBank(user.getIdPenyetor(), user.getIdBankSampah());
-        DatabasePenyetor.writeData(listPenyetors, bank.getFilePenyetor());
-
+        for (TransaksiJoin transaksiJoin : dafTransaksiJoins) {
+            if (transaksiJoin.getIdPenyetor().equals(user.getIdPenyetor()) && transaksiJoin.getStatusRequest() == TransaksiJoin.Status.DITERIMA) {
+                
+                
         JOptionPane.showMessageDialog(this,
                 "Anda berhasil mendaftar ke " + bank.getNamaBank() + "!",
                 "Pendaftaran Berhasil",
                 JOptionPane.INFORMATION_MESSAGE);
+                
+                mainFrame.setBankSampah(bank);
+                return;
+            } else if (transaksiJoin.getIdPenyetor().equals(user.getIdPenyetor()) && transaksiJoin.getStatusRequest() == TransaksiJoin.Status.DITOLAK) {
+                JOptionPane.showMessageDialog(this,
+                "Anda Ditolak mendaftar ke " + bank.getNamaBank() + "!",
+                "Pendaftaran Ggagal",
+                JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+        }
 
-        mainFrame.setBankSampah(bank);
+        String idTransaksiJoin = DatabaseRequestJoin.generateRewardId();
+
+        TransaksiJoin baru = new TransaksiJoin(idTransaksiJoin, user.getIdPenyetor(), bank.getIdBank());
+        dafTransaksiJoins.add(baru);
+        DatabaseRequestJoin.writeData(dafTransaksiJoins);
+        DatabaseRequestJoin.writeData(dafTransaksiJoins, bank.getFileRequestJoin());
+
+        JOptionPane.showMessageDialog(this,
+                "Anda berhasil mendaftar ke " + bank.getNamaBank() + "!" + ", Tunggu Sampai Admin ",
+                "Pendaftaran Menunggu Konfirmasi Admin",
+                JOptionPane.INFORMATION_MESSAGE);
         return;
     }
 

@@ -7,9 +7,7 @@ import Controller.LoginController;
 import java.awt.*;
 
 import Model.Admin;
-import Model.BankSampah;
 import Model.Penyetor;
-import Service.BankSampahService;
 
 public class LoginView extends JFrame {
 
@@ -219,15 +217,11 @@ public class LoginView extends JFrame {
 
         if (user instanceof Penyetor) {
             Penyetor p = (Penyetor) user;
-            BankSampahService bss = new BankSampahService();
-            BankSampah bs = bss.getObjBankSampah(p.getIdBankSampah());
-
-
             JOptionPane.showMessageDialog(this,
                     "Login berhasil sebagai PENYETOR: " + p.getNamaLengkap());
 
-            dispose();
-            new DashboardPenyetorView(p).setVisible(true);
+                    new DashboardPenyetorView(p).setVisible(true);
+                    dispose();
             return;
         }
     }

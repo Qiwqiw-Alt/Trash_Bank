@@ -3,23 +3,43 @@ package View.PenyetorPanels;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
+
+import Database.DatabasePenukaranReward;
+import Database.DatabaseTransaksi;
+
 import java.awt.*;
 import java.util.ArrayList;
 
-import Model.BankSampah;
 import Model.Penyetor;
 import Model.Transaksi;
 import Service.BankSampahService;
-import Database.DatabaseTransaksi;
+import Service.SetoranPenyetorService;
 
 public class PenyetorHomePanel extends JPanel {
 
-    BankSampahService bss = new BankSampahService();
+    private BankSampahService bss = new BankSampahService();
+    private SetoranPenyetorService sps = new SetoranPenyetorService();
+    private ArrayList<Transaksi> listTransaksi;
+    private Penyetor penyetor;
 
     public PenyetorHomePanel(Penyetor user) {
+        this.penyetor = user;
 
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245)); // soft grey
+
+        this.listTransaksi = sps.getDaftarTransaksi(penyetor);
+        user.setTotalSetoran(this.listTransaksi.size());
+        double totalPoinPendapatanTransaksi = DatabaseTransaksi.hitungPoinPenyetor(user);
+        double totalPoinPengeluranTukarReward = DatabasePenukaranReward.hitungPoinPenyetor(user);
+        double totalPoinUser = totalPoinPendapatanTransaksi - totalPoinPengeluranTukarReward;
+
+        if (totalPoinUser < 0) {
+            user.setTotalPoin(0);
+        } else {
+
+            user.setTotalPoin(totalPoinPendapatanTransaksi - totalPoinPengeluranTukarReward);
+        }
 
         // Panel utama berisi semuanya
         JPanel container = new JPanel();
@@ -27,9 +47,9 @@ public class PenyetorHomePanel extends JPanel {
         container.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         container.setBackground(new Color(245, 245, 245));
 
-        container.add(createInfoCards(user));
+        container.add(createInfoCards(penyetor));
         container.add(Box.createVerticalStrut(20));
-        container.add(createTablePanel(user));
+        container.add(createTablePanel(penyetor));
 
         add(container, BorderLayout.CENTER);
     }
@@ -41,7 +61,7 @@ public class PenyetorHomePanel extends JPanel {
         JPanel panel = new JPanel(new GridLayout(1, 2, 20, 0));
         panel.setOpaque(false);
 
-        panel.add(createSingleCard("Total Setoran", String.valueOf(user.getTotalSetoran())));
+        panel.add(createSingleCard("Total Setoran", String.valueOf(bss.getTotalSetoran(user))));
         panel.add(createSingleCard("Total Poin", String.valueOf(user.getTotalPoin())));
 
         return panel;
@@ -55,8 +75,7 @@ public class PenyetorHomePanel extends JPanel {
         // Rounded border
         card.setBorder(new CompoundBorder(
                 new LineBorder(new Color(220, 220, 220), 1, true),
-                new EmptyBorder(20, 20, 20, 20)
-        ));
+                new EmptyBorder(20, 20, 20, 20)));
 
         JLabel lblTitle = new JLabel(title);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -76,16 +95,14 @@ public class PenyetorHomePanel extends JPanel {
     // -------------------------
     // TABEL TRANSAKSI
     // -------------------------
-    private JPanel createTablePanel(Penyetor user) {
 
-        BankSampah bankUser = bss.getObjBankSampah(user.getIdBankSampah());
+    private JPanel createTablePanel(Penyetor user) {
 
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(Color.WHITE);
         wrapper.setBorder(new CompoundBorder(
                 new LineBorder(new Color(220, 220, 220), 1, true),
-                new EmptyBorder(15, 15, 15, 15)
-        ));
+                new EmptyBorder(15, 15, 15, 15)));
 
         JLabel title = new JLabel("Riwayat Transaksi");
         title.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -93,14 +110,11 @@ public class PenyetorHomePanel extends JPanel {
 
         wrapper.add(title, BorderLayout.NORTH);
 
-        String[] columns = {"ID Transaksi", "Tanggal", "Berat (kg)", "Harga (Rp)", "Status"};
+        String[] columns = { "ID Transaksi", "Tanggal", "Berat (kg)", "Harga (Rp)", "Status" };
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
-        ArrayList<Transaksi> allTransaksi = DatabaseTransaksi.loadData(bankUser.getFileTransaksi());
-        ArrayList<String> ids = user.getRiwayatTransaksi();
-
-        for (Transaksi trx : allTransaksi) {
-            if (ids.contains(trx.getIdTransaksi())) {
+        for (Transaksi trx : listTransaksi) {
+            if (trx.getIdPenyetor().equals(user.getIdPenyetor())) {
                 Object[] row = {
                         trx.getIdTransaksi(),
                         trx.getTanggal(),

@@ -1,6 +1,9 @@
 package Database;
 
 import Model.Transaksi.Status;
+import Service.BankSampahService;
+import Model.BankSampah;
+import Model.Penyetor;
 import Model.Transaksi;
 
 import java.io.*;
@@ -11,7 +14,7 @@ public class DatabaseTransaksi {
     private static final String DATA_TRANSAKSI_GLOBAL = "src\\database\\Transaksi\\logs.txt";
     private static final String DELIM = "\\|";
 
-    public static String getFinalPath(){
+    public static String getFinalPath() {
         return DATA_TRANSAKSI_GLOBAL;
     }
 
@@ -25,9 +28,10 @@ public class DatabaseTransaksi {
         int max = 0;
         for (Transaksi t : list) {
             try {
-                String angka = t.getIdTransaksi().substring(3); 
+                String angka = t.getIdTransaksi().substring(3);
                 int num = Integer.parseInt(angka);
-                if (num > max) max = num;
+                if (num > max)
+                    max = num;
             } catch (Exception e) {
                 continue;
             }
@@ -42,7 +46,7 @@ public class DatabaseTransaksi {
     public static ArrayList<Transaksi> loadData(String filePath) {
         ArrayList<Transaksi> listHasil = new ArrayList<>();
         File file = new File(filePath);
-        
+
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
@@ -56,7 +60,8 @@ public class DatabaseTransaksi {
 
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
 
                 String[] p = line.split(DELIM);
                 if (p.length >= 7) {
@@ -67,22 +72,22 @@ public class DatabaseTransaksi {
                     Transaksi trx = new Transaksi(idTrx, idPenyetor, idBank);
 
                     try {
-                        trx.setStatus(Status.valueOf(p[3])); 
+                        trx.setStatus(Status.valueOf(p[3]));
                     } catch (Exception e) {
                         trx.setStatus(Status.PENDING); // Default jika error
                     }
-                    
+
                     try {
                         trx.setTanggal(LocalDate.parse(p[4]));
                     } catch (Exception e) {
-                        trx.setTanggal(LocalDate.now()); 
+                        trx.setTanggal(LocalDate.now());
                     }
-                    
+
                     double totalHarga = Double.parseDouble(p[5]);
                     double totalBerat = Double.parseDouble(p[6]);
 
                     // Buat objek
-                    
+
                     trx.setTotalHarga(totalHarga);
                     trx.setTotalBerat(totalBerat);
 
@@ -106,13 +111,12 @@ public class DatabaseTransaksi {
             for (Transaksi t : listTransaksi) {
                 bw.write(
                         t.getIdTransaksi() + "|" +
-                        t.getIdPenyetor() + "|" +
-                        t.getIdBank() + "|" +
-                        t.getStatus().name() + "|" +
-                        t.getTanggal().toString() + "|" +
-                        t.getTotalHarga() + "|" +
-                        t.getTotalBerat()
-                );
+                                t.getIdPenyetor() + "|" +
+                                t.getIdBank() + "|" +
+                                t.getStatus().name() + "|" +
+                                t.getTanggal().toString() + "|" +
+                                t.getTotalHarga() + "|" +
+                                t.getTotalBerat());
                 bw.newLine();
             }
             System.out.println("Transaksi tersimpan di: " + filePath);
@@ -123,9 +127,24 @@ public class DatabaseTransaksi {
     }
 
     public static void addTransaksi(Transaksi t, String filePath) {
-        ArrayList<Transaksi> list = loadData(filePath);
-        list.add(t);
-        writeData(list, filePath);
+        ArrayList<Transaksi> list = loadData(filePath); // -> ambil data di file list item satu transaksi di bank
+        list.add(t); // -> tambah ke list saat ini
+        writeData(list, filePath); // -> tulis ke file item bank
+    }
+
+    public static double hitungPoinPenyetor(Penyetor user) {
+        BankSampahService bss = new BankSampahService();
+        BankSampah bankSampah = bss.getObjBankSampah(user.getIdBankSampah());
+        ArrayList<Transaksi> list = loadData(bankSampah.getFileTransaksi()); 
+        double total = 0;
+
+        for (Transaksi t : list) {
+            if (t.getIdPenyetor().equals(user.getIdPenyetor()) && t.getStatus().equals(Transaksi.Status.DITERIMA) ) {
+                total += t.getTotalHarga(); // poin = totalHarga transaksi
+            }
+        }
+
+        return total;
     }
 
 }

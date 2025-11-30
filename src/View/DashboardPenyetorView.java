@@ -17,16 +17,22 @@ public class DashboardPenyetorView extends JFrame {
     private JPanel contentPanel;
     private JPanel menuPanel;
 
+    // Icon & Style Constants
     private final Color GREEN_PRIMARY = new Color(0, 128, 0);
     private final Color GREEN_LIGHT = new Color(200, 240, 200);
+    // private final Color TEXT_DARK = new Color(50, 50, 50);
 
     public DashboardPenyetorView(Penyetor user) {
         this.currentUser = user;
-        this.bankSampah = bss.getObjBankSampah(user.getIdBankSampah());
+        this.bankSampah = bss.getObjBankSampah((user.getIdBankSampah()));
 
-        setTitle("Dashboard Penyetor");
+
+        String namaBank = bankSampah != null ? bankSampah.getNamaBank() : "Bank Sampah App";
+        setTitle("Dashboard Penyetor - " + namaBank);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setLocationRelativeTo(null);
+        setResizable(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         initLayout();
@@ -35,16 +41,13 @@ public class DashboardPenyetorView extends JFrame {
     private void initLayout() {
         setLayout(new BorderLayout());
 
-        // Sidebar pertama kali dibuat
         menuPanel = createSidebar();
         add(menuPanel, BorderLayout.WEST);
 
-        // Panel konten
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.white);
         add(contentPanel, BorderLayout.CENTER);
 
-        // Tentukan panel pertama
         if (this.bankSampah == null) {
             switchPanel("JoinBank");
         } else {
@@ -52,23 +55,58 @@ public class DashboardPenyetorView extends JFrame {
         }
     }
 
-    /** ============ REFRESH SIDEBAR ============ **/
-    private void refreshSidebar() {
-        remove(menuPanel); // hapus sidebar lama
+    private JPanel createSidebar() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(260, 0));
+        panel.setBackground(GREEN_PRIMARY);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        menuPanel = createSidebar(); // buat sidebar baru
-        add(menuPanel, BorderLayout.WEST);
+        // 1. Header Logo
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        logoPanel.setBackground(GREEN_PRIMARY);
+        JLabel logo = new JLabel("BANK SAMPAH APP", SwingConstants.CENTER);
+        logo.setFont(new Font("Arial", Font.BOLD, 20));
+        logo.setForeground(Color.WHITE);
+        logo.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        logoPanel.add(logo);
+        panel.add(logoPanel);
 
-        revalidate();
-        repaint();
+        panel.add(new JSeparator());
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        // 2. Menu Profil (Selalu Ada)
+        panel.add(createMenuLabel("Profil Saya", "Profil"));
+
+        // 3. LOGIKA MENU DINAMIS
+        if (this.bankSampah != null) {
+            // --- JIKA SUDAH MEMBER ---
+            panel.add(createSectionTitle("MENU UTAMA"));
+            panel.add(createMenuLabel("Dashboard Home", "Home"));
+            panel.add(createMenuLabel("Setor Sampah", "SetorSampah"));
+            panel.add(createMenuLabel("Riwayat Transaksi", "Riwayat"));
+            panel.add(createMenuLabel("Tukar Poin", "TukarPoin"));
+            panel.add(createMenuLabel("Kirim Keluhan", "Keluhan"));
+        } else {
+            // --- JIKA BELUM MEMBER ---
+            panel.add(createSectionTitle("AKTIVITAS"));
+            panel.add(createMenuLabel("Gabung Bank Sampah", "JoinBank"));
+        }
+
+        // 4. Footer (Logout)
+        panel.add(Box.createVerticalGlue()); // Dorong ke bawah
+        panel.add(new JSeparator());
+        panel.add(createMenuLabel("Logout", "Logout"));
+
+        return panel;
     }
 
-    /** ============ SWITCH PANEL ============ **/
     public void switchPanel(String menuName) {
         JPanel nextPanel = null;
 
+        // Routing ke Panel Pecahan
         switch (menuName) {
             case "Home":
+                // Pastikan class ini ada di folder View/Panels/
                 nextPanel = new View.PenyetorPanels.PenyetorHomePanel(currentUser);
                 break;
             case "Profil":
@@ -87,75 +125,46 @@ public class DashboardPenyetorView extends JFrame {
                 nextPanel = new View.PenyetorPanels.KeluhanPanel(currentUser);
                 break;
             case "JoinBank":
+                // Passing 'this' agar panel bisa merefresh frame ini setelah join
                 nextPanel = new View.PenyetorPanels.JoinBankPanel(currentUser, this);
                 break;
             case "Logout":
                 logoutAction();
-                return;
+                return; // Stop execution
             default:
-                nextPanel = new JPanel();
+                nextPanel = new JPanel(); // Panel kosong fallback
+                break;
         }
 
-        contentPanel.removeAll();
-        contentPanel.add(nextPanel, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    /** ============ SIDE BAR ============ **/
-    private JPanel createSidebar() {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(260, 0));
-        panel.setBackground(GREEN_PRIMARY);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // Logo
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        logoPanel.setBackground(GREEN_PRIMARY);
-        JLabel logo = new JLabel("BANK SAMPAH APP");
-        logo.setFont(new Font("Arial", Font.BOLD, 20));
-        logo.setForeground(Color.WHITE);
-        logo.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        logoPanel.add(logo);
-        panel.add(logoPanel);
-
-        panel.add(new JSeparator());
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        // Profil selalu ada
-        panel.add(createMenuLabel("Profil Saya", "Profil"));
-
-        if (bankSampah != null) {
-            // Sudah member
-            panel.add(createSectionTitle("MENU UTAMA"));
-            panel.add(createMenuLabel("Dashboard Home", "Home"));
-            panel.add(createMenuLabel("Setor Sampah", "SetorSampah"));
-            panel.add(createMenuLabel("Riwayat Transaksi", "Riwayat"));
-            panel.add(createMenuLabel("Tukar Poin", "TukarPoin"));
-            panel.add(createMenuLabel("Kirim Keluhan", "Keluhan"));
-        } else {
-            // Belum member
-            panel.add(createSectionTitle("AKTIVITAS"));
-            panel.add(createMenuLabel("Gabung Bank Sampah", "JoinBank"));
+        if (nextPanel != null) {
+            contentPanel.removeAll();
+            contentPanel.add(nextPanel, BorderLayout.CENTER);
+            contentPanel.revalidate();
+            contentPanel.repaint();
         }
-
-        // Footer
-        panel.add(Box.createVerticalGlue());
-        panel.add(new JSeparator());
-        panel.add(createMenuLabel("Logout", "Logout"));
-
-        return panel;
     }
 
-    /** Dipanggil setelah JoinBank sukses */
-    public void setBankSampah(BankSampah bank) {
-        this.bankSampah = bank;
-
-        refreshSidebar();    // langsung regenerasi menu
-        switchPanel("Home"); // pindah ke home
+    private void logoutAction() {
+        int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            new LoginView().setVisible(true);
+            this.dispose();
+        }
     }
 
-    /** Komponen visual menu */
+    // =========================================================================
+    // 4. HELPER UI METHODS
+    // =========================================================================
+
+    private JLabel createSectionTitle(String title) {
+        JLabel label = new JLabel("  " + title);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+        label.setForeground(new Color(200, 255, 200));
+        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return label;
+    }
+
     private JPanel createMenuLabel(String text, String command) {
         JPanel btnPanel = new JPanel(new BorderLayout());
         btnPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
@@ -167,28 +176,44 @@ public class DashboardPenyetorView extends JFrame {
         label.setForeground(Color.WHITE);
         btnPanel.add(label, BorderLayout.CENTER);
 
-        btnPanel.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) { switchPanel(command); }
-            @Override public void mouseEntered(MouseEvent e) { btnPanel.setBackground(GREEN_LIGHT); }
-            @Override public void mouseExited(MouseEvent e) { btnPanel.setBackground(GREEN_PRIMARY); }
-        });
+        // Hover Effect & Click Listener
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switchPanel(command);
+            }
 
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnPanel.setBackground(GREEN_LIGHT);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnPanel.setBackground(GREEN_PRIMARY);
+            }
+        };
+
+        btnPanel.addMouseListener(ma);
         return btnPanel;
     }
 
-    private JLabel createSectionTitle(String title) {
-        JLabel label = new JLabel("  " + title);
-        label.setFont(new Font("Arial", Font.BOLD, 12));
-        label.setForeground(new Color(200, 255, 200));
-        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
-        return label;
+    // ini nanti dipanggil sama join bank panel biar bisa balik ke sini lagi
+    public void setBankSampah(BankSampah bank) {
+        this.bankSampah = bank;
+
+        refreshSidebar();    // langsung regenerasi menu
+        switchPanel("Home"); // pindah ke home
     }
 
-    private void logoutAction() {
-        if (JOptionPane.showConfirmDialog(this, "Yakin ingin logout?", "Logout",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            new LoginView().setVisible(true);
-            dispose();
-        }
+    private void refreshSidebar() {
+        remove(menuPanel); // hapus sidebar lama
+
+        menuPanel = createSidebar(); // buat sidebar baru
+        add(menuPanel, BorderLayout.WEST);
+
+        revalidate();
+        repaint();
     }
+
 }
