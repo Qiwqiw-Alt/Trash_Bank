@@ -11,18 +11,19 @@ import java.util.List;
 
 public class DatabaseComplain {
     private static final String DATA_COMPLAIN_GLOBAL = "src\\Database\\Complain\\datacomplain.txt";
-    private static final String DELIM = "\\|"; 
+    private static final String DELIM = "\\|";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public static String generateComplainId() {
         ArrayList<Complain> list = loadData();
-        
+
         int max = 0;
         for (Complain c : list) {
             try {
                 String angka = c.getIdComplain().substring(2);
                 int num = Integer.parseInt(angka);
-                if (num > max) max = num;
+                if (num > max)
+                    max = num;
             } catch (Exception e) {
                 continue;
             }
@@ -30,7 +31,6 @@ public class DatabaseComplain {
         return String.format("CP%03d", max + 1);
     }
 
-    // --- LOAD DATA (Overload Default) ---
     public static ArrayList<Complain> loadData() {
         return loadData(DATA_COMPLAIN_GLOBAL);
     }
@@ -40,7 +40,6 @@ public class DatabaseComplain {
         ArrayList<Complain> listHasil = new ArrayList<>();
         File file = new File(filePath);
 
-        // Buat folder jika belum ada
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
@@ -54,7 +53,8 @@ public class DatabaseComplain {
 
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
 
                 String[] data = line.split(DELIM); // Pakai \\|
 
@@ -64,25 +64,20 @@ public class DatabaseComplain {
                             data[1], // id penyetor
                             data[2], // id bank
                             data[3], // judul
-                            data[4]  // isi
+                            data[4] // isi
                     );
-                    
-                    // Parsing Tanggal
+
                     try {
                         c.setTanggal(LocalDate.parse(data[5], FORMATTER));
                     } catch (Exception e) {
                         c.setTanggal(LocalDate.now());
                     }
-
-                    // Parsing Status (Enum)
                     try {
-                        c.setStatus(Status.valueOf(data[6])); 
+                        c.setStatus(Status.valueOf(data[6]));
                     } catch (Exception e) {
-                        c.setStatus(Status.PENDING); // Default jika error
+                        c.setStatus(Status.PENDING);
                     }
 
-                    // Tanggapan Admin
-                    // Cek jika tulisannya "null" string, ubah jadi null object/kosong
                     if (data[7].equalsIgnoreCase("null")) {
                         c.setTanggapanAdmin("-");
                     } else {
@@ -104,23 +99,22 @@ public class DatabaseComplain {
 
     public static void writeData(List<Complain> listComplain, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-            
+
             for (Complain c : listComplain) {
                 String tglStr = c.getTanggal().format(FORMATTER);
-                
-                // Handle null pada tanggapan agar tidak error saat ditulis
-                String tanggapan = (c.getTanggapanAdmin() == null || c.getTanggapanAdmin().isEmpty()) 
-                                   ? "null" 
-                                   : c.getTanggapanAdmin();
+
+                String tanggapan = (c.getTanggapanAdmin() == null || c.getTanggapanAdmin().isEmpty())
+                        ? "null"
+                        : c.getTanggapanAdmin();
 
                 String line = c.getIdComplain() + "|" +
-                              c.getIdPenyetor() + "|" +
-                              c.getIdBank() + "|" +
-                              c.getJudul() + "|" +
-                              c.getIsi() + "|" +
-                              tglStr + "|" +
-                              c.getStatus().name() + "|" + // Ambil nama ENUM (PENDING/SELESAI)
-                              tanggapan;
+                        c.getIdPenyetor() + "|" +
+                        c.getIdBank() + "|" +
+                        c.getJudul() + "|" +
+                        c.getIsi() + "|" +
+                        tglStr + "|" +
+                        c.getStatus().name() + "|" + 
+                        tanggapan;
 
                 bw.write(line);
                 bw.newLine();

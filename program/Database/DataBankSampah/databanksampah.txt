@@ -1,4 +1,0 @@
-BS001|Bank Sampah Laweyan|Jalan Kutai Utara Nomor 1, Kelurahan Sumber, Kecamatan Banjarsari, Solo
-BS003|Bank Sampah Slamet Riyadi|Jl. Slamet Riyadi No.13
-BS004|Bank Sampah Jebres|Jl. Jebres No.14
-

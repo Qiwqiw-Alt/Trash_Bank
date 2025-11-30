@@ -10,7 +10,7 @@ public class LandingView extends JFrame {
     private JButton loginButton;
     private JButton startButton;
     private JScrollPane scrollPane;
-    private JPanel scrollableContent; 
+    private JPanel scrollableContent;
     private JPanel welcomeWrapper;
     private JPanel aboutWrapper;
 
@@ -53,7 +53,7 @@ public class LandingView extends JFrame {
             aboutWrapper.setPreferredSize(new Dimension(contentWidth, aboutWrapper.getPreferredSize().height));
             aboutWrapper.revalidate();
         }
-        
+
         if (scrollPane != null) {
             scrollableContent.revalidate();
             scrollableContent.repaint();
@@ -99,11 +99,10 @@ public class LandingView extends JFrame {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane, BorderLayout.CENTER);
 
-
         welcomeWrapper = new JPanel(new GridLayout(1, 2));
         welcomeWrapper.setBackground(Color.WHITE);
         welcomeWrapper.setPreferredSize(new Dimension(1000, 500));
-        welcomeWrapper.setMaximumSize(new Dimension(Integer.MAX_VALUE, 500)); 
+        welcomeWrapper.setMaximumSize(new Dimension(Integer.MAX_VALUE, 500));
         welcomeWrapper.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         scrollableContent.add(welcomeWrapper);
@@ -184,26 +183,22 @@ public class LandingView extends JFrame {
         JPanel about1Panel = new JPanel(new BorderLayout());
         about1Panel.setBackground(Color.WHITE);
         JTextArea about1 = createWrapTextArea(
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint magnam ab magni voluptates voluptatum nescunt, vel a qui earum explicabo possimus odit assumenda consectetur quia. Temporibus delectus sit nostrum. Ipsam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit, tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Perspiciatis ad voluptatem qui illum."
-        );
+                "Data SIPSN 2023 menunjukkan bahwa dari 31,9 juta ton timbunan sampah nasional, sebanyak 11,3 juta ton (35,67%) masih belum terkelola dan berisiko menjadi sumber penyakit. Rendahnya partisipasi masyarakat dalam memilah sampah menjadi kendala utama yang perlu diatasi melalui kombinasi edukasi dan insentif. Solusi strategisnya adalah pengadaan fasilitas Bank Sampah, di mana masyarakat dapat menukarkan sampah daur ulang menjadi uang atau barang. Pendekatan ini diharapkan mampu mengubah persepsi masyarakat dan meningkatkan partisipasi aktif mereka dalam pengelolaan sampah secara berkelanjutan.");
         about1Panel.add(about1, BorderLayout.CENTER);
 
-  
         JPanel about2Panel = new JPanel(new BorderLayout());
         about2Panel.setBackground(Color.WHITE);
         JTextArea about2 = createWrapTextArea(
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint magnam ab magni voluptates voluptatum nescunt, vel a qui earum explicabo possimus odit assumenda consectetur quia. Temporibus delectus sit nostrum. Ipsam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
-        );
+                "Guna mendukung optimalisasi fasilitas bank sampah, kami merancang sebuah aplikasi terintegrasi yang menghubungkan masyarakat dan pengelola. Solusi digital ini hadir untuk mengubah proses manajemen sampah yang sebelumnya rumit menjadi lebih sederhana, transparan, dan terorganisir.Kunci utama aplikasi ini adalah sistem insentif, di mana masyarakat mendapatkan reward berupa uang atau barang dari hasil penyetoran sampah. Dengan adanya keuntungan nyata dan kemudahan teknologi ini, diharapkan partisipasi masyarakat meningkat dan tercipta perubahan perilaku jangka panjang dalam menjaga kebersihan lingkungan.");
         about2Panel.add(about2, BorderLayout.CENTER);
 
         aboutContentPanel.add(about1Panel);
         aboutContentPanel.add(about2Panel);
-        
+
         aboutWrapper.add(aboutContentPanel);
         scrollableContent.add(aboutWrapper);
 
         scrollableContent.add(Box.createVerticalStrut(50));
-
 
         loginButton.addActionListener(e -> navigateToLogin());
         startButton.addActionListener(e -> navigateToLogin());
@@ -218,19 +213,17 @@ public class LandingView extends JFrame {
         area.setEditable(false);
         area.setOpaque(false);
         area.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
 
-        area.setPreferredSize(new Dimension(300, 300)); 
+        area.setPreferredSize(new Dimension(300, 300));
         area.setMinimumSize(new Dimension(250, 200));
-        
+
         return area;
     }
 
     private void navigateToLogin() {
 
-        new LoginView().setVisible(true); 
+        new LoginView().setVisible(true);
         dispose();
     }
 
-    
 }
