@@ -3,22 +3,22 @@ package View.PenyetorPanels;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
+
+import Database.DatabaseTransaksi;
+
 import java.awt.*;
 import java.util.ArrayList;
 
-import Model.BankSampah;
 import Model.Penyetor;
 import Model.Transaksi;
 import Service.BankSampahService;
 import Service.SetoranPenyetorService;
-import Database.DatabaseTransaksi;
 
 public class PenyetorHomePanel extends JPanel {
 
     private BankSampahService bss = new BankSampahService();
     private SetoranPenyetorService sps = new SetoranPenyetorService();
     private ArrayList<Transaksi> listTransaksi;
-    private BankSampah bank;
     private Penyetor penyetor;
 
     public PenyetorHomePanel(Penyetor user) {
@@ -27,10 +27,12 @@ public class PenyetorHomePanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245)); // soft grey
 
-        bank = bss.getObjBankSampah(penyetor.getIdBankSampah());
 
         this.listTransaksi = sps.getDaftarTransaksi(penyetor);
         user.setTotalSetoran(this.listTransaksi.size());
+        int totalPoin = DatabaseTransaksi.hitungPoinPenyetor(user);
+        user.setTotalPoin(totalPoin);
+
 
         // Panel utama berisi semuanya
         JPanel container = new JPanel();
@@ -104,8 +106,6 @@ public class PenyetorHomePanel extends JPanel {
 
         String[] columns = { "ID Transaksi", "Tanggal", "Berat (kg)", "Harga (Rp)", "Status" };
         DefaultTableModel model = new DefaultTableModel(columns, 0);
-
-        ArrayList<Transaksi> allTransaksi = DatabaseTransaksi.loadData(bank.getFileTransaksi());
 
         for (Transaksi trx : listTransaksi) {
             if (trx.getIdPenyetor().equals(user.getIdPenyetor())) {

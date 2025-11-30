@@ -7,9 +7,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.time.chrono.JapaneseEra;
 import java.util.ArrayList;
-import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,13 +24,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import Database.DatabaseBankSampah;
-import Database.DatabasePenyetor;
 import Database.DatabaseRequestJoin;
 import Model.BankSampah;
 // import Model.BankSampah;
 import Model.Penyetor;
 import Model.TransaksiJoin;
-import Service.BankSampahService;
 import View.DashboardPenyetorView;
 
 public class JoinBankPanel extends JPanel {

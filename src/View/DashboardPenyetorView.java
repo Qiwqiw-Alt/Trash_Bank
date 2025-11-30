@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import Model.Penyetor;
 import Service.BankSampahService;
-import Service.SetoranPenyetorService;
 import Model.BankSampah;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,7 +13,6 @@ public class DashboardPenyetorView extends JFrame {
     private Penyetor currentUser;
     private BankSampah bankSampah;
     private BankSampahService bss = new BankSampahService();
-    private SetoranPenyetorService sps = new SetoranPenyetorService();
 
     private JPanel contentPanel;
     private JPanel menuPanel;
