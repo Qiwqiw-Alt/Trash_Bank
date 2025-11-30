@@ -35,7 +35,6 @@ public class Complain {
         this.tanggapanAdmin = "-";
     }
 
-    // GETTER SETTER
     public String getIdComplain() { return idComplain; }
     public String getIdPenyetor() { return idPenyetor; }
     public String getIdBank() { return idBank; }
@@ -52,16 +51,7 @@ public class Complain {
         return tanggal.format(format);
     }
 
-    public void setTanggal(LocalDate time) {
-        this.tanggal = time;
-
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public void setTanggapanAdmin(String tanggapanAdmin) {
-        this.tanggapanAdmin = tanggapanAdmin;
-    }
+    public void setTanggal(LocalDate time) {this.tanggal = time;}
+    public void setStatus(Status status) {this.status = status;}
+    public void setTanggapanAdmin(String tanggapanAdmin) {this.tanggapanAdmin = tanggapanAdmin;}
 }
