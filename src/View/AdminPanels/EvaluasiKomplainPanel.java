@@ -52,11 +52,11 @@ public class EvaluasiKomplainPanel extends JPanel {
     private final Color TEXT_DARK = new Color(50, 50, 50);
     private final Color READONLY_BG = new Color(220, 230, 230); // Background untuk field Read-Only
     
-    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 22);
-    private final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 18);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 14);
-    private final Font FONT_TABLE = new Font("Segoe UI", Font.PLAIN, 13);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_TITLE = new Font("Fredoka", Font.BOLD, 22);
+    private final Font FONT_HEADER = new Font("Fredoka", Font.BOLD, 18);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 14);
+    private final Font FONT_TABLE = new Font("Fredoka", Font.PLAIN, 13);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
 
 
     public EvaluasiKomplainPanel(Admin admin, BankSampah bankSampah) {
@@ -104,11 +104,11 @@ public class EvaluasiKomplainPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(PRIMARY_COLOR);
         
-        JLabel lblTitle = new JLabel("📢 Daftar Komplain Masuk");
+        JLabel lblTitle = new JLabel("Daftar Komplain Masuk");
         lblTitle.setFont(FONT_TITLE);
         lblTitle.setForeground(TEXT_LIGHT);
         
-        JButton btnRefresh = new JButton("🔄 Refresh");
+        JButton btnRefresh = new JButton("Refresh");
         styleButton(btnRefresh, HEADER_BG); 
         btnRefresh.setPreferredSize(new Dimension(120, 35));
         btnRefresh.addActionListener(e -> refreshTable());
@@ -134,7 +134,7 @@ public class EvaluasiKomplainPanel extends JPanel {
         JTableHeader header = tableComplain.getTableHeader();
         header.setBackground(HEADER_BG);
         header.setForeground(Color.WHITE);
-        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setPreferredSize(new Dimension(header.getWidth(), 40));
 
         // Custom Renderer
@@ -192,7 +192,7 @@ public class EvaluasiKomplainPanel extends JPanel {
             BorderFactory.createLineBorder(PRIMARY_COLOR.brighter(), 1), // Border sedikit lebih cerah dari PRIMARY
             BorderFactory.createTitledBorder(
                 new LineBorder(PRIMARY_COLOR.brighter()), // Border untuk TitledBorder juga lebih cerah
-                " 📝 Evaluasi & Update Status ", 
+                "Evaluasi & Update Status ", 
                 0, 2, FONT_HEADER, TEXT_LIGHT))); // PERUBAHAN: Teks TitledBorder menjadi putih
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -204,13 +204,13 @@ public class EvaluasiKomplainPanel extends JPanel {
         // Info Pengirim
         gbc.weightx = 0.5;
         lblPengirim = new JLabel("Pengirim: -");
-        lblPengirim.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblPengirim.setFont(new Font("Fredoka", Font.BOLD, 14));
         lblPengirim.setForeground(TEXT_LIGHT); // PERUBAHAN: Warna teks label menjadi putih
         panel.add(lblPengirim, gbc);
 
         gbc.gridx = 1;
         lblTanggal = new JLabel("Tanggal: -");
-        lblTanggal.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblTanggal.setFont(new Font("Fredoka", Font.BOLD, 14));
         lblTanggal.setForeground(TEXT_LIGHT); // PERUBAHAN: Warna teks label menjadi putih
         panel.add(lblTanggal, gbc);
 
@@ -259,7 +259,7 @@ public class EvaluasiKomplainPanel extends JPanel {
         actionPanel.add(Box.createHorizontalStrut(20));
 
         // Tombol Simpan
-        btnSimpan = new JButton("💾 Simpan Perubahan");
+        btnSimpan = new JButton("Simpan Perubahan");
         styleButton(btnSimpan, HEADER_BG); 
         btnSimpan.addActionListener(e -> handleUpdateStatus());
         actionPanel.add(btnSimpan);
@@ -351,7 +351,7 @@ public class EvaluasiKomplainPanel extends JPanel {
     private void styleButton(JButton btn, Color color) {
         btn.setBackground(color);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 13));
         btn.setFocusPainted(false);
         btn.setPreferredSize(new Dimension(180, 35));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));

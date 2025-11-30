@@ -89,7 +89,7 @@ public class JoinBankPanel extends JPanel {
 
         JLabel title = new JLabel();
         title.setText("SELAMAT DATANG DI APLIKASI BANK SAMPAH, SILAHKAN BERGABUNG KE BANK!");
-        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setFont(new Font("Fredoka", Font.BOLD, 18));
         title.setForeground(Color.BLACK);
 
         main.add(title);
@@ -133,7 +133,7 @@ public class JoinBankPanel extends JPanel {
         
         JLabel title = new JLabel();
         title.setText(bank.getNamaBank());
-        title.setFont(new Font("Arial", Font.BOLD, 16));
+        title.setFont(new Font("Fredoka", Font.BOLD, 16));
         title.setForeground(new Color(50, 50, 50));
         
         titlePanel.add(iconBankTitle);
@@ -148,7 +148,7 @@ public class JoinBankPanel extends JPanel {
         
         JLabel alamat = new JLabel();
         alamat.setText("<html><div style='width: 400px; font-size: 12px;'>" + bank.getAlamat() + "</div></html>"); 
-        alamat.setFont(new Font("Arial", Font.PLAIN, 12));
+        alamat.setFont(new Font("Fredoka", Font.PLAIN, 12));
         alamat.setForeground(new Color(100, 100, 100));
 
         alamatPanel.add(iconLocation);
@@ -166,7 +166,7 @@ public class JoinBankPanel extends JPanel {
 
         JButton joinButton = new JButton();
         joinButton.setText("Gabung Bank");
-        joinButton.setFont(new Font("Arial", Font.BOLD, 12)); 
+        joinButton.setFont(new Font("Fredoka", Font.BOLD, 12)); 
 
         joinButton.setBackground(new Color(76, 175, 80)); 
         joinButton.setForeground(Color.WHITE);
@@ -200,7 +200,7 @@ public class JoinBankPanel extends JPanel {
             imageLabel = new JLabel(placeholderText, SwingConstants.CENTER);
             imageLabel.setPreferredSize(new Dimension(width, height));
             imageLabel.setBorder(BorderFactory.createLineBorder(new Color(53, 106, 105), 1));
-            imageLabel.setFont(new Font("Arial", Font.BOLD, 10));
+            imageLabel.setFont(new Font("Fredoka", Font.BOLD, 10));
             imageLabel.setForeground(new Color(53, 106, 105));
         }
         return imageLabel;

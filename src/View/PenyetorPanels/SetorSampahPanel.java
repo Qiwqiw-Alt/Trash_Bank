@@ -53,7 +53,7 @@ public class SetorSampahPanel extends JPanel {
 
         JLabel title = new JLabel(" Setor Sampah", SwingConstants.CENTER);
         title.setIcon(getScaledIcon(RECYCLE_ICON_PATH, ICON_SIZE_BUTTON, ICON_SIZE_BUTTON)); 
-        title.setFont(new Font("Arial", Font.BOLD, 22)); 
+        title.setFont(new Font("Fredoka", Font.BOLD, 22)); 
         title.setForeground(GREEN_PRIMARY.darker()); 
         title.setBorder(new EmptyBorder(20, 0, 20, 0));
         add(title, BorderLayout.NORTH);
@@ -69,30 +69,30 @@ public class SetorSampahPanel extends JPanel {
         form.setOpaque(false);
         
         comboSampah = new JComboBox<>();
-        comboSampah.setFont(new Font("Segoe UI", Font.PLAIN, 14)); 
+        comboSampah.setFont(new Font("Fredoka", Font.PLAIN, 14)); 
         comboSampah.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
         loadSampahToCombo(bank);
 
         tfBerat = new JTextField();
-        tfBerat.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tfBerat.setFont(new Font("Fredoka", Font.PLAIN, 14));
         tfBerat.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
 
         JLabel lbJenis = new JLabel("Jenis Sampah:");
         lbJenis.setIcon(null); 
-        lbJenis.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lbJenis.setFont(new Font("Fredoka", Font.BOLD, 14));
         form.add(lbJenis);
         form.add(comboSampah);
 
         JLabel lbBerat = new JLabel("Berat (kg):");
-        lbBerat.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lbBerat.setFont(new Font("Fredoka", Font.BOLD, 14));
         form.add(lbBerat);
         form.add(tfBerat);
 
         JButton btnTambah = new JButton(" Tambah Item");
         btnTambah.setBackground(GREEN_PRIMARY);
         btnTambah.setForeground(Color.WHITE);
-        btnTambah.setFont(new Font("Arial", Font.BOLD, 14));
+        btnTambah.setFont(new Font("Fredoka", Font.BOLD, 14));
         btnTambah.setFocusPainted(false);
         btnTambah.setBorder(new EmptyBorder(8, 15, 8, 15)); 
         btnTambah.addActionListener(e -> tambahItem());
@@ -106,13 +106,13 @@ public class SetorSampahPanel extends JPanel {
         JTable table = new JTable(tableModel);
 
         table.setRowHeight(30);
-        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setFont(new Font("Fredoka", Font.PLAIN, 14));
         table.setGridColor(new Color(240, 240, 240));
         table.setShowVerticalLines(false);
         table.setSelectionBackground(new Color(230, 245, 230));
         
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setBackground(GREEN_PRIMARY);
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(header.getWidth(), 35));
@@ -142,8 +142,8 @@ public class SetorSampahPanel extends JPanel {
         totalTextWrapper.setLayout(new BoxLayout(totalTextWrapper, BoxLayout.Y_AXIS));
         totalTextWrapper.setOpaque(false);
         
-        lbTotalBerat.setFont(new Font("Arial", Font.BOLD, 16)); 
-        lbTotalHarga.setFont(new Font("Arial", Font.BOLD, 16)); 
+        lbTotalBerat.setFont(new Font("Fredoka", Font.BOLD, 16)); 
+        lbTotalHarga.setFont(new Font("Fredoka", Font.BOLD, 16)); 
         lbTotalHarga.setForeground(GREEN_PRIMARY.darker()); 
         
         lbTotalBerat.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -159,7 +159,7 @@ public class SetorSampahPanel extends JPanel {
         btnKirim.setIcon(getScaledIcon(CHECK_ICON_PATH, ICON_SIZE_BUTTON, ICON_SIZE_BUTTON)); 
         btnKirim.setBackground(GREEN_PRIMARY);
         btnKirim.setForeground(Color.WHITE);
-        btnKirim.setFont(new Font("Arial", Font.BOLD, 16));
+        btnKirim.setFont(new Font("Fredoka", Font.BOLD, 16));
         btnKirim.setFocusPainted(false);
         btnKirim.setBorder(new EmptyBorder(10, 25, 10, 25));
         btnKirim.addActionListener(e -> simpanTransaksi(user, bank));

@@ -60,7 +60,7 @@ public class TukarPoinPanel extends JPanel {
 
         JLabel title = new JLabel(" Tukar Poin Reward", SwingConstants.CENTER);
         title.setIcon(getScaledIcon(REWARD_ICON_PATH, ICON_SIZE_TITLE, ICON_SIZE_TITLE));
-        title.setFont(new Font("Arial", Font.BOLD, 26));
+        title.setFont(new Font("Fredoka", Font.BOLD, 26));
         title.setForeground(PRIMARY_COLOR.darker());
         title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
@@ -179,19 +179,19 @@ public class TukarPoinPanel extends JPanel {
         left.setOpaque(false);
 
         JLabel name = new JLabel("✨ " + reward.getNamaHadiah());
-        name.setFont(new Font("Arial", Font.BOLD, 18));
+        name.setFont(new Font("Fredoka", Font.BOLD, 18));
         name.setForeground(PRIMARY_COLOR.darker()); 
 
         JLabel desc = new JLabel("<html>" + reward.getDeskripsi() + "</html>");
-        desc.setFont(new Font("Arial", Font.PLAIN, 13));
+        desc.setFont(new Font("Fredoka", Font.PLAIN, 13));
         desc.setForeground(new Color(100, 100, 100)); 
 
         JLabel harga = new JLabel("💰 Harga Poin: " + integerFormatter.format(reward.getHargaTukar()));
-        harga.setFont(new Font("Arial", Font.BOLD, 15));
+        harga.setFont(new Font("Fredoka", Font.BOLD, 15));
         harga.setForeground(ACCENT_COLOR); 
 
         JLabel stok = new JLabel("📦 Stok Tersedia: " + integerFormatter.format(reward.getStok()));
-        stok.setFont(new Font("Arial", Font.PLAIN, 14));
+        stok.setFont(new Font("Fredoka", Font.PLAIN, 14));
         stok.setForeground(reward.getStok() > 5 ? SUCCESS_COLOR : Color.RED); 
 
         left.add(name);
@@ -209,7 +209,7 @@ public class TukarPoinPanel extends JPanel {
         btnTukar.setFocusPainted(false);
         btnTukar.setBackground(ACCENT_COLOR); 
         btnTukar.setForeground(Color.WHITE);
-        btnTukar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnTukar.setFont(new Font("Fredoka", Font.BOLD, 14));
         btnTukar.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
         if (user.getTotalPoin() < reward.getHargaTukar() || reward.getStok() <= 0) {
@@ -252,7 +252,7 @@ public class TukarPoinPanel extends JPanel {
 
         JLabel title = new JLabel("Riwayat Penukaran Anda");
         title.setIcon(getScaledIcon(HISTORY_ICON_PATH, ICON_SIZE_CARD, ICON_SIZE_CARD));
-        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setFont(new Font("Fredoka", Font.BOLD, 18));
         title.setForeground(PRIMARY_COLOR);
         title.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
@@ -278,7 +278,7 @@ public class TukarPoinPanel extends JPanel {
         JTable table = new JTable(model);
         
         table.setRowHeight(30);
-        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setFont(new Font("Fredoka", Font.PLAIN, 14));
         table.setShowGrid(true);
         table.setGridColor(new Color(240, 240, 240));
         table.setIntercellSpacing(new Dimension(0, 0));
@@ -287,7 +287,7 @@ public class TukarPoinPanel extends JPanel {
 
 
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setBackground(PRIMARY_COLOR); 
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(header.getWidth(), 35));

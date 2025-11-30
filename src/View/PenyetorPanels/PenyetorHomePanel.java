@@ -109,12 +109,12 @@ public class PenyetorHomePanel extends JPanel {
         textPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
 
         JLabel lblTitle = new JLabel(title.toUpperCase());
-        lblTitle.setFont(new Font("Arial", Font.PLAIN, 14));
+        lblTitle.setFont(new Font("Fredoka", Font.PLAIN, 14));
         lblTitle.setForeground(new Color(150, 150, 150));
         lblTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lblValue = new JLabel(value);
-        lblValue.setFont(new Font("Arial", Font.BOLD, 28));
+        lblValue.setFont(new Font("Fredoka", Font.BOLD, 28));
         lblValue.setForeground(accentColor.darker()); 
         lblValue.setAlignmentX(Component.LEFT_ALIGNMENT);
         
@@ -138,7 +138,7 @@ public class PenyetorHomePanel extends JPanel {
             imageLabel = new JLabel(placeholderText, SwingConstants.CENTER);
             imageLabel.setPreferredSize(new Dimension(width, height));
             imageLabel.setBorder(BorderFactory.createLineBorder(GREEN_PRIMARY, 1));
-            imageLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            imageLabel.setFont(new Font("Fredoka", Font.BOLD, 12));
             imageLabel.setOpaque(true);
             imageLabel.setBackground(new Color(230, 230, 230));
         }
@@ -154,7 +154,7 @@ public class PenyetorHomePanel extends JPanel {
                 new EmptyBorder(20, 20, 20, 20)));
 
         JLabel title = new JLabel("Riwayat Transaksi Terakhir");
-        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setFont(new Font("Fredoka", Font.BOLD, 18));
         title.setForeground(GREEN_PRIMARY.darker());
         title.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
@@ -187,14 +187,14 @@ public class PenyetorHomePanel extends JPanel {
         };
         
         table.setRowHeight(35);
-        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setFont(new Font("Fredoka", Font.PLAIN, 14));
         table.setGridColor(new Color(240, 240, 240)); 
         table.setShowVerticalLines(false); 
         table.setSelectionBackground(new Color(230, 245, 230)); 
         table.setSelectionForeground(Color.BLACK);
         
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setBackground(GREEN_PRIMARY); 
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(header.getWidth(), 40));
@@ -207,7 +207,7 @@ public class PenyetorHomePanel extends JPanel {
                 setHorizontalAlignment(JLabel.CENTER);
                 setForeground(Color.WHITE);
                 setBackground(GREEN_PRIMARY);
-                setFont(new Font("Arial", Font.BOLD, 14));
+                setFont(new Font("Fredoka", Font.BOLD, 14));
                 setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, new Color(100, 100, 100)));
             }
         }

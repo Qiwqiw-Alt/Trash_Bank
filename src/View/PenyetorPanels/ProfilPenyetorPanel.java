@@ -40,8 +40,8 @@ public class ProfilPenyetorPanel extends JPanel {
     private JButton btnChangePass;
 
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 12);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
 
     public ProfilPenyetorPanel(Penyetor user) {
         this.user = user;
@@ -64,7 +64,7 @@ public class ProfilPenyetorPanel extends JPanel {
         
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Informasi Pribadi ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(GREEN_PRIMARY);
         panel.setBorder(BorderFactory.createCompoundBorder(border, new EmptyBorder(10, 15, 10, 15)));
 
@@ -123,7 +123,7 @@ public class ProfilPenyetorPanel extends JPanel {
 
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Keamanan (Ganti Password) ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(new Color(220, 53, 69)); 
         panel.setBorder(BorderFactory.createCompoundBorder(border, new EmptyBorder(10, 15, 10, 15)));
 
@@ -267,7 +267,7 @@ public class ProfilPenyetorPanel extends JPanel {
     private void styleButton(JButton btn) {
         btn.setBackground(GREEN_PRIMARY);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 14));
         btn.setFocusPainted(false);
         btn.setPreferredSize(new Dimension(200, 40));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));

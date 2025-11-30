@@ -53,11 +53,11 @@ public class ManajemenSampahPanel extends JPanel {
     private final Color TEXT_DARK = new Color(50, 50, 50); 
     private final Color INFO_BG_MOD = new Color(59, 117, 117); 
 
-    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 22);
-    private final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 18);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 14);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
-    private final Font FONT_TABLE = new Font("Segoe UI", Font.PLAIN, 13);
+    private final Font FONT_TITLE = new Font("Fredoka", Font.BOLD, 22);
+    private final Font FONT_HEADER = new Font("Fredoka", Font.BOLD, 18);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 14);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
+    private final Font FONT_TABLE = new Font("Fredoka", Font.PLAIN, 13);
 
 
     public ManajemenSampahPanel(BankSampah bankSampah){
@@ -116,9 +116,9 @@ public class ManajemenSampahPanel extends JPanel {
                 new EmptyBorder(8, 8, 8, 8)
         ));
         alertPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
-        JLabel lblAlert = new JLabel("💡 Info: Klik baris pada tabel untuk Mengedit atau Menghapus data.");
+        JLabel lblAlert = new JLabel("Info: Klik baris pada tabel untuk Mengedit atau Menghapus data.");
         lblAlert.setForeground(TEXT_LIGHT); 
-        lblAlert.setFont(new Font("Segoe UI", Font.ITALIC, 13));
+        lblAlert.setFont(new Font("Fredoka", Font.ITALIC, 13));
         alertPanel.add(lblAlert);
         alertPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(alertPanel);
@@ -144,7 +144,7 @@ public class ManajemenSampahPanel extends JPanel {
         JTableHeader header = tableSampah.getTableHeader();
         header.setBackground(HEADER_BG); 
         header.setForeground(Color.WHITE);
-        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setPreferredSize(new Dimension(header.getWidth(), 35));
         
         DefaultTableCellRenderer defaultRenderer = new DefaultTableCellRenderer() {
@@ -258,20 +258,20 @@ public class ManajemenSampahPanel extends JPanel {
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         btnPanel.setBackground(PRIMARY_COLOR); 
 
-        btnAdd = new JButton("💾 Tambah");
+        btnAdd = new JButton("Tambah");
         styleButton(btnAdd, GREEN_ACCENT); 
         btnAdd.addActionListener(e -> handleAdd());
 
-        btnUpdate = new JButton("✏️ Edit");
+        btnUpdate = new JButton("Edit");
         styleButton(btnUpdate, COLOR_EDIT); 
         btnUpdate.setForeground(Color.BLACK); 
         btnUpdate.addActionListener(e -> handleUpdate());
 
-        btnDelete = new JButton("🗑️ Hapus");
+        btnDelete = new JButton("Hapus");
         styleButton(btnDelete, COLOR_DELETE); 
         btnDelete.addActionListener(e -> handleDelete());
 
-        btnClear = new JButton("🔄 Bersihkan Form");
+        btnClear = new JButton("Bersihkan Form");
         styleButton(btnClear, Color.GRAY);
         btnClear.setPreferredSize(new Dimension(150, 35));
         btnClear.addActionListener(e -> resetForm());
@@ -403,7 +403,7 @@ public class ManajemenSampahPanel extends JPanel {
     private void styleButton(JButton btn, Color color) {
         btn.setBackground(color);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 12));
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
