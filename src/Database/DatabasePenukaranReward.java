@@ -69,7 +69,6 @@ public class DatabasePenukaranReward {
                             data[2] // id penyetor
                     );
 
-                    // Parsing tanggal aman
                     try {
                         baru.setTanggalPenukaran(LocalDate.parse(data[3], FORMATTER));
                     } catch (Exception e) {
@@ -91,17 +90,14 @@ public class DatabasePenukaranReward {
         return listHasil;
     }
 
-    // --- WRITE DATA (Overload Default) ---
     public static void writeData(List<PenukaranReward> listPenukaran) {
         writeData(listPenukaran, DATA_PENUKARAN_REWARD_GLOBAL);
     }
 
-    // --- WRITE DATA (Core - Stateless) ---
     public static void writeData(List<PenukaranReward> listPenukaran, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
 
             for (PenukaranReward pr : listPenukaran) {
-                // Pastikan format tanggal konsisten saat disimpan
                 String tglStr = pr.getFormattedTime();
 
                 bw.write(
@@ -134,7 +130,7 @@ public class DatabasePenukaranReward {
 
         for (PenukaranReward t : list) {
             if (t.getIdPenyetor().equals(user.getIdPenyetor()) ) {
-                total += t.getPoin(); // poin = totalHarga transaksi
+                total += t.getPoin();
             }
         }
 

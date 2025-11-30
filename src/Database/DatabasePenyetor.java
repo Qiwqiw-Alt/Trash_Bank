@@ -122,7 +122,7 @@ public class DatabasePenyetor {
     }
 
     public static boolean assignUserToBank(String userId, String idBank) {
-        ArrayList<Penyetor> globalList = loadData(DATA_PENYETOR_GLOBAL); // Load global data
+        ArrayList<Penyetor> globalList = loadData(DATA_PENYETOR_GLOBAL); 
         boolean found = false;
 
         for (Penyetor p : globalList) {
@@ -145,7 +145,6 @@ public class DatabasePenyetor {
         boolean found = false;
 
         for (int i = 0; i < list.size(); i++) {
-            // Cari admin berdasarkan ID, update datanya
             if (list.get(i).getIdPenyetor().equals(userUpdate.getIdPenyetor())) {
                 list.set(i, userUpdate);
                 found = true;

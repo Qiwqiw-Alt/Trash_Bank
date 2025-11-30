@@ -1,6 +1,6 @@
 package View.AdminPanels;
 
-import Database.DatabaseBankSampah; // Pastikan import ini ada
+import Database.DatabaseBankSampah; 
 import Model.BankSampah;
 
 import javax.swing.*;
@@ -13,16 +13,14 @@ public class EditBankSampahProfile extends JPanel {
 
     private BankSampah currentBank;
 
-    // Komponen UI
     private JTextField tfIdBank;
     private JTextField tfNamaBank;
-    private JTextArea taAlamat; // Pakai TextArea biar muat alamat panjang
+    private JTextArea taAlamat; 
     private JButton btnSave;
 
-    // Styling
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 12);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
 
     public EditBankSampahProfile(BankSampah bankSampah) {
         this.currentBank = bankSampah;
@@ -32,17 +30,15 @@ public class EditBankSampahProfile extends JPanel {
 
     private void initLayout() {
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 245, 245)); // Background abu muda
-        setBorder(new EmptyBorder(30, 30, 30, 30)); // Margin luar
+        setBackground(new Color(245, 245, 245)); 
+        setBorder(new EmptyBorder(30, 30, 30, 30)); 
 
-        // Panel Putih di tengah
         JPanel contentPanel = new JPanel(new GridBagLayout());
         contentPanel.setBackground(Color.WHITE);
         
-        // Border Judul
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Informasi Bank Sampah ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(GREEN_PRIMARY);
         contentPanel.setBorder(BorderFactory.createCompoundBorder(
             border, new EmptyBorder(20, 20, 20, 20)
@@ -54,16 +50,14 @@ public class EditBankSampahProfile extends JPanel {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 0;
 
-        // 1. ID Bank (Read Only)
         contentPanel.add(createLabel("ID Bank (Permanen):"), gbc);
         gbc.gridy++;
         tfIdBank = new JTextField();
         styleTextField(tfIdBank);
         tfIdBank.setEditable(false);
-        tfIdBank.setBackground(new Color(240, 240, 240)); // Abu-abu tanda disable
+        tfIdBank.setBackground(new Color(240, 240, 240)); 
         contentPanel.add(tfIdBank, gbc);
 
-        // 2. Nama Bank
         gbc.gridy++;
         contentPanel.add(createLabel("Nama Bank Sampah:"), gbc);
         gbc.gridy++;
@@ -71,11 +65,10 @@ public class EditBankSampahProfile extends JPanel {
         styleTextField(tfNamaBank);
         contentPanel.add(tfNamaBank, gbc);
 
-        // 3. Alamat (TextArea)
         gbc.gridy++;
         contentPanel.add(createLabel("Alamat Lengkap:"), gbc);
         gbc.gridy++;
-        taAlamat = new JTextArea(4, 20); // 4 Baris
+        taAlamat = new JTextArea(4, 20); 
         taAlamat.setFont(FONT_INPUT);
         taAlamat.setLineWrap(true);
         taAlamat.setWrapStyleWord(true);
@@ -87,20 +80,17 @@ public class EditBankSampahProfile extends JPanel {
         ));
         contentPanel.add(scrollAlamat, gbc);
 
-        // 4. Tombol Simpan
         gbc.gridy++;
-        gbc.insets = new Insets(30, 0, 0, 0); // Jarak tombol agak jauh
+        gbc.insets = new Insets(30, 0, 0, 0); 
         btnSave = new JButton("💾 Simpan Perubahan");
         styleButton(btnSave);
         btnSave.addActionListener(e -> handleSave());
         contentPanel.add(btnSave, gbc);
 
-        // Spacer biar form tidak melar ke bawah
         gbc.gridy++;
         gbc.weighty = 1.0;
         contentPanel.add(Box.createVerticalGlue(), gbc);
 
-        // Tambahkan contentPanel ke panel utama (biar di tengah atas)
         add(contentPanel, BorderLayout.NORTH);
     }
 
@@ -134,7 +124,6 @@ public class EditBankSampahProfile extends JPanel {
         }
     }
 
-    // --- Styling Helpers ---
     private JLabel createLabel(String text) {
         JLabel lbl = new JLabel(text);
         lbl.setFont(FONT_LABEL);
@@ -154,7 +143,7 @@ public class EditBankSampahProfile extends JPanel {
     private void styleButton(JButton btn) {
         btn.setBackground(GREEN_PRIMARY);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 14));
         btn.setFocusPainted(false);
         btn.setPreferredSize(new Dimension(200, 45));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));

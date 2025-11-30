@@ -16,10 +16,11 @@ public class DashboardAdminView extends JFrame {
     private String IdBankSampah;
     private BankSampah currentBankSampah;
     private JPanel contentPanel;
-    private ImageIcon iconImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\recycle-bin.png");
-    private final Color GREEN_PRIMARY = new Color(0x356A69);
+    private ImageIcon iconImage = new ImageIcon("src\\Asset\\Image\\recycle-bin.png");
+    private final Color GREEN_PRIMARY = new Color(0x356A69); 
     private final Color GREEN_HOVER = new Color(0x67AE6E); 
     private final Color GREEN_LIGHT = new Color(0x67AE6E); 
+    
     private String activeMenu = "Home"; 
     
     private JPanel homeNavButton;
@@ -82,7 +83,6 @@ public class DashboardAdminView extends JFrame {
         headerPanel.setBackground(GREEN_PRIMARY); 
         headerPanel.setPreferredSize(new Dimension(this.getWidth(), 70));
         
-   
         String titleText = (currentBankSampah != null) ? currentBankSampah.getNamaBank().toUpperCase() : "BANK SAMPAH ADMIN";
         JLabel headerTitle = new JLabel(titleText);
         headerTitle.setFont(new Font("Fredoka", Font.BOLD, 24));
@@ -231,6 +231,7 @@ public class DashboardAdminView extends JFrame {
 
 
     public void switchPanel(String menuName) {
+        
         if(currentBankSampah == null) {
             boolean isAllowed = menuName.equals("Logout") || 
                                 menuName.equals("Profil") || 
@@ -318,6 +319,5 @@ public class DashboardAdminView extends JFrame {
         revalidate();
     }
     
-    // --- DIHAPUS/DIKOSONGKAN (Mantan Sidebar) ---
     private JPanel createSidebar() { return new JPanel(); }
 }

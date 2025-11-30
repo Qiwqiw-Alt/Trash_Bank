@@ -2,7 +2,7 @@ package View.AdminPanels;
 
 import Model.Admin;
 import Model.BankSampah;
-import View.DashboardAdminView; // Import view utama untuk callback
+import View.DashboardAdminView; 
 
 import javax.swing.*;
 
@@ -14,6 +14,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class CreateBankSampahPanel extends JPanel {
+
+
     private DashboardAdminView parentFrame;
     private Admin currentAdmin;
 
@@ -21,13 +23,12 @@ public class CreateBankSampahPanel extends JPanel {
     private JTextField tfAlamat;
     private JButton btnSimpan;
 
-    // Warna (Konsisten dengan Dashboard)
     private final Color GREEN_PRIMARY = new Color(0, 128, 0);
 
     /**
      * Constructor
-     * @param parentFrame : Referensi ke DashboardAdminView (untuk memanggil onBankCreatedSuccess)
-     * @param admin : Admin yang sedang login (untuk disambungkan dengan bank baru)
+     * @param parentFrame 
+     * @param admin 
      */
     public CreateBankSampahPanel(DashboardAdminView parentFrame, Admin admin) {
         this.parentFrame = parentFrame;
@@ -81,6 +82,7 @@ public class CreateBankSampahPanel extends JPanel {
         gbc.ipady = 10; 
         add(btnSimpan, gbc);
 
+     
         btnSimpan.addActionListener(e -> handleSimpan());
     }
 
@@ -88,6 +90,7 @@ public class CreateBankSampahPanel extends JPanel {
         String nama = tfNamaBank.getText().trim();
         String alamat = tfAlamat.getText().trim();
 
+   
         if (nama.isEmpty() || alamat.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama Bank dan Alamat tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
@@ -104,7 +107,9 @@ public class CreateBankSampahPanel extends JPanel {
             }
         }
         DataBaseAdmin.writeData(listAdmin);
+
         JOptionPane.showMessageDialog(this, "Bank Sampah '" + nama + "' berhasil dibuat!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
 
         if (parentFrame != null) {
             parentFrame.onBankCreatedSuccess(new BankSampah(idBank, idBank, alamat));

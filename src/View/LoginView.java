@@ -14,7 +14,7 @@ public class LoginView extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, signupButton;
-    private ImageIcon image = new ImageIcon("Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-bin.png");
+    private ImageIcon image = new ImageIcon("src\\\\Asset\\\\Image\\\\recycle-bin.png");
 
     public LoginView() {
         setTitle("Login - Bank Sampah");
@@ -27,51 +27,43 @@ public class LoginView extends JFrame {
         initComponents();
     }
 
-    // Method untuk setup data awal (sebelum ada database)
-
     private void initComponents() {
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setPreferredSize(new Dimension(400, 600));
         leftPanel.setBackground(Color.WHITE);
 
-        // BAGIAN ATAS ATAU HEADER
-
         JLabel headerLabel = new JLabel("BANK SAMPAH", SwingConstants.LEFT);
         headerLabel.setFont(new Font("Fredoka", Font.BOLD, 24));
-        headerLabel.setForeground(new Color(0x356A69)); // Warna Hijau Gelap
-        headerLabel.setBorder(BorderFactory.createEmptyBorder(30, 30, 0, 0)); // Padding
+        headerLabel.setForeground(new Color(0x356A69)); 
+        headerLabel.setBorder(BorderFactory.createEmptyBorder(30, 30, 0, 0)); 
         leftPanel.add(headerLabel, BorderLayout.NORTH);
 
         JPanel imageContainer = new JPanel(new GridBagLayout());
         imageContainer.setBackground(Color.WHITE);
-        // Menggunakan path absolut yang Anda berikan
-        ImageIcon loginImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\");
-        // Ukuran gambar diskala 350x350
+        ImageIcon loginImage = new ImageIcon("src\\Asset\\Image\\1010042-10 - Edited.png\\");
         Image img = loginImage.getImage();
         Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH);
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
         imageContainer.add(imageLabel);
         leftPanel.add(imageContainer, BorderLayout.CENTER);
 
-        // Footer Text
         JLabel footerLabel = new JLabel("Starts for free and get attractive offers", SwingConstants.CENTER);
         footerLabel.setFont(new Font("Fredoka", Font.BOLD, 16));
         footerLabel.setForeground(new Color(0x356A69));
-        footerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0)); // Padding bawah
+        footerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0)); 
         leftPanel.add(footerLabel, BorderLayout.SOUTH);
 
         add(leftPanel, BorderLayout.WEST);
 
         JPanel rightPanel = new JPanel(new GridBagLayout());
-        rightPanel.setBackground(new Color(0x356A69)); // Warna Hijau Gelap
+        rightPanel.setBackground(new Color(0x356A69)); 
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 20, 10, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 0; // Reset internal padding
+        gbc.ipadx = 0; 
 
-        // Title
         JLabel title = new JLabel("Welcome back.", SwingConstants.LEFT);
         title.setFont(new Font("Fredoka", Font.BOLD, 30));
         title.setForeground(Color.WHITE);
@@ -80,16 +72,14 @@ public class LoginView extends JFrame {
         gbc.gridwidth = 2;
         rightPanel.add(title, gbc);
 
-        // Subtitle (No Account Label)
         JPanel subtitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        subtitlePanel.setOpaque(false); // Agar background mengikuti rightPanel
+        subtitlePanel.setOpaque(false); 
 
         JLabel noAccountLabel = new JLabel("Don't have an account? ");
         noAccountLabel.setFont(new Font("Fredoka", Font.PLAIN, 14));
         noAccountLabel.setForeground(Color.WHITE);
         subtitlePanel.add(noAccountLabel);
 
-        // Teks "Sign up" yang dapat diklik (Link Teks)
         JLabel signupLink = new JLabel("Sign up");
         signupLink.setFont(new Font("Fredoka", Font.BOLD, 14));
         signupLink.setForeground(new Color(0x67AE6E));
@@ -99,34 +89,29 @@ public class LoginView extends JFrame {
         gbc.gridy = 1;
         rightPanel.add(subtitlePanel, gbc);
 
-        // Dummy Space/Divider
         gbc.gridy = 2;
         rightPanel.add(Box.createVerticalStrut(20), gbc);
 
-        // Username Field (Langsung tanpa label di atas)
         usernameField = new JTextField(25);
-        usernameField.setText("Username"); // Placeholder-like
+        usernameField.setText("Username"); 
         usernameField.setForeground(Color.GRAY);
         styleTextField(usernameField);
         gbc.gridy = 3;
         rightPanel.add(usernameField, gbc);
 
-        // Password Field (Langsung tanpa label di atas)
         passwordField = new JPasswordField(25);
-        passwordField.setText("Password"); // Placeholder-like
+        passwordField.setText("Password"); 
         passwordField.setForeground(Color.GRAY);
         styleTextField(passwordField);
         gbc.gridy = 4;
         rightPanel.add(passwordField, gbc);
 
-        // Dummy Space/Divider
         gbc.gridy = 5;
         rightPanel.add(Box.createVerticalStrut(20), gbc);
 
-        // Login Button
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Fredoka", Font.BOLD, 14));
-        loginButton.setBackground(new Color(0x67AE6E)); // Warna Hijau
+        loginButton.setBackground(new Color(0x67AE6E)); 
         loginButton.setForeground(Color.WHITE);
         loginButton.setFocusPainted(false);
         gbc.gridy = 6;
@@ -134,11 +119,9 @@ public class LoginView extends JFrame {
         rightPanel.add(loginButton, gbc);
         gbc.ipady = 0;
 
-        // Dummy Space/Divider
         gbc.gridy = 7;
         rightPanel.add(Box.createVerticalStrut(10), gbc);
 
-        // Sign Up Button (Sebagai link di bawah)
         signupButton = new JButton("Sign up");
         signupButton.setFont(new Font("Fredoka", Font.PLAIN, 14));
         signupButton.setForeground(new Color(0x67AE6E));
@@ -149,24 +132,21 @@ public class LoginView extends JFrame {
         gbc.gridy = 8;
         rightPanel.add(signupButton, gbc);
 
-        add(rightPanel, BorderLayout.CENTER); // Pasang ke posisi KANAN/TENGAH (CENTER)
+        add(rightPanel, BorderLayout.CENTER); 
 
-        // Action Listeners
         loginButton.addActionListener(e -> loginAction());
 
-        // 1. Action listener untuk link teks "Sign up" (di subtitle)
         signupLink.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 new SignInView().setVisible(true);
-                dispose(); // Tutup jendela login saat pindah
+                dispose(); 
             }
         });
 
-        // 2. Action listener untuk tombol "Sign up" (di gbc.gridy=8)
         signupButton.addActionListener(e -> {
             new SignInView().setVisible(true);
-            dispose(); // Tutup jendela login saat pindah
+            dispose(); 
         });
 
     }
@@ -216,8 +196,8 @@ public class LoginView extends JFrame {
             JOptionPane.showMessageDialog(this,
                     "Login berhasil sebagai PENYETOR: " + p.getNamaLengkap());
 
-                    new DashboardPenyetorView(p).setVisible(true);
-                    dispose();
+            new DashboardPenyetorView(p).setVisible(true);
+            dispose();
             return;
         }
     }

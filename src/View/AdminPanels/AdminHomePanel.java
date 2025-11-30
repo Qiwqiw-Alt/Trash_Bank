@@ -1,11 +1,12 @@
 package View.AdminPanels;
 
 import Model.Admin;
-import Model.BankSampah;
+import Model.BankSampah; 
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder; 
 
 import Controller.AdminHomePanelController;
 
@@ -16,7 +17,7 @@ public class AdminHomePanel extends JPanel {
 
     private Admin currentUser;
     private BankSampah curreBankSampah;
-   
+    
     private JLabel lblBankName;
     private JLabel lblAdminName;
     
@@ -26,11 +27,20 @@ public class AdminHomePanel extends JPanel {
     
     private JPanel panelCategoryList; 
 
-    private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Color WHITE = Color.WHITE;
-    private final Font FONT_BIG = new Font("Segoe UI", Font.BOLD, 24);
-    private final Font FONT_MED = new Font("Segoe UI", Font.BOLD, 16);
-    private final Font FONT_NUM = new Font("Segoe UI", Font.BOLD, 28);
+    private final Color GREEN_PRIMARY = new Color(40, 167, 69); 
+    private final Color BLUE_ACCENT = new Color(0, 123, 255); 
+    private final Color YELLOW_ACCENT = new Color(255, 193, 7); 
+    private final Color BACKGROUND_COLOR = new Color(248, 249, 250); 
+    private final Color CARD_BACKGROUND = Color.WHITE;
+    private final Color TEXT_DARK = new Color(33, 37, 41);
+    private final Color TEXT_MUTED = new Color(108, 117, 125);
+    private final Color BORDER_LIGHT = new Color(222, 226, 230); 
+    
+    private final Font FONT_HEADER_TITLE = new Font("Fredoka", Font.BOLD, 30); 
+    private final Font FONT_SUBTITLE = new Font("Fredoka", Font.PLAIN, 16);
+    private final Font FONT_CARD_TITLE = new Font("Fredoka", Font.BOLD, 14);
+    private final Font FONT_CARD_VALUE = new Font("Fredoka", Font.BOLD, 36); 
+    private final Font FONT_SECTION_TITLE = new Font("Fredoka", Font.BOLD, 20); 
 
     public AdminHomePanel(Admin admin, BankSampah bankSampah) {
         this.currentUser = admin;
@@ -42,26 +52,28 @@ public class AdminHomePanel extends JPanel {
 
     private void initLayout() {
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 245, 245)); 
+        setBackground(BACKGROUND_COLOR); 
         
         JPanel mainContent = new JPanel();
         mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
-        mainContent.setBackground(new Color(245, 245, 245));
-        mainContent.setBorder(new EmptyBorder(20, 30, 20, 30));
+        mainContent.setBackground(BACKGROUND_COLOR);
+        mainContent.setBorder(new EmptyBorder(30, 40, 30, 40)); 
 
         mainContent.add(createHeaderSection());
-        mainContent.add(Box.createVerticalStrut(25)); 
+        mainContent.add(Box.createVerticalStrut(35)); 
 
         mainContent.add(createSummaryCards());
-        mainContent.add(Box.createVerticalStrut(25));
+        mainContent.add(Box.createVerticalStrut(35));
 
         mainContent.add(createCategorySection());
-        mainContent.add(Box.createVerticalStrut(20));
+        mainContent.add(Box.createVerticalStrut(25));
 
-        JButton btnRefresh = new JButton("🔄 Refresh Data");
-        btnRefresh.setBackground(Color.DARK_GRAY);
-        btnRefresh.setForeground(Color.WHITE);
+        JButton btnRefresh = new JButton("Muat Ulang Data");
+        btnRefresh.setFont(new Font("Fredoka", Font.BOLD, 14));
+        btnRefresh.setBackground(GREEN_PRIMARY); 
+        btnRefresh.setForeground(CARD_BACKGROUND);
         btnRefresh.setFocusPainted(false);
+        btnRefresh.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         btnRefresh.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnRefresh.addActionListener(e -> loadData()); 
         mainContent.add(btnRefresh);
@@ -74,72 +86,72 @@ public class AdminHomePanel extends JPanel {
 
 
     private JPanel createHeaderSection() {
-        JPanel panel = new JPanel(new GridLayout(2, 1));
-        panel.setBackground(new Color(245, 245, 245));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(BACKGROUND_COLOR);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.setMaximumSize(new Dimension(Short.MAX_VALUE, 80));
+        panel.setMaximumSize(new Dimension(Short.MAX_VALUE, 100));
 
-        // Baris 1: Sapaan Admin
         lblAdminName = new JLabel("Halo, Admin " + currentUser.getNamaAdmin() + "!");
-        lblAdminName.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        lblAdminName.setForeground(Color.GRAY);
+        lblAdminName.setFont(FONT_SUBTITLE);
+        lblAdminName.setForeground(TEXT_MUTED);
 
         lblBankName = new JLabel("Dashboard Bank Sampah");
-        lblBankName.setFont(FONT_BIG);
-        lblBankName.setForeground(new Color(33, 37, 41));
-
+        lblBankName.setFont(FONT_HEADER_TITLE);
+        lblBankName.setForeground(GREEN_PRIMARY); 
+        
         panel.add(lblAdminName);
+        panel.add(Box.createVerticalStrut(5));
         panel.add(lblBankName);
 
         return panel;
     }
 
     private JPanel createSummaryCards() {
-        JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0));
-        panel.setBackground(new Color(245, 245, 245));
+        JPanel panel = new JPanel(new GridLayout(1, 3, 30, 0)); 
+        panel.setBackground(BACKGROUND_COLOR);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.setMaximumSize(new Dimension(Short.MAX_VALUE, 120));
+        panel.setMaximumSize(new Dimension(Short.MAX_VALUE, 150)); 
 
-      
+        String iconMember = "👥"; 
+        String iconTrx = "💵"; 
+        String iconSampah = "🗑️"; 
+
         lblTotalMemberVal = new JLabel("0");
-        panel.add(createSingleCard("Total Nasabah", lblTotalMemberVal, new Color(13, 110, 253))); // Biru
+        panel.add(createSingleCard("Total Nasabah", lblTotalMemberVal, BLUE_ACCENT, iconMember)); 
 
-      
         lblTotalTrxVal = new JLabel("0");
-        panel.add(createSingleCard("Total Transaksi", lblTotalTrxVal, new Color(255, 193, 7))); // Kuning
+        panel.add(createSingleCard("Total Transaksi", lblTotalTrxVal, YELLOW_ACCENT, iconTrx)); 
 
-        
-        lblTotalSampahVal = new JLabel("0 Kg");
-        panel.add(createSingleCard("Total Sampah Terkumpul", lblTotalSampahVal, GREEN_PRIMARY)); // Hijau
+        lblTotalSampahVal = new JLabel("0.0 Kg");
+        panel.add(createSingleCard("Sampah Terkumpul", lblTotalSampahVal, GREEN_PRIMARY, iconSampah)); 
 
         return panel;
     }
 
-    private JPanel createSingleCard(String title, JLabel valueLabel, Color accentColor) {
-        JPanel card = new JPanel(new BorderLayout());
-        card.setBackground(WHITE);
+    private JPanel createSingleCard(String title, JLabel valueLabel, Color accentColor, String icon) {
+        JPanel card = new JPanel(new BorderLayout(15, 0)); 
+        card.setBackground(CARD_BACKGROUND);
+        
         card.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(220, 220, 220), 1, true), // Border luar halus
-            new EmptyBorder(15, 20, 15, 20) // Padding dalam
+            new LineBorder(BORDER_LIGHT.darker(), 1, true),
+            new EmptyBorder(25, 20, 25, 20) 
         ));
 
-        // Garis warna di kiri sebagai aksen
-        JPanel accent = new JPanel();
-        accent.setBackground(accentColor);
-        accent.setPreferredSize(new Dimension(5, 0));
-        card.add(accent, BorderLayout.WEST);
+        JLabel lblIcon = new JLabel(icon);
+        lblIcon.setFont(new Font("Fredoka Emoji", Font.PLAIN, 40)); 
+        lblIcon.setForeground(accentColor);
+        card.add(lblIcon, BorderLayout.WEST);
 
-        // Konten text
         JPanel content = new JPanel(new GridLayout(2, 1));
-        content.setBackground(WHITE);
-        content.setBorder(new EmptyBorder(0, 15, 0, 0));
-
+        content.setBackground(CARD_BACKGROUND);
+        
         JLabel lblTitle = new JLabel(title);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        lblTitle.setForeground(Color.GRAY);
+        lblTitle.setFont(FONT_CARD_TITLE);
+        lblTitle.setForeground(TEXT_MUTED);
 
-        valueLabel.setFont(FONT_NUM);
-        valueLabel.setForeground(new Color(33, 37, 41));
+        valueLabel.setFont(FONT_CARD_VALUE);
+        valueLabel.setForeground(TEXT_DARK); 
 
         content.add(lblTitle);
         content.add(valueLabel);
@@ -150,57 +162,61 @@ public class AdminHomePanel extends JPanel {
 
     private JPanel createCategorySection() {
         JPanel container = new JPanel(new BorderLayout());
-        container.setBackground(WHITE);
+        container.setBackground(CARD_BACKGROUND);
         container.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         container.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(220, 220, 220), 1, true),
-            new EmptyBorder(20, 20, 20, 20)
+            new LineBorder(BORDER_LIGHT, 1, true),
+            new EmptyBorder(25, 25, 25, 25)
         ));
 
-        JLabel lblTitle = new JLabel("📦 Stok Sampah per Kategori");
-        lblTitle.setFont(FONT_MED);
-        lblTitle.setForeground(GREEN_PRIMARY);
+        JLabel lblTitle = new JLabel("Data Stok Sampah per Kategori");
+        lblTitle.setFont(FONT_SECTION_TITLE);
+        lblTitle.setForeground(GREEN_PRIMARY); 
         container.add(lblTitle, BorderLayout.NORTH);
 
-        // Panel List (Nanti diisi looping data)
         panelCategoryList = new JPanel();
         panelCategoryList.setLayout(new BoxLayout(panelCategoryList, BoxLayout.Y_AXIS));
-        panelCategoryList.setBackground(WHITE);
-        panelCategoryList.setBorder(new EmptyBorder(15, 0, 0, 0));
+        panelCategoryList.setBackground(CARD_BACKGROUND);
+        panelCategoryList.setBorder(new EmptyBorder(25, 0, 0, 0)); 
 
         container.add(panelCategoryList, BorderLayout.CENTER);
         
         return container;
     }
 
-
     private JPanel createCategoryRow(String name, double totalKg) {
-        JPanel row = new JPanel(new BorderLayout());
-        row.setBackground(WHITE);
-        row.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
-        row.setBorder(new EmptyBorder(5, 0, 5, 0));
+        JPanel row = new JPanel(new BorderLayout(0, 5)); 
+        row.setBackground(CARD_BACKGROUND);
+        row.setMaximumSize(new Dimension(Short.MAX_VALUE, 50)); 
+
+        JPanel content = new JPanel(new BorderLayout());
+        content.setBackground(CARD_BACKGROUND);
+        content.setBorder(new EmptyBorder(8, 0, 8, 0)); 
 
         JLabel lblName = new JLabel("• " + name);
-        lblName.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lblName.setFont(new Font("Fredoka", Font.PLAIN, 15));
+        lblName.setForeground(TEXT_DARK);
 
-        JLabel lblVal = new JLabel(String.format("%.1f Kg", totalKg)); // Format 1 desimal
-        lblVal.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblVal.setForeground(Color.DARK_GRAY);
+        JLabel lblVal = new JLabel(String.format("%.1f Kg", totalKg)); 
+        lblVal.setFont(new Font("Fredoka", Font.BOLD, 16));
+        lblVal.setForeground(GREEN_PRIMARY.darker()); 
 
-        row.add(lblName, BorderLayout.WEST);
-        row.add(lblVal, BorderLayout.EAST);
+        content.add(lblName, BorderLayout.WEST);
+        content.add(lblVal, BorderLayout.EAST);
         
-        row.add(new JSeparator(SwingConstants.HORIZONTAL), BorderLayout.SOUTH);
+        row.add(content, BorderLayout.CENTER);
+        
+        row.setBorder(new MatteBorder(0, 0, 1, 0, BORDER_LIGHT)); 
 
         return row;
     }
-
 
     private void loadData() {
         if (curreBankSampah == null) return;
 
         String namaBank = AdminHomePanelController.getService().getBankName(currentUser);
-        lblBankName.setText(namaBank.isEmpty() ? "Bank Sampah" : namaBank);
+        lblBankName.setText(namaBank.isEmpty() ? "Dashboard Bank Sampah" : namaBank);
 
         int totalMember = AdminHomePanelController.getService().getTotalMember(curreBankSampah);
         lblTotalMemberVal.setText(String.valueOf(totalMember));
@@ -208,7 +224,6 @@ public class AdminHomePanel extends JPanel {
         int totalTrx = AdminHomePanelController.getService().getTotalTransaksi(curreBankSampah);
         lblTotalTrxVal.setText(String.valueOf(totalTrx));
 
-        
         double totalBerat = AdminHomePanelController.getService().getTotalBeratSampah(curreBankSampah);
         lblTotalSampahVal.setText(String.format("%.1f Kg", totalBerat)); 
 
@@ -218,8 +233,9 @@ public class AdminHomePanel extends JPanel {
 
         if (dataKategori.isEmpty()) {
             JLabel emptyLabel = new JLabel("Belum ada data sampah masuk.");
-            emptyLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-            emptyLabel.setFont(new Font("Segoe UI", Font.ITALIC, 13));
+            emptyLabel.setBorder(new EmptyBorder(30, 10, 30, 10)); 
+            emptyLabel.setFont(new Font("Fredoka", Font.ITALIC, 14));
+            emptyLabel.setForeground(TEXT_MUTED);
             panelCategoryList.add(emptyLabel);
         } else {
             for (Map.Entry<String, Double> entry : dataKategori.entrySet()) {

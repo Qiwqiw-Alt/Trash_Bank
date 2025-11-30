@@ -1,6 +1,4 @@
 UA001|Admin|kikikoko|kikikikoko69|PhyrurrizqiAF|00000000|BS001
 UA002|Admin|ambasing|ambasing69|amba|0000000|BS002
 UA003|Admin|wijaya|12341234|wijaya anjing|0123456789|BS003
-UA004|Admin|koko6699|kikikoko6699|kikikoko|081246744538|BS005
-UA005|Admin|tubesPBO|tubesPBO69|tianIhsan|00000069|BS006
-UA006|Admin|zidanaselole123|zidanaselole123|zidanaselole|7273592732|null
+UA004|Admin|adminDemo|12341234|demoAdmin|1234567890|null

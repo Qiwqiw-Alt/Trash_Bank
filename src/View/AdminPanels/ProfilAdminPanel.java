@@ -1,6 +1,6 @@
 package View.AdminPanels;
 
-import Database.DataBaseAdmin; // Pastikan nama class Database Admin sesuai
+import Database.DataBaseAdmin;
 import Model.Admin;
 
 import javax.swing.*;
@@ -13,7 +13,6 @@ public class ProfilAdminPanel extends JPanel {
 
     private Admin currentAdmin;
 
-    // --- Komponen Bagian Kiri (Profil) ---
     private JTextField tfIdAdmin;
     private JTextField tfIdBank;
     private JTextField tfNama;
@@ -21,16 +20,14 @@ public class ProfilAdminPanel extends JPanel {
     private JTextField tfNoHp;
     private JButton btnSaveProfile;
 
-    // --- Komponen Bagian Kanan (Password) ---
     private JPasswordField pfOldPass;
     private JPasswordField pfNewPass;
     private JPasswordField pfConfirmPass;
     private JButton btnChangePass;
 
-    // --- Styling ---
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 12);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
 
     public ProfilAdminPanel(Admin admin) {
         this.currentAdmin = admin;
@@ -39,7 +36,7 @@ public class ProfilAdminPanel extends JPanel {
     }
 
     private void initLayout() {
-        setLayout(new GridLayout(1, 2, 20, 0)); // Grid 2 Kolom (Kiri & Kanan)
+        setLayout(new GridLayout(1, 2, 20, 0));
         setBackground(new Color(245, 245, 245));
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -47,17 +44,14 @@ public class ProfilAdminPanel extends JPanel {
         add(createPasswordSection());
     }
 
-    // ========================================================================
-    // BAGIAN KIRI: DATA PROFIL
-    // ========================================================================
+
     private JPanel createProfileSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
         
-        // Border dengan Judul
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Informasi Pribadi ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(GREEN_PRIMARY);
         panel.setBorder(BorderFactory.createCompoundBorder(border, new EmptyBorder(10, 15, 10, 15)));
 
@@ -67,49 +61,42 @@ public class ProfilAdminPanel extends JPanel {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 0;
 
-        // 1. ID Admin (Read Only)
         panel.add(createLabel("ID Admin (Tidak dapat diubah):"), gbc);
         gbc.gridy++;
-        tfIdAdmin = createTextField(false); // False = Read Only
+        tfIdAdmin = createTextField(false); 
         panel.add(tfIdAdmin, gbc);
 
-        // 2. ID Bank (Read Only)
         gbc.gridy++;
         panel.add(createLabel("ID Bank Sampah (Tidak dapat diubah):"), gbc);
         gbc.gridy++;
         tfIdBank = createTextField(false);
         panel.add(tfIdBank, gbc);
 
-        // 3. Nama Lengkap
         gbc.gridy++;
         panel.add(createLabel("Nama Lengkap:"), gbc);
         gbc.gridy++;
         tfNama = createTextField(true);
         panel.add(tfNama, gbc);
 
-        // 4. Username
         gbc.gridy++;
         panel.add(createLabel("Username:"), gbc);
         gbc.gridy++;
         tfUsername = createTextField(true);
         panel.add(tfUsername, gbc);
 
-        // 5. No HP
         gbc.gridy++;
         panel.add(createLabel("Nomor HP:"), gbc);
         gbc.gridy++;
         tfNoHp = createTextField(true);
         panel.add(tfNoHp, gbc);
 
-        // Tombol Simpan Profil
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
-        btnSaveProfile = new JButton("💾 Simpan Perubahan Profil");
+        btnSaveProfile = new JButton("Simpan Perubahan Profil");
         styleButton(btnSaveProfile);
         btnSaveProfile.addActionListener(e -> handleSaveProfile());
         panel.add(btnSaveProfile, gbc);
 
-        // Spacer ke bawah
         gbc.gridy++;
         gbc.weighty = 1.0;
         panel.add(Box.createVerticalGlue(), gbc);
@@ -117,15 +104,14 @@ public class ProfilAdminPanel extends JPanel {
         return panel;
     }
 
-   
     private JPanel createPasswordSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
 
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Keamanan (Ganti Password) ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
-        border.setTitleColor(new Color(220, 53, 69)); // Merah dikit biar warning
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
+        border.setTitleColor(new Color(220, 53, 69));
         panel.setBorder(BorderFactory.createCompoundBorder(border, new EmptyBorder(10, 15, 10, 15)));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -140,7 +126,6 @@ public class ProfilAdminPanel extends JPanel {
         styleTextField(pfOldPass);
         panel.add(pfOldPass, gbc);
 
-
         gbc.gridy++;
         panel.add(createLabel("Password Baru:"), gbc);
         gbc.gridy++;
@@ -148,7 +133,6 @@ public class ProfilAdminPanel extends JPanel {
         styleTextField(pfNewPass);
         panel.add(pfNewPass, gbc);
 
-   
         gbc.gridy++;
         panel.add(createLabel("Konfirmasi Password Baru:"), gbc);
         gbc.gridy++;
@@ -156,23 +140,20 @@ public class ProfilAdminPanel extends JPanel {
         styleTextField(pfConfirmPass);
         panel.add(pfConfirmPass, gbc);
 
-  
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
-        btnChangePass = new JButton("🔒 Update Password");
+        btnChangePass = new JButton("Update Password");
         styleButton(btnChangePass);
         btnChangePass.setBackground(new Color(220, 53, 69)); 
         btnChangePass.addActionListener(e -> handleChangePassword());
         panel.add(btnChangePass, gbc);
 
-        // Spacer
         gbc.gridy++;
         gbc.weighty = 1.0;
         panel.add(Box.createVerticalGlue(), gbc);
 
         return panel;
     }
-
 
     private void loadData() {
         if (currentAdmin != null) {
@@ -202,7 +183,6 @@ public class ProfilAdminPanel extends JPanel {
         currentAdmin.setNohp(hp);
 
         String path = "src\\Database\\Admin\\admin_" + currentAdmin.getIdBankSampah() + ".txt";
-        
         DataBaseAdmin.updateAdmin(currentAdmin, path);
 
         JOptionPane.showMessageDialog(this, "Profil berhasil diperbarui!");
@@ -272,7 +252,7 @@ public class ProfilAdminPanel extends JPanel {
     private void styleButton(JButton btn) {
         btn.setBackground(GREEN_PRIMARY);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 14));
         btn.setFocusPainted(false);
         btn.setPreferredSize(new Dimension(200, 40));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
