@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import Database.DatabaseBankSampah;
 import Database.DatabaseTransaksi;
 import Model.BankSampah;
-import Model.Complain;
 import Model.Penyetor;
 import Model.Transaksi;
 

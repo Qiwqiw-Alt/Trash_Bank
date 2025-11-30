@@ -1,6 +1,7 @@
 package Database;
 
 import Model.PenukaranReward;
+import Model.Penyetor;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ public class DatabasePenukaranReward {
     private static final String DELIM = "\\|";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public static String getFinalPath(){
+    public static String getFinalPath() {
         return DATA_PENUKARAN_REWARD_GLOBAL;
     }
 
@@ -28,7 +29,8 @@ public class DatabasePenukaranReward {
                 // Asumsi ID: PR001 -> ambil substring mulai index 2
                 String angka = pr.getIdPenukaran().substring(2);
                 int num = Integer.parseInt(angka);
-                if (num > max) max = num;
+                if (num > max)
+                    max = num;
             } catch (Exception e) {
                 continue;
             }
@@ -44,7 +46,7 @@ public class DatabasePenukaranReward {
     public static ArrayList<PenukaranReward> loadData(String filePath) {
         ArrayList<PenukaranReward> listHasil = new ArrayList<>();
         File file = new File(filePath);
-        
+
         // Buat folder parent jika belum ada
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
@@ -59,23 +61,30 @@ public class DatabasePenukaranReward {
 
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
 
                 String[] data = line.split(DELIM);
-                if (data.length >= 4) {
+                if (data.length >= 5) {
                     PenukaranReward baru = new PenukaranReward(
                             data[0], // id penukaran
                             data[1], // id reward
-                            data[2]  // id penyetor
+                            data[2] // id penyetor
                     );
-                    
+
                     // Parsing tanggal aman
                     try {
                         baru.setTanggalPenukaran(LocalDate.parse(data[3], FORMATTER));
                     } catch (Exception e) {
                         baru.setTanggalPenukaran(LocalDate.now());
                     }
-                    
+                    try {
+                        double poin = Double.parseDouble(data[4]);
+                        baru.setPoint(poin);
+                    } catch (Exception e) {
+                        System.out.println("Error Membaca file Reward : " + e.getMessage() + ", format salah");
+                    }
+
                     listHasil.add(baru);
                 }
             }
@@ -93,17 +102,16 @@ public class DatabasePenukaranReward {
     // --- WRITE DATA (Core - Stateless) ---
     public static void writeData(List<PenukaranReward> listPenukaran, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-            
+
             for (PenukaranReward pr : listPenukaran) {
                 // Pastikan format tanggal konsisten saat disimpan
                 String tglStr = pr.getFormattedTime();
 
                 bw.write(
-                    pr.getIdPenukaran() + "|" +
-                    pr.getIdReward() + "|" + 
-                    pr.getIdPenyetor() + "|" + 
-                    tglStr
-                );
+                        pr.getIdPenukaran() + "|" +
+                                pr.getIdReward() + "|" +
+                                pr.getIdPenyetor() + "|" +
+                                tglStr);
                 bw.newLine();
             }
             System.out.println("Data Penukaran tersimpan di: " + filePath);
@@ -121,5 +129,18 @@ public class DatabasePenukaranReward {
         ArrayList<PenukaranReward> list = loadData(filePath);
         list.add(transaksiBaru);
         writeData(list, filePath);
+    }
+
+    public static double hitungPoinPenyetor(Penyetor user) {
+        ArrayList<PenukaranReward> list = loadData(); 
+        double total = 0;
+
+        for (PenukaranReward t : list) {
+            if (t.getIdPenyetor().equals(user.getIdPenyetor()) ) {
+                total += t.getPoin(); // poin = totalHarga transaksi
+            }
+        }
+
+        return total;
     }
 }

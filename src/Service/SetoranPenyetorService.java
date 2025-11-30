@@ -8,7 +8,6 @@ import Model.BankSampah;
 import Model.ItemTransaksi;
 import Model.Penyetor;
 import Model.Transaksi;
-import Model.User;
 
 public class SetoranPenyetorService {
     BankSampahService bss = new BankSampahService();
