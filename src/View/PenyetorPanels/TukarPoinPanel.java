@@ -4,11 +4,14 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import Model.Reward;
 import Service.BankSampahService;
@@ -32,6 +35,18 @@ public class TukarPoinPanel extends JPanel {
     private BankSampah bank;
     private BankSampahService bss = new BankSampahService();
 
+    private final Color PRIMARY_COLOR = new Color(0x356A69); 
+    private final Color ACCENT_COLOR = new Color(0x3498DB); 
+    private final Color SOFT_BG = new Color(245, 245, 245);
+    private final Color CARD_HOVER_COLOR = new Color(235, 245, 255);
+    private final Color SUCCESS_COLOR = new Color(0x67AE6E);
+    private final NumberFormat integerFormatter = new DecimalFormat("#,##0");
+
+    private final String REWARD_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\gift (2).png"; 
+    private final String HISTORY_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\history.png";
+    private final int ICON_SIZE_TITLE = 30;
+    private final int ICON_SIZE_CARD = 20;
+
     public TukarPoinPanel(Penyetor user) {
         this.user = user;
         bank = bss.getObjBankSampah(user.getIdBankSampah());
@@ -41,41 +56,54 @@ public class TukarPoinPanel extends JPanel {
         this.listReward = DatabaseReward.loadData(bankSampah.getFileReward());
 
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 245, 245));
+        setBackground(SOFT_BG);
 
-        // TITLE
-        JLabel title = new JLabel("Tukar Poin Reward", SwingConstants.CENTER);
-        title.setFont(new Font("SansSerif", Font.BOLD, 26));
+        JLabel title = new JLabel(" Tukar Poin Reward", SwingConstants.CENTER);
+        title.setIcon(getScaledIcon(REWARD_ICON_PATH, ICON_SIZE_TITLE, ICON_SIZE_TITLE));
+        title.setFont(new Font("Arial", Font.BOLD, 26));
+        title.setForeground(PRIMARY_COLOR.darker());
         title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
         add(title, BorderLayout.NORTH);
 
-        // LIST PANEL (Card container)
         content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.setBackground(new Color(245, 245, 245));
+        content.setBackground(SOFT_BG);
 
-        wrapperPanel = new JPanel(new BorderLayout());
+        wrapperPanel = new JPanel(); 
+        wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS)); 
+        wrapperPanel.setBackground(SOFT_BG);
         wrapperPanel.setBorder(BorderFactory.createEmptyBorder(20, 80, 20, 80));
-        wrapperPanel.add(content, BorderLayout.NORTH);
-
+        
+        JPanel rewardCardsWrapper = new JPanel(new BorderLayout());
+        rewardCardsWrapper.add(content, BorderLayout.NORTH);
+        rewardCardsWrapper.setBackground(SOFT_BG);
+        
         for (Reward r : listReward) {
             JPanel card = createRewardCard(r);
-
-            card.setAlignmentX(Component.CENTER_ALIGNMENT); // biar center
-            card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 220)); // panjang mengikuti panel, tinggi fix
+            card.setAlignmentX(Component.CENTER_ALIGNMENT);
+            card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 220)); 
 
             content.add(card);
-            content.add(Box.createVerticalStrut(20)); // jarak antar card
+            content.add(Box.createVerticalStrut(20));
         }
-
+        
+        wrapperPanel.add(rewardCardsWrapper);
+        
+        wrapperPanel.add(Box.createVerticalStrut(30)); 
+        
         JPanel riwayatTukar = createTablePenukaranPanel(user);
-        JScrollPane historyScroll = new JScrollPane(riwayatTukar);
-        historyScroll.setPreferredSize(new Dimension(800, 250));
-        historyScroll.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        
+        JScrollPane historyScroll = new JScrollPane(riwayatTukar); 
+        historyScroll.setPreferredSize(new Dimension(800, 450)); 
+        historyScroll.setBorder(null); 
 
-        wrapperPanel.add(Box.createVerticalStrut(20));
-        wrapperPanel.add(historyScroll, BorderLayout.CENTER);
+        JPanel historyContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        historyContainer.setBackground(SOFT_BG);
+        historyContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); 
+        historyContainer.add(historyScroll);
+
+        wrapperPanel.add(historyContainer);
 
         scroll = new JScrollPane(wrapperPanel);
         scroll.setBorder(null);
@@ -85,11 +113,21 @@ public class TukarPoinPanel extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
 
+    private ImageIcon getScaledIcon(String path, int width, int height) {
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImg);
+        } catch (Exception e) {
+            return null; 
+        }
+    }
+
     private void refreshPanel() {
-        // reload data reward
         listReward = DatabaseReward.loadData(bank.getFileReward());
 
-        content.removeAll(); // hapus semua card lama
+        content.removeAll(); 
 
         for (Reward r : listReward) {
             JPanel card = createRewardCard(r);
@@ -100,9 +138,21 @@ public class TukarPoinPanel extends JPanel {
             content.add(card);
             content.add(Box.createVerticalStrut(20));
         }
+        
+        JPanel historyContainer = (JPanel) wrapperPanel.getComponent(2); 
+        historyContainer.removeAll();
+        
+        JPanel riwayatTukarBaru = createTablePenukaranPanel(user);
+        JScrollPane historyScrollBaru = new JScrollPane(riwayatTukarBaru);
+        historyScrollBaru.setPreferredSize(new Dimension(800, 450));
+        historyScrollBaru.setBorder(null);
+        historyContainer.add(historyScrollBaru);
+
 
         content.revalidate();
         content.repaint();
+        wrapperPanel.revalidate();
+        wrapperPanel.repaint();
     }
 
     private JPanel createRewardCard(Reward reward) {
@@ -112,11 +162,10 @@ public class TukarPoinPanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
                 BorderFactory.createEmptyBorder(20, 20, 20, 20)));
 
-        // HOVER EFFECT
         card.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                card.setBackground(new Color(250, 250, 250));
+                card.setBackground(CARD_HOVER_COLOR); 
             }
 
             @Override
@@ -125,56 +174,61 @@ public class TukarPoinPanel extends JPanel {
             }
         });
 
-        // =============================
-        // LEFT PANEL (Text)
-        // =============================
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         left.setOpaque(false);
 
-        JLabel name = new JLabel(reward.getNamaHadiah());
-        name.setFont(new Font("SansSerif", Font.BOLD, 18));
+        JLabel name = new JLabel("✨ " + reward.getNamaHadiah());
+        name.setFont(new Font("Arial", Font.BOLD, 18));
+        name.setForeground(PRIMARY_COLOR.darker()); 
 
         JLabel desc = new JLabel("<html>" + reward.getDeskripsi() + "</html>");
-        desc.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        desc.setForeground(new Color(80, 80, 80));
+        desc.setFont(new Font("Arial", Font.PLAIN, 13));
+        desc.setForeground(new Color(100, 100, 100)); 
 
-        JLabel harga = new JLabel("Harga Poin: " + reward.getHargaTukar());
-        harga.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        JLabel harga = new JLabel("💰 Harga Poin: " + integerFormatter.format(reward.getHargaTukar()));
+        harga.setFont(new Font("Arial", Font.BOLD, 15));
+        harga.setForeground(ACCENT_COLOR); 
 
-        JLabel stok = new JLabel("Stok: " + reward.getStok());
-        stok.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        JLabel stok = new JLabel("📦 Stok Tersedia: " + integerFormatter.format(reward.getStok()));
+        stok.setFont(new Font("Arial", Font.PLAIN, 14));
+        stok.setForeground(reward.getStok() > 5 ? SUCCESS_COLOR : Color.RED); 
 
         left.add(name);
         left.add(Box.createVerticalStrut(10));
         left.add(desc);
-        left.add(Box.createVerticalStrut(10));
+        left.add(Box.createVerticalStrut(15));
         left.add(harga);
         left.add(stok);
 
-        // =============================
-        // RIGHT PANEL (Button)
-        // =============================
-        JPanel right = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel right = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 50)); 
         right.setOpaque(false);
 
-        JButton btnTukar = new JButton("Tukar");
-        btnTukar.setPreferredSize(new Dimension(100, 35));
+        JButton btnTukar = new JButton("Tukar Sekarang");
+        btnTukar.setPreferredSize(new Dimension(150, 40));
         btnTukar.setFocusPainted(false);
-        btnTukar.setBackground(new Color(52, 152, 219));
+        btnTukar.setBackground(ACCENT_COLOR); 
         btnTukar.setForeground(Color.WHITE);
-        btnTukar.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btnTukar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnTukar.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        
+        if (user.getTotalPoin() < reward.getHargaTukar() || reward.getStok() <= 0) {
+            btnTukar.setEnabled(false);
+            btnTukar.setBackground(Color.GRAY);
+            btnTukar.setText("Tidak Tersedia");
+        }
 
-        // Hover button
         btnTukar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnTukar.setBackground(new Color(41, 128, 185));
+                if (btnTukar.isEnabled())
+                    btnTukar.setBackground(ACCENT_COLOR.darker());
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnTukar.setBackground(new Color(52, 152, 219));
+                if (btnTukar.isEnabled())
+                    btnTukar.setBackground(ACCENT_COLOR);
             }
         });
 
@@ -182,16 +236,11 @@ public class TukarPoinPanel extends JPanel {
 
         right.add(btnTukar);
 
-        // Add to card
         card.add(left, BorderLayout.WEST);
         card.add(right, BorderLayout.EAST);
 
         return card;
     }
-
-    // -------------------------
-    // TABEL PENUKARAN REWARD
-    // -------------------------
 
     private JPanel createTablePenukaranPanel(Penyetor user) {
 
@@ -201,18 +250,17 @@ public class TukarPoinPanel extends JPanel {
                 new LineBorder(new Color(220, 220, 220), 1, true),
                 new EmptyBorder(15, 15, 15, 15)));
 
-        // Title
-        JLabel title = new JLabel("Riwayat Penukaran");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        JLabel title = new JLabel("Riwayat Penukaran Anda");
+        title.setIcon(getScaledIcon(HISTORY_ICON_PATH, ICON_SIZE_CARD, ICON_SIZE_CARD));
+        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setForeground(PRIMARY_COLOR);
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         wrapper.add(title, BorderLayout.NORTH);
 
-        // Kolom
-        String[] columns = { "ID Penukaran", "ID Reward", "Tanggal", "Poin" };
+        String[] columns = { "ID Penukaran", "ID Reward", "Tanggal", "Poin Dikeluarkan" }; 
         DefaultTableModel model = new DefaultTableModel(columns, 0);
 
-        // Ambil data penukaran
         ArrayList<PenukaranReward> list = DatabasePenukaranReward.loadData();
 
         for (PenukaranReward pr : list) {
@@ -221,26 +269,40 @@ public class TukarPoinPanel extends JPanel {
                         pr.getIdPenukaran(),
                         pr.getIdReward(),
                         pr.getTanggal(),
-                        pr.getPoin()
+                        integerFormatter.format(pr.getPoin()) 
                 };
                 model.addRow(row);
             }
         }
 
         JTable table = new JTable(model);
-        table.setRowHeight(28);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table.setShowGrid(false);
+        
+        table.setRowHeight(30);
+        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setShowGrid(true);
+        table.setGridColor(new Color(240, 240, 240));
         table.setIntercellSpacing(new Dimension(0, 0));
+        table.setSelectionBackground(CARD_HOVER_COLOR.darker());
+        table.setShowVerticalLines(false);
+
 
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        header.setBackground(new Color(230, 230, 230));
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setBackground(PRIMARY_COLOR); 
+        header.setForeground(Color.WHITE);
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
 
-        JScrollPane scroll = new JScrollPane(table);
-        scroll.setBorder(null);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for(int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        JScrollPane scrollTable = new JScrollPane(table);
+        scrollTable.setBorder(new LineBorder(new Color(200, 200, 200)));
 
-        wrapper.add(scroll, BorderLayout.CENTER);
+
+        wrapper.add(scrollTable, BorderLayout.CENTER);
 
         return wrapper;
     }
@@ -261,23 +323,24 @@ public class TukarPoinPanel extends JPanel {
 
         int confirm = JOptionPane.showConfirmDialog(
                 this,
-                "Tukar " + reward.getNamaHadiah() + " dengan " + (int) hargaReward + " poin?",
+                "Tukar " + reward.getNamaHadiah() + " dengan " + integerFormatter.format(hargaReward) + " poin?",
                 "Konfirmasi Penukaran",
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            user.setTotalPoin(poinUser);
+            
+            user.setTotalPoin(poinUser - hargaReward); 
             reward.kurangiStok(1);
 
             String idPR = DatabasePenukaranReward.generatePenukaranId();
             PenukaranReward transaksi = new PenukaranReward(idPR, reward.getIdReward(), user.getIdPenyetor());
-            transaksi.setPoint(poinUser - reward.getHargaTukar());
+            transaksi.setPoint(hargaReward); 
 
             DatabasePenukaranReward.addPenukaran(transaksi);
 
             DatabaseReward.updateReward(reward, bank.getFileReward());
 
-            JOptionPane.showMessageDialog(this, "Penukaran reward berhasil!");
+            JOptionPane.showMessageDialog(this, "Penukaran reward berhasil! Sisa Poin Anda: " + integerFormatter.format(user.getTotalPoin()));
             refreshPanel();
         }
     }

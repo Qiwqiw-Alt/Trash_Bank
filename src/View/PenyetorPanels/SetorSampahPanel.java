@@ -2,7 +2,10 @@ package View.PenyetorPanels;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import Database.DatabaseItemTransaksi;
 import Database.DatabaseSampah;
@@ -15,6 +18,8 @@ import Model.Transaksi;
 import Model.ItemTransaksi;
 
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class SetorSampahPanel extends JPanel {
@@ -32,94 +37,159 @@ public class SetorSampahPanel extends JPanel {
     private ArrayList<ItemTransaksi> listItems = new ArrayList<>();
     private ArrayList<Transaksi> listTransaksi = new ArrayList<>();
 
+    private final Color GREEN_PRIMARY = new Color(0x356A69); 
+    private final Color SOFT_GREY = new Color(245, 245, 245);
+    private final NumberFormat currencyFormatter = new DecimalFormat("#,##0");
+
+    private final String RECYCLE_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-symbol.png"; 
+    private final String CHECK_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\check.png";  
+    private final int ICON_SIZE_SMALL = 18;
+    private final int ICON_SIZE_BUTTON = 20;
+
     public SetorSampahPanel(Penyetor user, BankSampah bank) {
 
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 245, 245));
+        setBackground(SOFT_GREY);
 
-        JLabel title = new JLabel("Setor Sampah", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 22));
+        JLabel title = new JLabel(" Setor Sampah", SwingConstants.CENTER);
+        title.setIcon(getScaledIcon(RECYCLE_ICON_PATH, ICON_SIZE_BUTTON, ICON_SIZE_BUTTON)); 
+        title.setFont(new Font("Arial", Font.BOLD, 22)); 
+        title.setForeground(GREEN_PRIMARY.darker()); 
         title.setBorder(new EmptyBorder(20, 0, 20, 0));
         add(title, BorderLayout.NORTH);
 
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
         main.setOpaque(false);
+        main.setBorder(new EmptyBorder(0, 30, 30, 30)); 
 
-        // -------------------------------
-        // FORM INPUT
-        // -------------------------------
+
         JPanel form = new JPanel(new GridLayout(2, 2, 10, 10));
         form.setBorder(new EmptyBorder(10, 40, 10, 40));
         form.setOpaque(false);
-
+        
         comboSampah = new JComboBox<>();
+        comboSampah.setFont(new Font("Segoe UI", Font.PLAIN, 14)); 
+        comboSampah.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
         loadSampahToCombo(bank);
 
         tfBerat = new JTextField();
+        tfBerat.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tfBerat.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
-        form.add(new JLabel("Jenis Sampah:"));
+
+        JLabel lbJenis = new JLabel("Jenis Sampah:");
+        lbJenis.setIcon(null); 
+        lbJenis.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        form.add(lbJenis);
         form.add(comboSampah);
 
-        form.add(new JLabel("Berat (kg):"));
+        JLabel lbBerat = new JLabel("Berat (kg):");
+        lbBerat.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        form.add(lbBerat);
         form.add(tfBerat);
 
-        // -------------------------------
-        // TOMBOL TAMBAH
-        // -------------------------------
-        JButton btnTambah = new JButton("Tambah Item");
+        JButton btnTambah = new JButton(" Tambah Item");
+        btnTambah.setBackground(GREEN_PRIMARY);
+        btnTambah.setForeground(Color.WHITE);
+        btnTambah.setFont(new Font("Arial", Font.BOLD, 14));
+        btnTambah.setFocusPainted(false);
+        btnTambah.setBorder(new EmptyBorder(8, 15, 8, 15)); 
         btnTambah.addActionListener(e -> tambahItem());
 
-        JPanel wrapTambah = new JPanel();
+        JPanel wrapTambah = new JPanel(new FlowLayout(FlowLayout.CENTER)); 
         wrapTambah.setOpaque(false);
         wrapTambah.add(btnTambah);
 
-        // -------------------------------
-        // TABLE ITEM
-        // -------------------------------
-        String[] cols = { "Jenis", "Harga/Kg", "Berat", "Subtotal" };
+        String[] cols = { "Jenis", "Harga/Kg (Rp)", "Berat (kg)", "Subtotal (Rp)" };
         tableModel = new DefaultTableModel(cols, 0);
         JTable table = new JTable(tableModel);
 
-        JScrollPane scroll = new JScrollPane(table);
+        table.setRowHeight(30);
+        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setGridColor(new Color(240, 240, 240));
+        table.setShowVerticalLines(false);
+        table.setSelectionBackground(new Color(230, 245, 230));
+        
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setBackground(GREEN_PRIMARY);
+        header.setForeground(Color.WHITE);
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        
+        table.getColumnModel().getColumn(0).setPreferredWidth(150);
+        table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        table.getColumnModel().getColumn(2).setPreferredWidth(80);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+
+        JScrollPane scroll = new JScrollPane(table); 
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200))); 
         scroll.setBorder(new EmptyBorder(10, 40, 10, 40));
 
-        // -------------------------------
-        // TOTAL
-        // -------------------------------
         lbTotalBerat = new JLabel("Total Berat: 0 kg");
         lbTotalHarga = new JLabel("Total Harga: Rp 0");
 
-        JPanel panelTotal = new JPanel();
+        JPanel panelTotal = new JPanel(new BorderLayout()); 
         panelTotal.setOpaque(false);
-        panelTotal.setLayout(new BoxLayout(panelTotal, BoxLayout.Y_AXIS));
-        lbTotalBerat.setFont(new Font("Arial", Font.BOLD, 14));
-        lbTotalHarga.setFont(new Font("Arial", Font.BOLD, 14));
-        panelTotal.add(lbTotalBerat);
-        panelTotal.add(lbTotalHarga);
+        
+        JPanel totalTextWrapper = new JPanel();
+        totalTextWrapper.setLayout(new BoxLayout(totalTextWrapper, BoxLayout.Y_AXIS));
+        totalTextWrapper.setOpaque(false);
+        
+        lbTotalBerat.setFont(new Font("Arial", Font.BOLD, 16)); 
+        lbTotalHarga.setFont(new Font("Arial", Font.BOLD, 16)); 
+        lbTotalHarga.setForeground(GREEN_PRIMARY.darker()); 
+        
+        lbTotalBerat.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        lbTotalHarga.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        
+        totalTextWrapper.add(lbTotalBerat);
+        totalTextWrapper.add(lbTotalHarga);
+        
+        panelTotal.add(totalTextWrapper, BorderLayout.EAST); 
         panelTotal.setBorder(new EmptyBorder(10, 40, 10, 40));
 
-        // -------------------------------
-        // BUTTON KIRIM TRANSAKSI
-        // -------------------------------
-        JButton btnKirim = new JButton("Kirim Transaksi");
+        JButton btnKirim = new JButton("Kirim ");
+        btnKirim.setIcon(getScaledIcon(CHECK_ICON_PATH, ICON_SIZE_BUTTON, ICON_SIZE_BUTTON)); 
+        btnKirim.setBackground(GREEN_PRIMARY);
+        btnKirim.setForeground(Color.WHITE);
+        btnKirim.setFont(new Font("Arial", Font.BOLD, 16));
+        btnKirim.setFocusPainted(false);
+        btnKirim.setBorder(new EmptyBorder(10, 25, 10, 25));
         btnKirim.addActionListener(e -> simpanTransaksi(user, bank));
 
-        JPanel wrapKirim = new JPanel();
+        JPanel wrapKirim = new JPanel(new FlowLayout(FlowLayout.CENTER));
         wrapKirim.setOpaque(false);
         wrapKirim.add(btnKirim);
 
-        // -------------------------------
-        // ADD ALL COMPONENT
-        // -------------------------------
         main.add(form);
         main.add(wrapTambah);
+        main.add(Box.createVerticalStrut(10));
         main.add(scroll);
+        main.add(Box.createVerticalStrut(10));
         main.add(panelTotal);
         main.add(wrapKirim);
 
         add(main, BorderLayout.CENTER);
     }
+
+    private ImageIcon getScaledIcon(String path, int width, int height) {
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImg);
+        } catch (Exception e) {
+            return null; 
+        }
+    }
+
 
     private void loadSampahToCombo(BankSampah bank) {
         ArrayList<Sampah> list = DatabaseSampah.loadData(bank.getFileDaftarSampah());
@@ -146,19 +216,19 @@ public class SetorSampahPanel extends JPanel {
         double hargaPerKg = s.getHargaPerKg();
         double subtotal = berat * hargaPerKg;
 
-        // Tambah ke tabel
         tableModel.addRow(new Object[] {
-                s.getJenis(), hargaPerKg, berat, subtotal
+                s.getJenis(), 
+                currencyFormatter.format(hargaPerKg), 
+                String.format("%.2f", berat), 
+                currencyFormatter.format(subtotal)
         });
 
-        // Update total
         totalBerat += berat;
         totalHarga += subtotal;
 
-        lbTotalBerat.setText("Total Berat: " + totalBerat + " kg");
-        lbTotalHarga.setText("Total Harga: Rp " + totalHarga);
+        lbTotalBerat.setText("Total Berat: " + String.format("%.2f", totalBerat) + " kg");
+        lbTotalHarga.setText("Total Harga: Rp " + currencyFormatter.format(totalHarga));
 
-        // Tambah ke list item transaksi
         listItems.add(new ItemTransaksi("Belum ada", s.getIdSampah(), hargaPerKg, berat));
 
         tfBerat.setText("");
@@ -186,17 +256,16 @@ public class SetorSampahPanel extends JPanel {
         }
         trx.setItemTransaksi(listItems);
 
-        listTransaksi.add(trx); //-> tambah transaski ke total semua transaksi yang terjadi
+        listTransaksi.add(trx); 
         
-        DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi()); // -> tulis ke file data transksi setiap bank, transaksi yang baru terjadi
-        DatabaseTransaksi.writeData(listTransaksi); // -> tulis ke file total transaski yang pernah terjadi di aplikasi 
-        DatabaseItemTransaksi.writeData(listItems, bank.getFileItemTransaksi()); // -> menulis item setiap transaksi ke file bank
-        DatabaseItemTransaksi.writeData(listItems); // -> menulis item transaksi ke file data keseluruhan transaksi yang terjadi di apliaski
+        DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi()); 
+        DatabaseTransaksi.writeData(listTransaksi); 
+        DatabaseItemTransaksi.writeData(listItems, bank.getFileItemTransaksi()); 
+        DatabaseItemTransaksi.writeData(listItems); 
 
         JOptionPane.showMessageDialog(this, "Transaksi berhasil dikirim!");
         user.tambahSetoran(1);
 
-        // Reset panel
         tableModel.setRowCount(0);
         listItems.clear();
         totalBerat = 0;

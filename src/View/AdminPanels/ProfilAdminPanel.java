@@ -1,6 +1,6 @@
 package View.AdminPanels;
 
-import Database.DataBaseAdmin; // Pastikan nama class Database Admin sesuai
+import Database.DataBaseAdmin;
 import Model.Admin;
 
 import javax.swing.*;
@@ -47,9 +47,7 @@ public class ProfilAdminPanel extends JPanel {
         add(createPasswordSection());
     }
 
-    // ========================================================================
-    // BAGIAN KIRI: DATA PROFIL
-    // ========================================================================
+
     private JPanel createProfileSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
@@ -117,9 +115,7 @@ public class ProfilAdminPanel extends JPanel {
         return panel;
     }
 
-    // ========================================================================
-    // BAGIAN KANAN: GANTI PASSWORD
-    // ========================================================================
+
     private JPanel createPasswordSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
@@ -204,18 +200,12 @@ public class ProfilAdminPanel extends JPanel {
             return;
         }
 
-        // 1. Update Object di Memori
         currentAdmin.setNamaAdmin(nama);
         currentAdmin.setUsername(user);
         currentAdmin.setNohp(hp);
 
-        // 2. Update ke Database (File TXT)
-        // Kita construct path file adminnya secara dinamis berdasarkan ID Bank
-        // Path: src/Database/Admin/admin_BSxxx.txt
         String path = "src\\Database\\Admin\\admin_" + currentAdmin.getIdBankSampah() + ".txt";
-        
-        // Panggil method update di DatabaseAdmin (pastikan method updateAdmin() sudah kamu buat di DatabaseAdmin.java)
-        // Jika belum ada, gunakan trik load -> edit -> save manual
+
         DataBaseAdmin.updateAdmin(currentAdmin, path);
 
         JOptionPane.showMessageDialog(this, "Profil berhasil diperbarui!");
