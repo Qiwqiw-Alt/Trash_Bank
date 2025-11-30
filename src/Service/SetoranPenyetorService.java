@@ -36,7 +36,7 @@ public class SetoranPenyetorService {
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getIdTransaksi().equals(trxUpdate.getIdTransaksi())) {
-                list.get(i).setStatus(trxUpdate.getStatus()); // Update status
+                list.get(i).setStatus(trxUpdate.getStatus());
                 found = true;
                 break;
             }
