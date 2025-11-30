@@ -1,0 +1,2 @@
+UP003|Penyetor|Zidan|12341234|zidan dicky|0123456789|BS003
+UP002|Penyetor|kristian|12341234|Kristian pandu|0123456789|BS003
