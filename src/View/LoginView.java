@@ -14,7 +14,7 @@ public class LoginView extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, signupButton;
-    private ImageIcon image = new ImageIcon("Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-bin.png");
+    private ImageIcon image = new ImageIcon("src\\\\Asset\\\\Image\\\\recycle-bin.png");
 
     public LoginView() {
         setTitle("Login - Bank Sampah");
@@ -41,7 +41,7 @@ public class LoginView extends JFrame {
 
         JPanel imageContainer = new JPanel(new GridBagLayout());
         imageContainer.setBackground(Color.WHITE);
-        ImageIcon loginImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\");
+        ImageIcon loginImage = new ImageIcon("src\\Asset\\Image\\1010042-10 - Edited.png\\");
         Image img = loginImage.getImage();
         Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH);
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));

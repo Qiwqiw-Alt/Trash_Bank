@@ -42,8 +42,8 @@ public class TukarPoinPanel extends JPanel {
     private final Color SUCCESS_COLOR = new Color(0x67AE6E);
     private final NumberFormat integerFormatter = new DecimalFormat("#,##0");
 
-    private final String REWARD_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\gift (2).png"; 
-    private final String HISTORY_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\history.png";
+    private final String REWARD_ICON_PATH = "src\\\\Asset\\\\Image\\\\gift (2).png"; 
+    private final String HISTORY_ICON_PATH = "src\\\\Asset\\\\Image\\\\history.png";
     private final int ICON_SIZE_TITLE = 30;
     private final int ICON_SIZE_CARD = 20;
 

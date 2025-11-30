@@ -35,9 +35,9 @@ public class JoinBankPanel extends JPanel {
     ArrayList<BankSampah> listBankSampah;
     DashboardPenyetorView mainFrame;
 
-    private final String IMAGE_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\bank.png";
-    private final String LOCATION_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\location.png"; 
-    private final String NAME_ICON = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\tag.png";
+    private final String IMAGE_PATH = "src\\\\Asset\\\\Image\\\\bank.png";
+    private final String LOCATION_ICON_PATH = "src\\\\Asset\\\\Image\\\\location.png"; 
+    private final String NAME_ICON = "src\\\\Asset\\\\Image\\\\tag.png";
 
     public JoinBankPanel(Penyetor User, DashboardPenyetorView mainFrame) {
         this.user = User;

@@ -14,7 +14,7 @@ public class LandingView extends JFrame {
     private JPanel welcomeWrapper;
     private JPanel aboutWrapper;
 
-    private ImageIcon iconImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\recycle-bin.png");
+    private ImageIcon iconImage = new ImageIcon("src\\Asset\\Image\\recycle-bin.png");
 
     public LandingView() {
         setTitle("Selamat Datang - Bank Sampah");
@@ -150,7 +150,7 @@ public class LandingView extends JFrame {
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setBackground(Color.WHITE);
 
-        ImageIcon img = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\e1xf_1j1j_220225.jpg");
+        ImageIcon img = new ImageIcon("src\\Asset\\Image\\e1xf_1j1j_220225.jpg");
         Image scaled = img.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
         img = new ImageIcon(scaled);
 

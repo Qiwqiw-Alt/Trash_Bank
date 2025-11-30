@@ -15,7 +15,7 @@ public class SignInView extends JFrame {
     private JTextField namaField;
     private JTextField noHpField;
     private JComboBox<String> roleBox;
-    private ImageIcon image = new ImageIcon("Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-bin.png");
+    private ImageIcon image = new ImageIcon("src\\\\Asset\\\\Image\\\\recycle-bin.png");
     private JButton registerButton, backButton;
 
     public SignInView() {
@@ -46,7 +46,7 @@ public class SignInView extends JFrame {
     JPanel imageContainer = new JPanel(new GridBagLayout());
     imageContainer.setBackground(Color.WHITE);
     
-    ImageIcon signupImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\"); 
+    ImageIcon signupImage = new ImageIcon("src\\Asset\\Image\\1010042-10 - Edited.png\\"); 
     Image img = signupImage.getImage();
     Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH); 
     JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));

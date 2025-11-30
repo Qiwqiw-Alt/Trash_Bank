@@ -41,8 +41,8 @@ public class SetorSampahPanel extends JPanel {
     private final Color SOFT_GREY = new Color(245, 245, 245);
     private final NumberFormat currencyFormatter = new DecimalFormat("#,##0");
 
-    private final String RECYCLE_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-symbol.png"; 
-    private final String CHECK_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\check.png";  
+    private final String RECYCLE_ICON_PATH = "src\\\\Asset\\\\Image\\\\recycle-symbol.png"; 
+    private final String CHECK_ICON_PATH = "src\\\\Asset\\\\Image\\\\check.png";  
     private final int ICON_SIZE_SMALL = 18;
     private final int ICON_SIZE_BUTTON = 20;
 

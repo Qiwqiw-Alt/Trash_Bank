@@ -33,7 +33,7 @@ public class DashboardPenyetorView extends JFrame {
     private JPanel keluhanNavButton;
     private JButton profileButtonEast; 
 
-    private ImageIcon iconImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\recycle-bin.png");
+    private ImageIcon iconImage = new ImageIcon("src\\Asset\\Image\\recycle-bin.png");
 
     public DashboardPenyetorView(Penyetor user) {
         this.currentUser = user;
@@ -363,7 +363,7 @@ public class DashboardPenyetorView extends JFrame {
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(Color.WHITE);
         
-        ImageIcon newIllustrationIcon = new ImageIcon("Trash_Bank\\\\src\\\\Asset\\\\Image\\\\e1xf_1j1j_220225.jpg"); 
+        ImageIcon newIllustrationIcon = new ImageIcon("\\src\\\\Asset\\\\Image\\\\e1xf_1j1j_220225.jpg"); 
         
         JLabel imageLabel;
         if (newIllustrationIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {

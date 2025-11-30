@@ -28,8 +28,8 @@ public class PenyetorHomePanel extends JPanel {
     private final Color ACCENT_COLOR = new Color(0x67AE6E); 
     private final Color SOFT_GREY = new Color(245, 245, 245);
     
-    private final String SETORAN_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\transaction.png"; 
-    private final String POIN_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\money.png";
+    private final String SETORAN_ICON_PATH = "src\\\\Asset\\\\Image\\\\transaction.png"; 
+    private final String POIN_ICON_PATH = "src\\\\Asset\\\\Image\\\\money.png";
 
     public PenyetorHomePanel(Penyetor user) {
         this.penyetor = user;

@@ -37,8 +37,8 @@ public class KeluhanPanel extends JPanel {
     private final Color HEADER_BG = new Color(0x356A69); 
     private final Color HOVER_COLOR = new Color(0, 102, 0); 
     
-    private final String ICON_COMPLAIN_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\suggestion-box.png";
-    private final String ICON_HISTORY_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\history.png";
+    private final String ICON_COMPLAIN_PATH = "src\\\\Asset\\\\Image\\\\suggestion-box.png";
+    private final String ICON_HISTORY_PATH = "src\\\\Asset\\\\Image\\\\history.png";
     private final int ICON_SIZE = 24;
 
     public KeluhanPanel(Penyetor user) {

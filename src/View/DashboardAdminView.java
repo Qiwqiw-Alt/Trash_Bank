@@ -16,7 +16,7 @@ public class DashboardAdminView extends JFrame {
     private String IdBankSampah;
     private BankSampah currentBankSampah;
     private JPanel contentPanel;
-    private ImageIcon iconImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\recycle-bin.png");
+    private ImageIcon iconImage = new ImageIcon("src\\Asset\\Image\\recycle-bin.png");
     private final Color GREEN_PRIMARY = new Color(0x356A69); 
     private final Color GREEN_HOVER = new Color(0x67AE6E); 
     private final Color GREEN_LIGHT = new Color(0x67AE6E); 
