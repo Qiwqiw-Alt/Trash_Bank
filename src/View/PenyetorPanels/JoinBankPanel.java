@@ -1,7 +1,6 @@
 package View.PenyetorPanels;
 
 import java.awt.BorderLayout;
-// import java.awt.Color;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -15,18 +14,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-// import javax.swing.JButton;
-// import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-// import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import Database.DatabaseBankSampah;
 import Database.DatabaseRequestJoin;
 import Model.BankSampah;
-// import Model.BankSampah;
 import Model.Penyetor;
 import Model.TransaksiJoin;
 import View.DashboardPenyetorView;
@@ -170,6 +165,8 @@ public class JoinBankPanel extends JPanel {
         return cardPanel;
     }
 
+
+    // Logic Gabung Bank
     private void joinBank(BankSampah bank) {
         ArrayList<TransaksiJoin> dafTransaksiJoins = DatabaseRequestJoin.loadData();
 

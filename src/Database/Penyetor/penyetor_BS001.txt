@@ -2,3 +2,4 @@ UP001|Penyetor|wijaya kusuma|12341234|Wijaya Kusuma|0123456789|BS001
 UP002|Penyetor|kristian siapp|12341234|Kristian pandu|0123456789|BS001
 UP003|Penyetor|Zidan|12341234|zidan dicky|0123456789|BS003
 UP005|Penyetor|ihsan|12341234|ihsan nul|0123456789|BS001
+UP006|Penyetor|budiawan|123123|budi kurniawan|085831482204|BS001

@@ -319,16 +319,10 @@ public class DashboardPenyetorView extends JFrame {
     }
 
 
-    // =========================================================================
-    // KODE LAINNYA (DIPERTAHANKAN)
-    // =========================================================================
-    
-    // --- Panel Home Khusus Landing Page (Konten Selamat Datang) ---
     private JPanel createHomeLandingPanel() {
         JPanel homePanel = new JPanel(new BorderLayout());
         homePanel.setBackground(Color.WHITE);
         
-        // --- 1. Main Content Area (Text, Button, and Image) ---
         JPanel mainContentArea = new JPanel(new BorderLayout()); 
         mainContentArea.setBackground(Color.WHITE);
 
@@ -339,7 +333,6 @@ public class DashboardPenyetorView extends JFrame {
         gbc.insets = new Insets(0, 50, 0, 50); 
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Konten Kiri (Text dan Button)
         JPanel textButtonPanel = new JPanel();
         textButtonPanel.setLayout(new BoxLayout(textButtonPanel, BoxLayout.Y_AXIS));
         textButtonPanel.setBackground(Color.WHITE);
@@ -387,7 +380,6 @@ public class DashboardPenyetorView extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         contentContainer.add(textButtonPanel, gbc);
 
-        // Konten Kanan (Gambar Ilustrasi)
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(Color.WHITE);
         
@@ -426,9 +418,7 @@ public class DashboardPenyetorView extends JFrame {
     }
 
 
-    // --- createSidebar() dikosongkan/dipertahankan hanya untuk menjaga kompatibilitas method ---
     private JPanel createSidebar() {
-        // Mode Dashboard kini menggunakan Header, jadi ini dikosongkan.
         return new JPanel();
     }
 
