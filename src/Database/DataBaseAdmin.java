@@ -15,15 +15,15 @@ public class DataBaseAdmin {
 
         for (Admin a : allData) {
             try {
-                String idStr = a.getIdAdmin().substring(2); // Ambil angka setelah "UP"
+                String idStr = a.getIdAdmin().substring(2);
                 int num = Integer.parseInt(idStr);
                 if (num > max) max = num;
             } catch (NumberFormatException e) {
-                continue; // Skip jika format ID salah
+                continue; 
             }
         }
 
-        return String.format("UA%03d", max + 1); // UA001, UA002, dst
+        return String.format("UA%03d", max + 1);
     }
 
     public static ArrayList<Admin> loadData(){
@@ -107,14 +107,13 @@ public class DataBaseAdmin {
         writeData(currentList, filePath);
     }
 
-    // Tambahkan di Database/DataBaseAdmin.java
 
     public static void updateAdmin(Admin adminUpdate, String filePath) {
         ArrayList<Admin> list = loadData(filePath);
         boolean found = false;
 
         for (int i = 0; i < list.size(); i++) {
-            // Cari admin berdasarkan ID, update datanya
+    
             if (list.get(i).getIdAdmin().equals(adminUpdate.getIdAdmin())) {
                 list.set(i, adminUpdate);
                 found = true;

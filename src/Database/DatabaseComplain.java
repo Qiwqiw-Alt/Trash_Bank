@@ -1,7 +1,7 @@
 package Database;
 
 import Model.Complain;
-import Model.Complain.Status; // Pastikan import enum Status
+import Model.Complain.Status;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -30,17 +30,14 @@ public class DatabaseComplain {
         return String.format("CP%03d", max + 1);
     }
 
-    // --- LOAD DATA (Overload Default) ---
     public static ArrayList<Complain> loadData() {
         return loadData(DATA_COMPLAIN_GLOBAL);
     }
 
-    // --- LOAD DATA (Core - Stateless) ---
     public static ArrayList<Complain> loadData(String filePath) {
         ArrayList<Complain> listHasil = new ArrayList<>();
         File file = new File(filePath);
 
-        // Buat folder jika belum ada
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
@@ -56,7 +53,7 @@ public class DatabaseComplain {
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
 
-                String[] data = line.split(DELIM); // Pakai \\|
+                String[] data = line.split(DELIM); 
 
                 if (data.length >= 8) {
                     Complain c = new Complain(
@@ -78,11 +75,9 @@ public class DatabaseComplain {
                     try {
                         c.setStatus(Status.valueOf(data[6])); 
                     } catch (Exception e) {
-                        c.setStatus(Status.PENDING); // Default jika error
+                        c.setStatus(Status.PENDING);
                     }
 
-                    // Tanggapan Admin
-                    // Cek jika tulisannya "null" string, ubah jadi null object/kosong
                     if (data[7].equalsIgnoreCase("null")) {
                         c.setTanggapanAdmin("-");
                     } else {
@@ -108,7 +103,6 @@ public class DatabaseComplain {
             for (Complain c : listComplain) {
                 String tglStr = c.getTanggal().format(FORMATTER);
                 
-                // Handle null pada tanggapan agar tidak error saat ditulis
                 String tanggapan = (c.getTanggapanAdmin() == null || c.getTanggapanAdmin().isEmpty()) 
                                    ? "null" 
                                    : c.getTanggapanAdmin();
@@ -119,7 +113,7 @@ public class DatabaseComplain {
                               c.getJudul() + "|" +
                               c.getIsi() + "|" +
                               tglStr + "|" +
-                              c.getStatus().name() + "|" + // Ambil nama ENUM (PENDING/SELESAI)
+                              c.getStatus().name() + "|" + 
                               tanggapan;
 
                 bw.write(line);

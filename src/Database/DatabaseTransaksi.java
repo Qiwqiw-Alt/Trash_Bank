@@ -74,7 +74,7 @@ public class DatabaseTransaksi {
                     try {
                         trx.setStatus(Status.valueOf(p[3]));
                     } catch (Exception e) {
-                        trx.setStatus(Status.PENDING); // Default jika error
+                        trx.setStatus(Status.PENDING); 
                     }
 
                     try {
@@ -127,9 +127,9 @@ public class DatabaseTransaksi {
     }
 
     public static void addTransaksi(Transaksi t, String filePath) {
-        ArrayList<Transaksi> list = loadData(filePath); // -> ambil data di file list item satu transaksi di bank
-        list.add(t); // -> tambah ke list saat ini
-        writeData(list, filePath); // -> tulis ke file item bank
+        ArrayList<Transaksi> list = loadData(filePath); 
+        list.add(t); 
+        writeData(list, filePath);
     }
 
     public static double hitungPoinPenyetor(Penyetor user) {
@@ -140,7 +140,7 @@ public class DatabaseTransaksi {
 
         for (Transaksi t : list) {
             if (t.getIdPenyetor().equals(user.getIdPenyetor()) && t.getStatus().equals(Transaksi.Status.DITERIMA) ) {
-                total += t.getTotalHarga(); // poin = totalHarga transaksi
+                total += t.getTotalHarga(); 
             }
         }
 

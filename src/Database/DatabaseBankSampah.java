@@ -10,13 +10,11 @@ public class DatabaseBankSampah {
     private static String DELIM = "\\|";
 
     public static String generateBankId() {
-        // 1. Load data terbaru dari file (bukan dari memori static)
         ArrayList<BankSampah> allData = loadData(); 
         
         int max = 0;
         for (BankSampah b : allData) {
             try {
-                // Ambil angka setelah "BS"
                 String idStr = b.getIdBank().substring(2); 
                 int num = Integer.parseInt(idStr);
                 if (num > max) max = num;
@@ -24,7 +22,7 @@ public class DatabaseBankSampah {
                 continue; 
             }
         }
-        return String.format("BS%03d", max + 1); // BS001, BS002, dst
+        return String.format("BS%03d", max + 1);
     }
 
     public static ArrayList<BankSampah> loadData() {
@@ -40,7 +38,7 @@ public class DatabaseBankSampah {
         try {
             if (!file.exists()) {
                 file.createNewFile();
-                return listHasil; // Return list kosong, jangan throw error
+                return listHasil; 
             }
 
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -65,7 +63,6 @@ public class DatabaseBankSampah {
         return listHasil;
     }
 
-    // Tulis data
     public static void writeData(ArrayList<BankSampah> listBank) {
         writeData(listBank, DATA_BANK_SAMPAH_GLOBAL);
     }

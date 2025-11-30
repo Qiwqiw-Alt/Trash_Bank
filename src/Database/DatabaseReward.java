@@ -38,7 +38,7 @@ public class DatabaseReward {
         ArrayList<Reward> listHasil = new ArrayList<>();
         File file = new File(filePath);
         
-        // Buat folder parent jika belum ada
+      
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
@@ -60,8 +60,8 @@ public class DatabaseReward {
                             data[0], // id
                             data[1], // nama hadiah
                             data[2], // deskripsi
-                            Double.parseDouble(data[3]), // poin tukar (handle double/int safe)
-                            Integer.parseInt(data[4]) // stok
+                            Double.parseDouble(data[3]),
+                            Integer.parseInt(data[4]) 
                     );
                     listHasil.add(loadReward);
                 }
@@ -85,7 +85,6 @@ public class DatabaseReward {
                               reward.getDeskripsi() + "|" +
                               reward.getHargaTukar() + "|" + 
                               reward.getStok(); 
-                              // \n dihapus di sini, diganti bw.newLine() agar support semua OS
 
                 bw.write(data);
                 bw.newLine();
@@ -125,7 +124,6 @@ public class DatabaseReward {
         ArrayList<Reward> newList = new ArrayList<>();
 
         for (Reward r : list) {
-            // Masukkan ke list baru KECUALI yang id-nya mau dihapus
             if (!r.getIdReward().equals(idReward)) {
                 newList.add(r);
             }

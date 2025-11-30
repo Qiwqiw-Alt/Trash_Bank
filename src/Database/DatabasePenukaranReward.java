@@ -18,15 +18,13 @@ public class DatabasePenukaranReward {
         return DATA_PENUKARAN_REWARD_GLOBAL;
     }
 
-    // --- GENERATE ID ---
+
     public static String generatePenukaranId() {
-        // Load data fresh
         ArrayList<PenukaranReward> list = loadData();
 
         int max = 0;
         for (PenukaranReward pr : list) {
             try {
-                // Asumsi ID: PR001 -> ambil substring mulai index 2
                 String angka = pr.getIdPenukaran().substring(2);
                 int num = Integer.parseInt(angka);
                 if (num > max)
@@ -42,12 +40,11 @@ public class DatabasePenukaranReward {
         return loadData(DATA_PENUKARAN_REWARD_GLOBAL);
     }
 
-    // --- LOAD DATA (Core - Stateless) ---
+
     public static ArrayList<PenukaranReward> loadData(String filePath) {
         ArrayList<PenukaranReward> listHasil = new ArrayList<>();
         File file = new File(filePath);
 
-        // Buat folder parent jika belum ada
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();

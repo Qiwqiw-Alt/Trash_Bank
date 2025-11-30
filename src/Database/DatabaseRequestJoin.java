@@ -61,7 +61,7 @@ public class DatabaseRequestJoin {
                     try {
                         loadTransaksiJoin.setStatus(Status.valueOf(data[3])); 
                     } catch (Exception e) {
-                        loadTransaksiJoin.setStatus(Status.PENDING); // Default jika error
+                        loadTransaksiJoin.setStatus(Status.PENDING); 
                     }
 
                     listHasil.add(loadTransaksiJoin);
@@ -124,7 +124,6 @@ public class DatabaseRequestJoin {
         ArrayList<TransaksiJoin> newList = new ArrayList<>();
 
         for (TransaksiJoin r : list) {
-            // Masukkan ke list baru KECUALI yang id-nya mau dihapus
             if (!r.getIdTransaksiJoin().equals(idTransaksiJoin)) {
                 newList.add(r);
             }
@@ -134,21 +133,18 @@ public class DatabaseRequestJoin {
     }
 
     public static void updateStatus(String idPenyetor, TransaksiJoin.Status statusBaru, String filePath) {
-        // 1. Load semua
         ArrayList<TransaksiJoin> list = loadData(filePath);
         boolean found = false;
 
-        // 2. Cari & Ubah
+  
         for (TransaksiJoin tj : list) {
             if (tj.getIdPenyetor().equals(idPenyetor)) {
                 tj.setStatus(statusBaru);
                 found = true;
-                // Jangan break jika satu user bisa request berkali-kali (history), 
-                // tapi kalau 1 user 1 request, boleh break.
+               
             }
         }
 
-        // 3. Simpan
         if (found) {
             writeData(list, filePath);
         }

@@ -15,7 +15,7 @@ public class DatabasePenyetor {
 
         for (Penyetor p : allData) {
             try {
-                String idStr = p.getIdPenyetor().substring(2); // Ambil angka setelah "UP"
+                String idStr = p.getIdPenyetor().substring(2); 
                 int num = Integer.parseInt(idStr);
                 if (num > max)
                     max = num;
@@ -24,7 +24,7 @@ public class DatabasePenyetor {
             }
         }
 
-        return String.format("UP%03d", max + 1); // UP001, UP002, dst
+        return String.format("UP%03d", max + 1); 
     }
 
     public static ArrayList<Penyetor> loadData() {
@@ -71,7 +71,6 @@ public class DatabasePenyetor {
         return listHasil;
     }
 
-    // Tulis data
     public static void writeData(ArrayList<Penyetor> listData, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Penyetor p : listData) {

@@ -112,7 +112,7 @@ public class DatabaseSampah {
         ArrayList<Sampah> newList = new ArrayList<>();
 
         for (Sampah s : list) {
-            // Masukkan ke list baru KECUALI yang id-nya mau dihapus
+
             if (!s.getIdSampah().equals(idSampah)) {
                 newList.add(s);
             }
