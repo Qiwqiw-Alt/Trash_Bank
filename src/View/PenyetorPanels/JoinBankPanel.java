@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -16,8 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
 
 import Database.DatabaseBankSampah;
 import Database.DatabaseRequestJoin;
@@ -32,6 +35,10 @@ public class JoinBankPanel extends JPanel {
     ArrayList<BankSampah> listBankSampah;
     DashboardPenyetorView mainFrame;
 
+    private final String IMAGE_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\bank.png";
+    private final String LOCATION_ICON_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\location.png"; 
+    private final String NAME_ICON = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\tag.png";
+
     public JoinBankPanel(Penyetor User, DashboardPenyetorView mainFrame) {
         this.user = User;
         this.mainFrame = mainFrame;
@@ -39,15 +46,10 @@ public class JoinBankPanel extends JPanel {
 
         initLayout();
     }
-
+    
     public void initLayout() {
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245));
-
-        JPanel mainContent = new JPanel();
-        mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
-        mainContent.setBackground(new Color(245, 245, 245));
-        mainContent.setBorder(new EmptyBorder(20, 30, 20, 30));
 
         JPanel wrapper = new JPanel();
         wrapper.setLayout(new BorderLayout());
@@ -55,12 +57,9 @@ public class JoinBankPanel extends JPanel {
         wrapper.setBorder(new EmptyBorder(20, 30, 20, 30));
 
         wrapper.add(headerSection(), BorderLayout.NORTH);
-
-
         wrapper.add(mainSection(), BorderLayout.CENTER);
 
         add(wrapper, BorderLayout.CENTER);
-
     }
 
     public JScrollPane mainSection() {
@@ -70,15 +69,14 @@ public class JoinBankPanel extends JPanel {
 
         for (BankSampah bankSampah : listBankSampah) {
             main.add(createCard(bankSampah));
-            main.add(Box.createVerticalStrut(15)); // spasi antar kartu
+            main.add(Box.createVerticalStrut(15)); 
         }
 
         JScrollPane scroll = new JScrollPane(main);
         scroll.setBorder(null);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
 
-        return scroll; // ✔ return scroll, bukan panel
-
+        return scroll;
     }
 
     public JPanel headerSection() {
@@ -86,8 +84,8 @@ public class JoinBankPanel extends JPanel {
         main.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         main.setBackground(new Color(245, 245, 245));
-        setAlignmentX(Component.CENTER_ALIGNMENT);
-        setMaximumSize(new Dimension(Short.MAX_VALUE, 20));
+        main.setAlignmentX(Component.CENTER_ALIGNMENT);
+        main.setMaximumSize(new Dimension(Short.MAX_VALUE, 20));
 
         JLabel title = new JLabel();
         title.setText("SELAMAT DATANG DI APLIKASI BANK SAMPAH, SILAHKAN BERGABUNG KE BANK!");
@@ -101,78 +99,118 @@ public class JoinBankPanel extends JPanel {
 
     public JPanel createCard(BankSampah bank) {
         JPanel cardPanel = new JPanel();
-        cardPanel.setLayout(new BorderLayout(20, 0)); // Spasi horizontal 20px
+        cardPanel.setLayout(new BorderLayout(15, 0)); 
         cardPanel.setBackground(Color.WHITE);
+        
+        cardPanel.setMaximumSize(new Dimension(1000, 120)); 
+        cardPanel.setPreferredSize(new Dimension(800, 120)); 
+        cardPanel.setAlignmentX(Component.CENTER_ALIGNMENT); 
 
-        // Padding dan Border halus
         cardPanel.setBorder(
                 BorderFactory.createCompoundBorder(
-                        new LineBorder(new Color(220, 220, 220), 1, true), // Border abu-abu tipis dengan sudut membulat
+                        new LineBorder(new Color(220, 220, 220), 1, true), 
                         new EmptyBorder(15, 20, 15, 20)));
 
-        // --- Konten Teks (Kiri) ---
-        JPanel textPanel = new JPanel();
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        textPanel.setOpaque(false); // Transparan
-        textPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        leftPanel.setOpaque(false);
+        leftPanel.setPreferredSize(new Dimension(100, 90));
+        
+        JLabel bankImageLabel = createImageLabel(IMAGE_PATH, 60, 60, "BANK");
+        leftPanel.add(bankImageLabel);
 
-        // Label Nama Bank
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setOpaque(false);
+        centerPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        titlePanel.setOpaque(false);
+        titlePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel iconBankTitle = createImageLabel(NAME_ICON, 16, 16, "B");
+        iconBankTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5)); 
+        
         JLabel title = new JLabel();
         title.setText(bank.getNamaBank());
         title.setFont(new Font("Arial", Font.BOLD, 16));
         title.setForeground(new Color(50, 50, 50));
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        titlePanel.add(iconBankTitle);
+        titlePanel.add(title);
+        
+        JPanel alamatPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        alamatPanel.setOpaque(false);
+        alamatPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Label Alamat
+        JLabel iconLocation = createImageLabel(LOCATION_ICON_PATH, 16, 16, "L");
+        iconLocation.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        
         JLabel alamat = new JLabel();
-        alamat.setText(bank.getAlamat());
+        alamat.setText("<html><div style='width: 400px; font-size: 12px;'>" + bank.getAlamat() + "</div></html>"); 
         alamat.setFont(new Font("Arial", Font.PLAIN, 12));
         alamat.setForeground(new Color(100, 100, 100));
-        alamat.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        textPanel.add(title);
-        textPanel.add(Box.createVerticalStrut(5)); // Spasi kecil
-        textPanel.add(alamat);
+        alamatPanel.add(iconLocation);
+        alamatPanel.add(alamat);
+        
+        centerPanel.add(titlePanel);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(alamatPanel);
+        centerPanel.add(Box.createVerticalGlue()); 
 
-        // --- Tombol (Kanan) ---
-        JPanel buttonWrapper = new JPanel();
-        buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        buttonWrapper.setOpaque(false);
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setOpaque(false);
+        rightPanel.setPreferredSize(new Dimension(120, 90));
 
         JButton joinButton = new JButton();
         joinButton.setText("Gabung Bank");
-        joinButton.setFont(new Font("Arial", Font.BOLD, 12));
+        joinButton.setFont(new Font("Arial", Font.BOLD, 12)); 
 
-        // Desain Tombol Modern (Warna Hijau Khas Bank Sampah)
-        joinButton.setBackground(new Color(76, 175, 80)); // Hijau
+        joinButton.setBackground(new Color(76, 175, 80)); 
         joinButton.setForeground(Color.WHITE);
-        joinButton.setFocusPainted(false); // Hilangkan fokus aneh
+        joinButton.setFocusPainted(false);
         joinButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(67, 160, 71), 1, true), // Border halus
-                new EmptyBorder(10, 15, 10, 15) // Padding
+                BorderFactory.createLineBorder(new Color(67, 160, 71), 1, true), 
+                new EmptyBorder(8, 15, 8, 15) 
         ));
 
         joinButton.addActionListener(e -> {
             joinBank(bank);
         });
 
-        buttonWrapper.add(joinButton);
+        rightPanel.add(joinButton, BorderLayout.CENTER);
 
-        // Tambahkan ke CardPanel
-        cardPanel.add(textPanel, BorderLayout.CENTER); // Konten di tengah
-        cardPanel.add(buttonWrapper, BorderLayout.EAST); // Tombol di kanan
+        cardPanel.add(leftPanel, BorderLayout.WEST);
+        cardPanel.add(centerPanel, BorderLayout.CENTER);
+        cardPanel.add(rightPanel, BorderLayout.EAST);
 
         return cardPanel;
     }
 
+    private JLabel createImageLabel(String path, int width, int height, String placeholderText) {
+        JLabel imageLabel;
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH); 
+            imageLabel = new JLabel(new ImageIcon(scaledImg));
+        } catch (Exception e) {
+            imageLabel = new JLabel(placeholderText, SwingConstants.CENTER);
+            imageLabel.setPreferredSize(new Dimension(width, height));
+            imageLabel.setBorder(BorderFactory.createLineBorder(new Color(53, 106, 105), 1));
+            imageLabel.setFont(new Font("Arial", Font.BOLD, 10));
+            imageLabel.setForeground(new Color(53, 106, 105));
+        }
+        return imageLabel;
+    }
 
-    // Logic Gabung Bank
     private void joinBank(BankSampah bank) {
         ArrayList<TransaksiJoin> dafTransaksiJoins = DatabaseRequestJoin.loadData();
 
         for (TransaksiJoin transaksiJoin : dafTransaksiJoins) {
             if (transaksiJoin.getIdPenyetor().equals(user.getIdPenyetor()) && transaksiJoin.getStatusRequest() == TransaksiJoin.Status.DITERIMA) {
-                
                 
         JOptionPane.showMessageDialog(this,
                 "Anda berhasil mendaftar ke " + bank.getNamaBank() + "!",
@@ -203,5 +241,4 @@ public class JoinBankPanel extends JPanel {
                 JOptionPane.INFORMATION_MESSAGE);
         return;
     }
-
 }

@@ -17,20 +17,16 @@ public class DashboardPenyetorView extends JFrame {
     private JPanel contentPanel; 
     private JPanel menuPanel; 
     
-    // Icon & Style Constants
-    private final Color GREEN_PRIMARY = new Color(0x356A69); // Hijau Gelap
-    private final Color GREEN_LIGHT = new Color(0x67AE6E); // Hijau Terang/Aksen
-    private final Color GRAY_NAV = new Color(0xF0F0F0); // Warna Latar Navigasi Landing
+    private final Color GREEN_PRIMARY = new Color(0x356A69); 
+    private final Color GREEN_LIGHT = new Color(0x67AE6E); 
+    private final Color GRAY_NAV = new Color(0xF0F0F0); 
 
-    // Variabel untuk melacak tombol mana yang sedang aktif
     private String activeLandingMenu = "Home"; 
     
-    // Variabel untuk menyimpan referensi tombol Navigasi di Header (Landing & Dashboard)
     private JPanel homeNavButton;
-    private JPanel joinBankNavButton; // Khusus mode Landing Page
-    private JPanel logoutNavButton; // Khusus mode Landing Page
+    private JPanel joinBankNavButton; 
+    private JPanel logoutNavButton; 
 
-    // BARU: Variabel untuk tombol Navigasi Dashboard di Header
     private JPanel setorSampahNavButton;
     private JPanel riwayatNavButton;
     private JPanel tukarPoinNavButton;
@@ -59,47 +55,60 @@ public class DashboardPenyetorView extends JFrame {
     }
 
     private void initLayout() {
-        // Hapus semua komponen yang mungkin ada sebelumnya
         getContentPane().removeAll();
         setLayout(new BorderLayout()); 
         
-        // Hapus menuPanel lama (Sidebar) jika ada
         if (menuPanel != null) {
             remove(menuPanel); 
             menuPanel = null;
         }
 
-        // Inisialisasi contentPanel agar selalu ada di CENTER
+        clearNavigationReferences(); 
+
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.white);
-        add(contentPanel, BorderLayout.CENTER);
-
-
+        
         if (this.bankSampah == null) {
-            // Mode Belum Terdaftar: Menggunakan Landing Page Layout (Header/Navbar di NORTH)
             createLandingPageLayout();
+            if (!activeLandingMenu.equals("JoinBank") && !activeLandingMenu.equals("Profil")) {
+                activeLandingMenu = "Home";
+            }
         } else {
-            // Mode Sudah Terdaftar: Menggunakan DASHBOARD HEADER LAYOUT
             createDashboardHeaderLayout();
+            if (activeLandingMenu.equals("JoinBank")) { 
+                activeLandingMenu = "Home";
+            }
         }
         
-        switchPanel("Home"); // Muat panel Home secara default
+        add(contentPanel, BorderLayout.CENTER); 
+        
+        switchPanel(activeLandingMenu); 
 
         revalidate();
         repaint();
     }
-
-    // =========================================================================
-    // --- Layout Khusus Mode Sudah Daftar (Dashboard Header) ---
-    // =========================================================================
     
+    private void clearNavigationReferences() {
+        homeNavButton = null;
+        joinBankNavButton = null;
+        logoutNavButton = null;
+        setorSampahNavButton = null;
+        riwayatNavButton = null;
+        tukarPoinNavButton = null;
+        keluhanNavButton = null;
+        profileButtonEast = null;
+    }
+
     private void createDashboardHeaderLayout() {
-        // --- Header (Navbar) ---
+        Component existingHeader = ((BorderLayout) getContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
+        if (existingHeader != null) {
+            remove(existingHeader);
+        }
+        
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(GREEN_PRIMARY);
         headerPanel.setPreferredSize(new Dimension(this.getWidth(), 70));
         
-        // 1. Logo (WEST)
         String namaBank = bankSampah != null ? bankSampah.getNamaBank().toUpperCase() : "DASHBOARD";
         JLabel headerTitle = new JLabel(namaBank); 
         headerTitle.setFont(new Font("Fredoka", Font.BOLD, 24));
@@ -107,11 +116,9 @@ public class DashboardPenyetorView extends JFrame {
         headerTitle.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         headerPanel.add(headerTitle, BorderLayout.WEST);
         
-        // 2. Tombol Navigasi Dashboard di Tengah (CENTER) 
         JPanel centerNavPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0)); 
         centerNavPanel.setOpaque(false);
         
-        // Menu Dashboard
         homeNavButton = createHeaderMenuButton("HOME", "Home"); 
         setorSampahNavButton = createHeaderMenuButton("SETOR SAMPAH", "SetorSampah");
         riwayatNavButton = createHeaderMenuButton("RIWAYAT TRANSAKSI", "Riwayat");
@@ -126,11 +133,9 @@ public class DashboardPenyetorView extends JFrame {
         
         headerPanel.add(centerNavPanel, BorderLayout.CENTER);
         
-        // 3. Tombol Profile & Logout (EAST)
         JPanel eastWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
         eastWrapper.setOpaque(false);
         
-        // Tombol Profile 
         profileButtonEast = new JButton("PROFILE (" + currentUser.getNamaLengkap().split(" ")[0].toUpperCase() + ")"); 
         profileButtonEast.setFont(new Font("Fredoka", Font.BOLD, 14));
         profileButtonEast.setBackground(Color.WHITE); 
@@ -145,7 +150,6 @@ public class DashboardPenyetorView extends JFrame {
         });
         eastWrapper.add(profileButtonEast);
         
-        // Tombol Logout
         JButton logoutButton = new JButton("LOGOUT");
         logoutButton.setFont(new Font("Fredoka", Font.BOLD, 14));
         logoutButton.setBackground(GREEN_LIGHT); 
@@ -161,42 +165,36 @@ public class DashboardPenyetorView extends JFrame {
         updateHeaderMenuHighlight();
     }
 
-
-    // =========================================================================
-    // --- Layout Khusus Mode Belum Daftar (Landing Page) --- (TIDAK DIUBAH)
-    // =========================================================================
     private void createLandingPageLayout() {
-        // --- Header (Navbar) ---
+        Component existingHeader = ((BorderLayout) getContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
+        if (existingHeader != null) {
+            remove(existingHeader);
+        }
+        
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(GREEN_PRIMARY);
         headerPanel.setPreferredSize(new Dimension(this.getWidth(), 70));
         
-        // 1. Logo (WEST)
         JLabel headerTitle = new JLabel("BANK SAMPAH");
         headerTitle.setFont(new Font("Fredoka", Font.BOLD, 24));
         headerTitle.setForeground(Color.WHITE);
         headerTitle.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         headerPanel.add(headerTitle, BorderLayout.WEST);
         
-        // 2. Tombol Navigasi di Tengah (CENTER) 
         JPanel centerNavPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0)); 
         centerNavPanel.setOpaque(false);
         
-        // Tombol HOME
         homeNavButton = createHeaderMenuButton("HOME", "Home");
         centerNavPanel.add(homeNavButton);
         
-        // Tombol DAFTAR BANK SAMPAH
         joinBankNavButton = createHeaderMenuButton("DAFTAR BANK SAMPAH", "JoinBank");
         centerNavPanel.add(joinBankNavButton);
         
-        // Tombol LOGOUT 
         logoutNavButton = createHeaderMenuButton("LOGOUT", "Logout"); 
         centerNavPanel.add(logoutNavButton);
         
         headerPanel.add(centerNavPanel, BorderLayout.CENTER); 
         
-        // 3. Tombol Profile (EAST)
         JButton profileButton = new JButton("LIHAT PROFILE");
         profileButton.setFont(new Font("Fredoka", Font.BOLD, 14));
         profileButton.setBackground(Color.WHITE); 
@@ -210,7 +208,6 @@ public class DashboardPenyetorView extends JFrame {
         
         headerPanel.add(profileWrapper, BorderLayout.EAST);
         
-        // Logic untuk LIHAT PROFILE
         profileButton.addActionListener(e -> {
             activeLandingMenu = "Profil"; 
             updateHeaderMenuHighlight(); 
@@ -221,10 +218,6 @@ public class DashboardPenyetorView extends JFrame {
         updateHeaderMenuHighlight();
     }
     
-    // =========================================================================
-    // --- UI HELPER METHODS ---
-    // =========================================================================
-
     private JPanel createHeaderMenuButton(String text, String command) {
         JPanel btnPanel = new JPanel(new BorderLayout()); 
         btnPanel.setBackground(GREEN_PRIMARY);
@@ -237,7 +230,6 @@ public class DashboardPenyetorView extends JFrame {
         label.setForeground(Color.WHITE);
         btnPanel.add(label, BorderLayout.CENTER);
 
-        // Hover & Click Listener
         btnPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -269,19 +261,16 @@ public class DashboardPenyetorView extends JFrame {
         return btnPanel;
     }
     
-    // --- Mengatur Highlight untuk Navigasi Header (Kompatibel Dua Mode) ---
     private void updateHeaderMenuHighlight() {
         boolean isDashboardMode = this.bankSampah != null;
         JPanel[] dashboardButtons = {homeNavButton, setorSampahNavButton, riwayatNavButton, tukarPoinNavButton, keluhanNavButton};
-        JPanel[] landingButtons = {homeNavButton, joinBankNavButton};
+        JPanel[] landingButtons = {homeNavButton, joinBankNavButton, logoutNavButton};
         
         JPanel[] buttonsToProcess = isDashboardMode ? dashboardButtons : landingButtons;
         
-        // 1. Proses Highlight
         for (JPanel btn : buttonsToProcess) {
             if (btn != null) {
                 boolean isActive = false;
-                // Cek apakah tombol yang sedang diproses cocok dengan activeLandingMenu
                 if (btn == homeNavButton && activeLandingMenu.equals("Home")) isActive = true;
                 if (btn == joinBankNavButton && activeLandingMenu.equals("JoinBank")) isActive = true;
                 if (btn == setorSampahNavButton && activeLandingMenu.equals("SetorSampah")) isActive = true;
@@ -296,20 +285,12 @@ public class DashboardPenyetorView extends JFrame {
                     btn.setBorder(BorderFactory.createEmptyBorder());
                     btn.setBackground(GREEN_PRIMARY);
                 }
+                
+                 if (btn == logoutNavButton || activeLandingMenu.equals("Profil")) {
+                    btn.setBorder(BorderFactory.createEmptyBorder());
+                    btn.setBackground(GREEN_PRIMARY);
+                }
             }
-        }
-        
-        // 2. Penanganan Khusus untuk Profil dan Logout (Tidak ada highlight aktif)
-        if (activeLandingMenu.equals("Profil")) {
-             for (JPanel btn : buttonsToProcess) {
-                 if (btn != null) btn.setBorder(BorderFactory.createEmptyBorder());
-             }
-        }
-        
-        // Logout Nav Button (Hanya ada di Landing Page)
-        if (logoutNavButton != null) {
-            logoutNavButton.setBorder(BorderFactory.createEmptyBorder());
-            logoutNavButton.setBackground(GREEN_PRIMARY);
         }
         
         if (contentPanel != null) {
@@ -317,7 +298,6 @@ public class DashboardPenyetorView extends JFrame {
             contentPanel.repaint();
         }
     }
-
 
     private JPanel createHomeLandingPanel() {
         JPanel homePanel = new JPanel(new BorderLayout());
@@ -407,7 +387,6 @@ public class DashboardPenyetorView extends JFrame {
         mainContentArea.add(contentContainer, BorderLayout.CENTER); 
         homePanel.add(mainContentArea, BorderLayout.CENTER);
 
-        // Footer Kosong
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         footerPanel.setBackground(Color.WHITE); 
         footerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); 
@@ -426,7 +405,6 @@ public class DashboardPenyetorView extends JFrame {
     public void switchPanel(String menuName) {
         JPanel nextPanel = null;
 
-        // Routing ke Panel Pecahan
         switch (menuName) {
             case "Home":
                 activeLandingMenu = "Home"; 
@@ -457,6 +435,15 @@ public class DashboardPenyetorView extends JFrame {
                 nextPanel = new View.PenyetorPanels.KeluhanPanel(currentUser);
                 break;
             case "JoinBank":
+                if (this.bankSampah != null) {
+                     JOptionPane.showMessageDialog(this, 
+                          "Anda sudah terdaftar di bank sampah, tidak dapat mengakses fitur ini.", 
+                          "Akses Ditolak", 
+                          JOptionPane.WARNING_MESSAGE);
+                    activeLandingMenu = "Home";
+                    switchPanel("Home"); 
+                    return;
+                }
                 activeLandingMenu = "JoinBank"; 
                 nextPanel = new View.PenyetorPanels.JoinBankPanel(currentUser, this);
                 break;
@@ -468,21 +455,16 @@ public class DashboardPenyetorView extends JFrame {
                 break;
         }
 
-        // Handle panel switching
         if (contentPanel != null) {
-            // Hapus komponen di CENTER
             contentPanel.removeAll();
             
-            // Tambahkan nextPanel ke CENTER
             contentPanel.add(nextPanel, BorderLayout.CENTER);
             
-            // Update highlight setelah panel diswitch 
             updateHeaderMenuHighlight();
             
             contentPanel.revalidate();
             contentPanel.repaint();
         } else {
-             // Fallback
              getContentPane().add(nextPanel, BorderLayout.CENTER);
              getContentPane().revalidate();
              getContentPane().repaint();
@@ -493,21 +475,16 @@ public class DashboardPenyetorView extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                // **MEMBUKA KEMBALI JENDELA LOGIN**
                 new View.LoginView().setVisible(true); 
             } catch (Exception ex) {
                 System.err.println("Gagal memuat LoginView. Pastikan class LoginView ada di package View.");
             }
-            this.dispose(); // Tutup jendela Dashboard saat ini
+            this.dispose(); 
         }
     }
 
-    // =========================================================================
-    // HELPER UI METHODS (Sidebar style - tidak digunakan di mode dashboard baru)
-    // =========================================================================
-
     private JLabel createSectionTitle(String title) {
-        JLabel label = new JLabel("  " + title);
+        JLabel label = new JLabel("  " + title);
         label.setFont(new Font("Fredoka", Font.BOLD, 12));
         label.setForeground(new Color(200, 255, 200));
         label.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
@@ -521,7 +498,7 @@ public class DashboardPenyetorView extends JFrame {
         btnPanel.setBackground(GREEN_PRIMARY);
         btnPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JLabel label = new JLabel("   " + text);
+        JLabel label = new JLabel("   " + text);
         label.setFont(new Font("Fredoka", Font.PLAIN, 15));
         label.setForeground(Color.WHITE);
         btnPanel.add(label, BorderLayout.CENTER);
@@ -531,12 +508,10 @@ public class DashboardPenyetorView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 switchPanel(command);
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 btnPanel.setBackground(GREEN_LIGHT);
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
                 btnPanel.setBackground(GREEN_PRIMARY);
@@ -549,6 +524,10 @@ public class DashboardPenyetorView extends JFrame {
 
     public void setBankSampah(BankSampah bank) {
         this.bankSampah = bank;
+         if (bank != null) {
+            this.currentUser.setIdBankSampah(bank.getIdBank()); 
+        }
+        activeLandingMenu = "Home"; 
         initLayout(); 
     }
 }

@@ -3,7 +3,12 @@ package View.PenyetorPanels;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import Database.DatabaseComplain;
@@ -14,205 +19,277 @@ import Service.BankSampahService;
 import Service.ComplainService;
 
 public class KeluhanPanel extends JPanel {
-   private Penyetor user;
-   private BankSampah bank;
-   private ComplainService cs;
-   private BankSampahService bss;
-   private ArrayList<Complain> daftarComplain;
+    private Penyetor user;
+    private BankSampah bank;
+    private ComplainService cs;
+    private BankSampahService bss;
+    private ArrayList<Complain> daftarComplain;
 
-   // Komponen UI
-   private JTextField judulField;
-   private JTextArea isiArea;
-   private JButton submitButton;
-   private JTable riwayatTable;
-   private DefaultTableModel tableModel;
+    private JTextField judulField;
+    private JTextArea isiArea;
+    private JButton submitButton;
+    private JTable riwayatTable;
+    private DefaultTableModel tableModel;
 
-   public KeluhanPanel(Penyetor user) {
-      this.user = user;
-      this.bss = new BankSampahService();
-      this.cs = new ComplainService();
-      this.bank = bss.getObjBankSampah(user.getIdBankSampah());
-      daftarComplain = cs.daftarComplain(bank);
+    private final Color PRIMARY_COLOR = new Color(0x1F6B6A); 
+    private final Color ACCENT_COLOR = new Color(0x67AE6E); 
+    private final Color SOFT_BG = new Color(245, 245, 245);
+    private final Color HEADER_BG = new Color(0x356A69); 
+    private final Color HOVER_COLOR = new Color(0, 102, 0); 
+    
+    private final String ICON_COMPLAIN_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\suggestion-box.png";
+    private final String ICON_HISTORY_PATH = "Trash_Bank\\\\src\\\\Asset\\\\Image\\\\history.png";
+    private final int ICON_SIZE = 24;
 
-      initUI();
-      loadRiwayatKeluhan();
-   }
+    public KeluhanPanel(Penyetor user) {
+        this.user = user;
+        this.bss = new BankSampahService();
+        this.cs = new ComplainService();
+        this.bank = bss.getObjBankSampah(user.getIdBankSampah());
+        daftarComplain = cs.daftarComplain(bank);
 
-   private void initUI() {
-      setLayout(new BorderLayout(20, 20));
-      setBackground(Color.WHITE);
-      setBorder(new EmptyBorder(20, 20, 20, 20));
+        initUI();
+        loadRiwayatKeluhan();
+    }
 
-      // Header
-      JLabel header = new JLabel("Kirim Keluhan");
-      header.setFont(new Font("Segoe UI", Font.BOLD, 26));
-      header.setHorizontalAlignment(SwingConstants.CENTER);
-      add(header, BorderLayout.NORTH);
+    private ImageIcon getScaledIcon(String path, int width, int height) {
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImg);
+        } catch (Exception e) {
+            return null; 
+        }
+    }
 
-      // Panel utama
-      JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
-      mainPanel.setBackground(Color.WHITE);
-      add(mainPanel, BorderLayout.CENTER);
+    private void initUI() {
+        setLayout(new BorderLayout(20, 20));
+        setBackground(SOFT_BG);
+        setBorder(new EmptyBorder(20, 40, 20, 40));
 
-      // Form keluhan
-      JPanel formPanel = new JPanel();
-      formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-      formPanel.setBackground(Color.WHITE);
-      formPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createTitledBorder("Form Keluhan"),
-            BorderFactory.createEmptyBorder(15, 15, 15, 15)));
+        JLabel header = new JLabel(" Kirim Keluhan", SwingConstants.CENTER);
+        header.setIcon(getScaledIcon(ICON_COMPLAIN_PATH, 30, 30));
+        header.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        header.setForeground(PRIMARY_COLOR.darker());
+        header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        add(header, BorderLayout.NORTH);
 
-      // Judul
-      JLabel judulLabel = new JLabel("Judul Keluhan:");
-      judulLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-      formPanel.add(judulLabel);
-      formPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        JPanel mainPanel = new JPanel(new BorderLayout(0, 30));
+        mainPanel.setBackground(SOFT_BG);
+        add(mainPanel, BorderLayout.CENTER);
 
-      judulField = new JTextField();
-      judulField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-      judulField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-      judulField.setBorder(BorderFactory.createCompoundBorder(
-            judulField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-      formPanel.add(judulField);
-      formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        JPanel formWrapper = createFormKeluhan();
+        mainPanel.add(formWrapper, BorderLayout.NORTH);
+        
+        JPanel riwayatPanel = createRiwayatTable();
+        mainPanel.add(riwayatPanel, BorderLayout.CENTER);
+    }
 
-      // Isi
-      JLabel isiLabel = new JLabel("Isi Keluhan:");
-      isiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-      formPanel.add(isiLabel);
-      formPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+    private JPanel createFormKeluhan() {
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(Color.LIGHT_GRAY, 1),
+                new EmptyBorder(25, 25, 25, 25)));
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 10, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        JLabel judulLabel = new JLabel("Judul Keluhan:");
+        judulLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.0;
+        formPanel.add(judulLabel, gbc);
 
-      isiArea = new JTextArea(6, 30);
-      isiArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-      isiArea.setLineWrap(true);
-      isiArea.setWrapStyleWord(true);
-      isiArea.setBorder(BorderFactory.createCompoundBorder(
-            isiArea.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-      JScrollPane scrollPane = new JScrollPane(isiArea);
-      scrollPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-      formPanel.add(scrollPane);
-      formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        judulField = new JTextField();
+        judulField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        judulField.setPreferredSize(new Dimension(300, 40));
+        judulField.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Color.LIGHT_GRAY),
+            new EmptyBorder(8, 10, 8, 10)));
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        formPanel.add(judulField, gbc);
 
-      // Tombol Submit
-      submitButton = new JButton("Submit Keluhan");
-      submitButton.setBackground(new Color(0, 128, 0));
-      submitButton.setForeground(Color.WHITE);
-      submitButton.setFocusPainted(false);
-      submitButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-      submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-      submitButton.setPreferredSize(new Dimension(150, 35));
-      submitButton.addActionListener(e -> tambahComplain());
-      formPanel.add(submitButton);
+        JLabel isiLabel = new JLabel("Isi Keluhan:");
+        isiLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        formPanel.add(isiLabel, gbc);
 
-      mainPanel.add(formPanel, BorderLayout.NORTH);
+        isiArea = new JTextArea(6, 30);
+        isiArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        isiArea.setLineWrap(true);
+        isiArea.setWrapStyleWord(true);
+        isiArea.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+        
+        JScrollPane scrollPane = new JScrollPane(isiArea);
+        scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY));
+        scrollPane.setPreferredSize(new Dimension(300, 120)); 
+        
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0; 
+        gbc.fill = GridBagConstraints.BOTH;
+        formPanel.add(scrollPane, gbc);
+        
+        submitButton = new JButton("Submit Keluhan");
+        submitButton.setBackground(PRIMARY_COLOR);
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setFocusPainted(false);
+        submitButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        submitButton.setPreferredSize(new Dimension(180, 45));
+        submitButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        submitButton.addActionListener(e -> tambahComplain());
+        
+        submitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                submitButton.setBackground(HOVER_COLOR);
+            }
 
-      // Panel riwayat
-      JPanel riwayatPanel = new JPanel(new BorderLayout());
-      riwayatPanel.setBackground(Color.WHITE);
-      riwayatPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createTitledBorder("Riwayat Keluhan Anda"),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+            @Override
+            public void mouseExited(MouseEvent e) {
+                submitButton.setBackground(ACCENT_COLOR);
+            }
+        });
 
-      tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status", "Tanggapan" }, 0) {
-         @Override
-         public boolean isCellEditable(int row, int column) {
-            return false; // read-only
-         }
-      };
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets = new Insets(20, 5, 0, 5);
+        formPanel.add(submitButton, gbc);
+        
+        return formPanel;
+    }
 
-      riwayatTable = new JTable(tableModel);
-      riwayatTable.setFillsViewportHeight(true);
-      riwayatTable.setRowHeight(30);
-      riwayatTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-      riwayatTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+    private JPanel createRiwayatTable() {
+        JPanel riwayatPanel = new JPanel(new BorderLayout(0, 10));
+        riwayatPanel.setBackground(SOFT_BG);
 
-      for (int i = 0; i < riwayatTable.getColumnCount(); i++) {
-         riwayatTable.getColumnModel().getColumn(i).setCellRenderer(new TextAreaRenderer());
-      }
+        JLabel riwayatTitle = new JLabel(" Riwayat Keluhan Anda");
+        riwayatTitle.setIcon(getScaledIcon(ICON_HISTORY_PATH, ICON_SIZE, ICON_SIZE));
+        riwayatTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        riwayatTitle.setForeground(PRIMARY_COLOR);
+        riwayatPanel.add(riwayatTitle, BorderLayout.NORTH);
 
-      JScrollPane tableScroll = new JScrollPane(riwayatTable);
-      tableScroll.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-      riwayatPanel.add(tableScroll, BorderLayout.CENTER);
+        tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status", "Tanggapan" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; 
+            }
+        };
 
-      mainPanel.add(riwayatPanel, BorderLayout.CENTER);
-   }
+        riwayatTable = new JTable(tableModel);
+        riwayatTable.setFillsViewportHeight(true);
+        riwayatTable.setRowHeight(30);
+        riwayatTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        riwayatTable.setGridColor(new Color(240, 240, 240));
+        riwayatTable.setSelectionBackground(new Color(230, 240, 230));
 
-   private void tambahComplain() {
-      String judul = judulField.getText().trim();
-      String isi = isiArea.getText().trim();
+        JTableHeader header = riwayatTable.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        header.setBackground(HEADER_BG); 
+        header.setForeground(Color.WHITE);
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
+        
+        for (int i = 0; i < riwayatTable.getColumnCount(); i++) {
+            riwayatTable.getColumnModel().getColumn(i).setCellRenderer(new TextAreaRenderer());
+        }
 
-      if (judul.isEmpty() || isi.isEmpty()) {
-         JOptionPane.showMessageDialog(this, "Judul dan isi keluhan tidak boleh kosong!", "Error",
-               JOptionPane.ERROR_MESSAGE);
-         return;
-      }
+        JScrollPane tableScroll = new JScrollPane(riwayatTable);
+        tableScroll.setBorder(new LineBorder(Color.LIGHT_GRAY));
+        riwayatPanel.add(tableScroll, BorderLayout.CENTER);
+        
+        return riwayatPanel;
+    }
 
-      String idUser = user.getIdPenyetor();
-      String idBank = user.getIdBankSampah();
-      String idComplain = DatabaseComplain.generateComplainId();
+    private void tambahComplain() {
+        String judul = judulField.getText().trim();
+        String isi = isiArea.getText().trim();
 
-      Complain complainBaru = new Complain(idComplain, idUser, idBank, judul, isi);
-      daftarComplain.add(complainBaru);
+        if (judul.isEmpty() || isi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Judul dan isi keluhan tidak boleh kosong!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-      // Simpan ke database
-      DatabaseComplain.writeData(daftarComplain, bank.getFileComplain());
-      DatabaseComplain.writeData(daftarComplain);
+        String idUser = user.getIdPenyetor();
+        String idBank = user.getIdBankSampah();
+        String idComplain = DatabaseComplain.generateComplainId();
 
-      JOptionPane.showMessageDialog(this, "Keluhan berhasil dikirim!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        Complain complainBaru = new Complain(idComplain, idUser, idBank, judul, isi);
+        daftarComplain.add(complainBaru);
 
-      // Reset form
-      judulField.setText("");
-      isiArea.setText("");
+        DatabaseComplain.writeData(daftarComplain, bank.getFileComplain());
+        DatabaseComplain.writeData(daftarComplain);
 
-      // Refresh tabel
-      loadRiwayatKeluhan();
-   }
+        JOptionPane.showMessageDialog(this, "Keluhan berhasil dikirim!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
 
-   private void loadRiwayatKeluhan() {
-      tableModel.setRowCount(0); // hapus data lama
-      daftarComplain = DatabaseComplain.loadData(bank.getFileComplain());
-      for (Complain c : daftarComplain) {
-         if (c.getIdPenyetor().equals(user.getIdPenyetor())) {
-            tableModel.addRow(
-                  new Object[] { c.getIdComplain(), c.getJudul(), c.getIsi(), c.getStatus(), c.getTanggapanAdmin() });
-         }
-      }
-   }
+        judulField.setText("");
+        isiArea.setText("");
+
+        loadRiwayatKeluhan();
+    }
+
+    private void loadRiwayatKeluhan() {
+        tableModel.setRowCount(0); 
+        daftarComplain = DatabaseComplain.loadData(bank.getFileComplain());
+        for (Complain c : daftarComplain) {
+            if (c.getIdPenyetor().equals(user.getIdPenyetor())) {
+                tableModel.addRow(
+                        new Object[] { c.getIdComplain(), c.getJudul(), c.getIsi(), c.getStatus(), c.getTanggapanAdmin() });
+            }
+        }
+        
+        revalidate();
+        repaint();
+    }
 }
 
 class TextAreaRenderer extends JTextArea implements javax.swing.table.TableCellRenderer {
-   public TextAreaRenderer() {
-      setLineWrap(true);
-      setWrapStyleWord(true);
-      setOpaque(true);
-   }
+    public TextAreaRenderer() {
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        setOpaque(true);
+        setBorder(new EmptyBorder(5, 5, 5, 5)); 
+    }
 
-   @Override
-   public Component getTableCellRendererComponent(JTable table, Object value,
-         boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
 
-      setText(value != null ? value.toString() : "");
-      setFont(table.getFont());
+        setText(value != null ? value.toString() : "");
+        setFont(table.getFont());
 
-      // Mengatur warna background & foreground ketika diseleksi
-      if (isSelected) {
-         setBackground(table.getSelectionBackground());
-         setForeground(table.getSelectionForeground());
-      } else {
-         setBackground(table.getBackground());
-         setForeground(table.getForeground());
-      }
+        if (isSelected) {
+            setBackground(table.getSelectionBackground());
+            setForeground(table.getSelectionForeground());
+        } else {
+            setBackground(table.getBackground());
+            setForeground(table.getForeground());
+        }
 
-      // Menyesuaikan tinggi row
-      int tableWidth = table.getColumnModel().getColumn(column).getWidth();
-      setSize(new Dimension(tableWidth, Short.MAX_VALUE));
-      int preferredHeight = getPreferredSize().height;
-      if (table.getRowHeight(row) != preferredHeight) {
-         table.setRowHeight(row, preferredHeight);
-      }
+        int tableWidth = table.getColumnModel().getColumn(column).getWidth();
+        setSize(new Dimension(tableWidth, Short.MAX_VALUE));
+        int preferredHeight = getPreferredSize().height;
+        
+        preferredHeight = Math.max(preferredHeight, 30); 
+        
+        if (table.getRowHeight(row) != preferredHeight) {
+            table.setRowHeight(row, preferredHeight);
+        }
 
-      return this;
-   }
+        return this;
+    }
 }

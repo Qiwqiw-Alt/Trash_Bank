@@ -5,13 +5,14 @@ import javax.swing.*;
 import Controller.SignInController;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SignInView extends JFrame {
 
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField namaField;
-//    private JTextField idField;
     private JTextField noHpField;
     private JComboBox<String> roleBox;
     private ImageIcon image = new ImageIcon("Trash_Bank\\\\src\\\\Asset\\\\Image\\\\recycle-bin.png");
@@ -19,7 +20,7 @@ public class SignInView extends JFrame {
 
     public SignInView() {
         setTitle("Sign Up - Bank Sampah");
-        setSize(800, 600); // Diperbesar untuk menampung field tambahan
+        setSize(800, 600); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -30,62 +31,47 @@ public class SignInView extends JFrame {
 
    private void initComponents() {
 
-    // Ukuran frame 800x700 (diatur di constructor), lebih besar dari LoginView 800x600 untuk menampung field lebih banyak.
     setLayout(new BorderLayout()); 
 
-    // ===================================
-    // PANEL KIRI (500px - IMAGE/HEADER)
-    // Mirip dengan sisi KIRI LoginView (putih)
-    // ===================================
     JPanel leftPanel = new JPanel(new BorderLayout());
     leftPanel.setPreferredSize(new Dimension(400, 600));
     leftPanel.setBackground(Color.WHITE);
 
-    // BAGIAN ATAS ATAU HEADER (Logo)
     JLabel headerLabel = new JLabel("BANK SAMPAH", SwingConstants.LEFT);
     headerLabel.setFont(new Font("Fredoka", Font.BOLD, 24));
-    headerLabel.setForeground(new Color(0x356A69)); // Warna Hijau Gelap
-    headerLabel.setBorder(BorderFactory.createEmptyBorder(30, 30, 0, 0)); // Padding
+    headerLabel.setForeground(new Color(0x356A69)); 
+    headerLabel.setBorder(BorderFactory.createEmptyBorder(30, 30, 0, 0)); 
     leftPanel.add(headerLabel, BorderLayout.NORTH);
 
-    // Kontainer Gambar (di Tengah)
     JPanel imageContainer = new JPanel(new GridBagLayout());
     imageContainer.setBackground(Color.WHITE);
     
-    // Placeholder untuk Gambar Ilustrasi (Anda bisa mengganti path ini)
-    ImageIcon signupImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\"); // Ganti dengan gambar Sign Up
+    ImageIcon signupImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\"); 
     Image img = signupImage.getImage();
-    // Skala gambar lebih kecil karena panel lebih tinggi
     Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH); 
     JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
     imageContainer.add(imageLabel);
     leftPanel.add(imageContainer, BorderLayout.CENTER);
 
-    // Footer Text
     JLabel footerLabel = new JLabel("Daftarkan dirimu dan mulai peduli lingkungan!", SwingConstants.CENTER);
     footerLabel.setFont(new Font("Fredoka", Font.BOLD, 16));
     footerLabel.setForeground(new Color(0x356A69));
-    footerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0)); // Padding bawah
+    footerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0)); 
     leftPanel.add(footerLabel, BorderLayout.SOUTH);
 
     add(leftPanel, BorderLayout.WEST);
 
-    // ===================================
-    // PANEL KANAN (300px - FORM)
-    // Mirip dengan sisi KANAN LoginView (Hijau Gelap)
-    // ===================================
     JPanel rightPanel = new JPanel(new GridBagLayout());
-    rightPanel.setBackground(new Color(0x356A69)); // Warna Hijau Gelap
+    rightPanel.setBackground(new Color(0x356A69)); 
 
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(8, 20, 8, 20); // Padding antara komponen
+    gbc.insets = new Insets(8, 20, 8, 20); 
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.ipadx = 0; // Reset internal padding
-    gbc.gridwidth = 2; // Lebar field mencakup 2 kolom
+    gbc.ipadx = 0; 
+    gbc.gridwidth = 2; 
 
     int y = 0;
 
-    // Title
     JLabel title = new JLabel("Create Your Account", SwingConstants.LEFT);
     title.setFont(new Font("Fredoka", Font.BOLD, 26));
     title.setForeground(Color.WHITE);
@@ -93,7 +79,6 @@ public class SignInView extends JFrame {
     gbc.gridy = y++;
     rightPanel.add(title, gbc);
 
-    // Subtitle (Text Link to LoginView)
     JPanel subtitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
     subtitlePanel.setOpaque(false);
 
@@ -109,62 +94,53 @@ public class SignInView extends JFrame {
     subtitlePanel.add(loginLink);
     
     gbc.gridy = y++;
-    gbc.insets = new Insets(0, 20, 20, 20); // Sedikit lebih rapat ke atas
+    gbc.insets = new Insets(0, 20, 20, 20); 
     rightPanel.add(subtitlePanel, gbc);
-    gbc.insets = new Insets(8, 20, 8, 20); // Reset padding
+    gbc.insets = new Insets(8, 20, 8, 20); 
 
-    // Role Box (Daftar Sebagai)
     roleBox = new JComboBox<>(new String[]{"Admin", "Penyetor"});
     styleField(roleBox);
     gbc.gridy = y++;
     rightPanel.add(roleBox, gbc);
 
-    // Nama Lengkap
     namaField = new JTextField(25);
     namaField.setText("Nama Lengkap");
     styleTextField(namaField);
     gbc.gridy = y++;
     rightPanel.add(namaField, gbc);
 
-    // No. HP
     noHpField = new JTextField(25);
     noHpField.setText("Nomor HP");
     styleTextField(noHpField);
     gbc.gridy = y++;
     rightPanel.add(noHpField, gbc);
 
-    // Username
     usernameField = new JTextField(25);
     usernameField.setText("Username"); 
     styleTextField(usernameField);
     gbc.gridy = y++;
     rightPanel.add(usernameField, gbc);
 
-    // Password
     passwordField = new JPasswordField(25);
     passwordField.setText("Password");
     styleTextField(passwordField);
     gbc.gridy = y++;
     rightPanel.add(passwordField, gbc);
 
-    // Dummy Space/Divider
     gbc.gridy = y++;
     rightPanel.add(Box.createVerticalStrut(10), gbc);
 
-    // Button Container (Register dan Back)
     JPanel buttonContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
     buttonContainer.setOpaque(false);
 
-    // Register Button
     registerButton = new JButton("Register");
     registerButton.setFont(new Font("Fredoka", Font.BOLD, 14));
-    registerButton.setBackground(new Color(0x67AE6E)); // Warna Hijau
+    registerButton.setBackground(new Color(0x67AE6E)); 
     registerButton.setForeground(Color.WHITE);
     registerButton.setFocusPainted(false);
     registerButton.setPreferredSize(new Dimension(130, 40)); 
     buttonContainer.add(registerButton);
 
-    // Back Button
     backButton = new JButton("Back");
     backButton.setFont(new Font("Fredoka", Font.BOLD, 14));
     backButton.setBackground(new Color(0x67AE6E)); 
@@ -174,18 +150,16 @@ public class SignInView extends JFrame {
     buttonContainer.add(backButton);
 
     gbc.gridy = y++;
-    gbc.ipady = 0; // Reset internal padding
+    gbc.ipady = 0; 
     rightPanel.add(buttonContainer, gbc);
 
     add(rightPanel, BorderLayout.CENTER); 
 
-    // Aksi Tombol (Logic tidak diubah)
     registerButton.addActionListener(e -> registerUser());
     
-    // Action listener untuk link teks "Login di sini"
-    loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
+    loginLink.addMouseListener(new MouseAdapter() {
         @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
+        public void mouseClicked(MouseEvent evt) {
             new LoginView().setVisible(true);
             dispose();
         }
@@ -197,7 +171,6 @@ public class SignInView extends JFrame {
     });
 }
 
-// Tambahkan atau ubah helper methods ini jika belum ada:
 private void styleTextField(JTextField field) {
     field.setPreferredSize(new Dimension(25, 40));
     field.setBackground(Color.WHITE);
@@ -212,9 +185,6 @@ private void styleField(JComboBox<String> box) {
     box.setFont(new Font("Fredoka", Font.PLAIN, 14));
     box.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 }
-    // ==============================
-    // LOGIC PENDAFTARAN (DIPERBAIKI)
-    // ==============================
     private void registerUser() {
         String role = roleBox.getSelectedItem().toString();
         String nama = namaField.getText();
@@ -231,7 +201,6 @@ private void styleField(JComboBox<String> box) {
             return;
         }
 
-        // Buat user baru berdasarkan role
         if (role.equals("Admin")) {
             SignInController.getService().registerAdmin(role, nama, user, pass, noHp);
         } else {

@@ -9,7 +9,10 @@ import Controller.ListMemberController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,75 +20,96 @@ import java.util.List;
 public class ListMemberPanel extends JPanel {
 
     private BankSampah currentBank;
-    
-    // --- Komponen Tab Kiri ---
+
     private JTabbedPane tabLeft;
-    
-    // 1. Tab Manual Add
     private JTextField tfUserId;
     private JButton btnAdd;
 
-    // 2. Tab Request List (BARU)
     private JTable tableRequest;
     private DefaultTableModel modelRequest;
     private JButton btnAccept;
     private JButton btnReject;
-    
-    // --- Komponen Kanan (Daftar Member Sah) ---
+
     private JTable tableMember;
     private DefaultTableModel tableModel;
 
-    // Styling
-    private final Color GREEN_PRIMARY = new Color(0, 128, 0);
-    private final Color RED_DANGER = new Color(220, 53, 69);
-    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 18);
+    private final Color PRIMARY_COLOR = new Color(0x316C6C); 
+    private final Color ACCENT_COLOR = new Color(0x56A8A8); 
+    private final Color DARK_BG = PRIMARY_COLOR.darker(); 
+    private final Color SOFT_BG = PRIMARY_COLOR; 
+    private final Color HEADER_BG = DARK_BG; 
+    private final Color TEXT_COLOR = Color.WHITE; 
+    private final Color TABLE_ROW_EVEN = SOFT_BG.brighter(); 
+    private final Color TABLE_ROW_ODD = SOFT_BG; 
+    private final Color SELECTION_COLOR = new Color(0x70C4C4); 
+
+    private final Color GREEN_ACTION = new Color(0x28A745); 
+    private final Color RED_DANGER = new Color(0xDC3545); 
+
+    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 20);
     private final Font FONT_TEXT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 14);
+    private final int BORDER_RADIUS = 15;
+
 
     public ListMemberPanel(BankSampah bankSampah) {
         this.currentBank = bankSampah;
-        
         initLayout();
-        refreshTable(); // Load data member
-        refreshRequestTable(); // Load data request
+        refreshTable();
+        refreshRequestTable();
     }
 
     private void initLayout() {
         setLayout(new GridLayout(1, 2, 20, 20));
-        setBackground(new Color(245, 245, 245)); 
-        setBorder(new EmptyBorder(20, 20, 20, 20)); 
+        setBackground(TEXT_COLOR); 
+        setBorder(new EmptyBorder(25, 30, 25, 30));
 
-        // 1. PANEL KIRI (TABBED PANE)
         add(createLeftPanel());
 
-        // 2. PANEL KANAN (LIST MEMBER)
         add(createRightPanel());
     }
 
-    // ========================================================================
-    // BAGIAN KIRI: TABBED PANE (MANUAL ADD & REQUEST)
-    // ========================================================================
     private JPanel createLeftPanel() {
         JPanel container = new JPanel(new BorderLayout());
-        container.setBackground(Color.WHITE);
-        container.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        container.setOpaque(false); 
+
+        JPanel pnlContainerStyled = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(SOFT_BG); 
+                g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, BORDER_RADIUS, BORDER_RADIUS);
+                g2d.dispose();
+                super.paintComponent(g);
+            }
+        };
+        pnlContainerStyled.setLayout(new BorderLayout());
+        pnlContainerStyled.setOpaque(false); 
+
+        pnlContainerStyled.setBorder(BorderFactory.createCompoundBorder(
+            new RoundedBorder(ACCENT_COLOR, 1, BORDER_RADIUS, true),
+            new EmptyBorder(10, 10, 10, 10) 
+        ));
 
         tabLeft = new JTabbedPane();
-        tabLeft.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        tabLeft.setFont(FONT_LABEL.deriveFont(Font.BOLD, 13f));
+        tabLeft.setOpaque(false);
+        tabLeft.setBackground(SOFT_BG); 
+        tabLeft.setForeground(TEXT_COLOR); 
         
-        // Tab 1: Input Manual (Kode lama dipindah ke method ini)
         tabLeft.addTab("➕ Tambah Manual", createManualAddPanel());
         
-        // Tab 2: Permintaan Masuk (Fitur Baru)
         tabLeft.addTab("📩 Permintaan Masuk", createRequestPanel());
 
-        container.add(tabLeft, BorderLayout.CENTER);
-        return container;
+        pnlContainerStyled.add(tabLeft, BorderLayout.CENTER);
+        return pnlContainerStyled;
     }
-
+    
     private JPanel createManualAddPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.setBackground(SOFT_BG);
+        panel.setBorder(new EmptyBorder(30, 30, 30, 30));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 0, 10, 0);
@@ -94,29 +118,34 @@ public class ListMemberPanel extends JPanel {
 
         JLabel lblTitle = new JLabel("Input ID Penyetor");
         lblTitle.setFont(FONT_TITLE);
-        lblTitle.setForeground(GREEN_PRIMARY);
+        lblTitle.setForeground(ACCENT_COLOR);
         gbc.gridy = 0; panel.add(lblTitle, gbc);
-
+        
+        gbc.insets = new Insets(5, 0, 15, 0);
         JLabel lblDesc = new JLabel("<html>Masukkan ID Penyetor yang ingin<br>didaftarkan secara manual.</html>");
         lblDesc.setFont(FONT_TEXT);
-        lblDesc.setForeground(Color.GRAY);
+        lblDesc.setForeground(TEXT_COLOR.brighter());
         gbc.gridy = 1; panel.add(lblDesc, gbc);
 
+        gbc.insets = new Insets(15, 0, 5, 0);
         JLabel lblInput = new JLabel("ID Penyetor (cth: UP001):");
-        lblInput.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        lblInput.setFont(FONT_LABEL);
+        lblInput.setForeground(TEXT_COLOR);
         gbc.gridy = 2; panel.add(lblInput, gbc);
 
         tfUserId = new JTextField();
         tfUserId.setFont(FONT_TEXT);
-        tfUserId.setPreferredSize(new Dimension(200, 35));
+        tfUserId.setPreferredSize(new Dimension(200, 40));
+        tfUserId.setBorder(BorderFactory.createLineBorder(ACCENT_COLOR.darker(), 1));
         gbc.gridy = 3; panel.add(tfUserId, gbc);
 
         btnAdd = new JButton("Tambahkan Member");
-        styleButton(btnAdd, GREEN_PRIMARY);
+        styleButton(btnAdd, GREEN_ACTION, TEXT_COLOR);
+        btnAdd.setPreferredSize(new Dimension(200, 40));
         btnAdd.addActionListener(e -> handleAddMember());
         
         gbc.gridy = 4;
-        gbc.insets = new Insets(20, 0, 0, 0);
+        gbc.insets = new Insets(25, 0, 0, 0);
         panel.add(btnAdd, gbc);
         
         gbc.gridy = 5; gbc.weighty = 1.0;
@@ -126,36 +155,64 @@ public class ListMemberPanel extends JPanel {
     }
 
     private JPanel createRequestPanel() {
-        JPanel panel = new JPanel(new BorderLayout(0, 10));
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        JPanel panel = new JPanel(new BorderLayout(0, 15));
+        panel.setBackground(SOFT_BG);
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         JLabel lblTitle = new JLabel("Daftar Request Bergabung");
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblTitle.setForeground(Color.DARK_GRAY);
+        lblTitle.setFont(FONT_LABEL.deriveFont(Font.BOLD, 16f));
+        lblTitle.setForeground(ACCENT_COLOR);
         panel.add(lblTitle, BorderLayout.NORTH);
 
-        // Tabel Request
         String[] cols = {"ID Penyetor", "Nama Penyetor", "Status"}; 
         modelRequest = new DefaultTableModel(cols, 0) {
             @Override
             public boolean isCellEditable(int row, int col) { return false; }
         };
         tableRequest = new JTable(modelRequest);
-        tableRequest.setRowHeight(25);
-        tableRequest.setSelectionBackground(new Color(255, 240, 200)); // Warna kuning muda
-        panel.add(new JScrollPane(tableRequest), BorderLayout.CENTER);
+        styleTableCommon(tableRequest, HEADER_BG, SELECTION_COLOR); 
+        tableRequest.setRowHeight(35); 
+        
+        tableRequest.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+             @Override
+             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                 JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                 label.setHorizontalAlignment(SwingConstants.CENTER);
+                 
+                 if (value.toString().equals("SEDANG_DITINJAU")) {
+                     label.setForeground(new Color(0xFFC107)); 
+                     label.setFont(label.getFont().deriveFont(Font.BOLD));
+                 } else if (value.toString().equals("DITERIMA")) {
+                     label.setForeground(GREEN_ACTION); 
+                 } else if (value.toString().equals("DITOLAK")) {
+                     label.setForeground(RED_DANGER); 
+                 } else {
+                     label.setForeground(TEXT_COLOR);
+                 }
 
-        // Tombol Aksi
+                 if (!isSelected) {
+                     label.setBackground(row % 2 == 0 ? TABLE_ROW_EVEN : TABLE_ROW_ODD);
+                 }
+                 
+                 return label;
+             }
+        });
+
+
+        JScrollPane scrollPane = new JScrollPane(tableRequest);
+        scrollPane.setBorder(BorderFactory.createLineBorder(ACCENT_COLOR, 1));
+        panel.add(scrollPane, BorderLayout.CENTER);
+
         JPanel btnPanel = new JPanel(new GridLayout(1, 2, 10, 0));
-        btnPanel.setBackground(Color.WHITE);
+        btnPanel.setBackground(SOFT_BG);
+        btnPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
         btnAccept = new JButton("✅ Terima");
-        styleButton(btnAccept, GREEN_PRIMARY);
+        styleButton(btnAccept, GREEN_ACTION, TEXT_COLOR);
         btnAccept.addActionListener(e -> handleRequestAction(true));
 
         btnReject = new JButton("❌ Tolak");
-        styleButton(btnReject, RED_DANGER);
+        styleButton(btnReject, RED_DANGER, TEXT_COLOR);
         btnReject.addActionListener(e -> handleRequestAction(false));
 
         btnPanel.add(btnAccept);
@@ -165,20 +222,34 @@ public class ListMemberPanel extends JPanel {
         return panel;
     }
 
-    // ========================================================================
-    // BAGIAN KANAN: DAFTAR MEMBER SAH
-    // ========================================================================
     private JPanel createRightPanel() {
-        JPanel panel = new JPanel(new BorderLayout(0, 10));
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
+        JPanel panel = new JPanel(new BorderLayout(0, 15));
+        panel.setBackground(SOFT_BG);
+
+        JPanel pnlContainerStyled = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(SOFT_BG); 
+                g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, BORDER_RADIUS, BORDER_RADIUS);
+                g2d.dispose();
+                super.paintComponent(g);
+            }
+        };
+        pnlContainerStyled.setLayout(new BorderLayout());
+        pnlContainerStyled.setOpaque(false);
+        pnlContainerStyled.add(panel, BorderLayout.CENTER);
+        panel.setOpaque(false);
+        
+        pnlContainerStyled.setBorder(BorderFactory.createCompoundBorder(
+            new RoundedBorder(ACCENT_COLOR, 1, BORDER_RADIUS, true),
             new EmptyBorder(20, 20, 20, 20)
         ));
 
         JLabel lblTitle = new JLabel("Daftar Anggota Aktif");
         lblTitle.setFont(FONT_TITLE);
-        lblTitle.setForeground(GREEN_PRIMARY);
+        lblTitle.setForeground(ACCENT_COLOR);
         panel.add(lblTitle, BorderLayout.NORTH);
 
         String[] columns = {"ID", "Nama Lengkap", "No. HP"};
@@ -188,21 +259,14 @@ public class ListMemberPanel extends JPanel {
         };
 
         tableMember = new JTable(tableModel);
-        tableMember.setRowHeight(30);
-        tableMember.getTableHeader().setBackground(new Color(240, 240, 240));
-        tableMember.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
-        tableMember.setSelectionBackground(new Color(200, 255, 200));
+        styleTableCommon(tableMember, HEADER_BG, SELECTION_COLOR);
 
         JScrollPane scrollPane = new JScrollPane(tableMember);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBorder(BorderFactory.createLineBorder(ACCENT_COLOR, 1));
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        return panel;
+        return pnlContainerStyled;
     }
-
-    // ========================================================================
-    // LOGIC & ACTIONS
-    // ========================================================================
 
     private void handleAddMember() {
         String targetId = tfUserId.getText().trim();
@@ -212,14 +276,12 @@ public class ListMemberPanel extends JPanel {
             return;
         }
 
-        // --- Logic Manual Add (Sama seperti sebelumnya) ---
         if (ListMemberController.getService().isUserAvilable(targetId)) {
             int confirm = JOptionPane.showConfirmDialog(this, 
                 "Tambahkan User ID: " + targetId + " ke database lokal bank ini?",
                 "Konfirmasi", JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                // Proses Add Member
                 prosesTambahMember(targetId);
                 tfUserId.setText(""); 
             }
@@ -238,7 +300,6 @@ public class ListMemberPanel extends JPanel {
         String userId = (String) modelRequest.getValueAt(row, 0);
         String userName = (String) modelRequest.getValueAt(row, 1);
         
-        // Cek status sekarang agar tidak double action
         String currentStatus = modelRequest.getValueAt(row, 2).toString();
         if(currentStatus.equals("DITERIMA") || currentStatus.equals("DITOLAK")){
              JOptionPane.showMessageDialog(this, "Request ini sudah diproses sebelumnya.");
@@ -250,10 +311,10 @@ public class ListMemberPanel extends JPanel {
                 "Terima " + userName + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                // 1. Masukkan ke Member Sah (Lokal)
+                
                 prosesTambahMember(userId); 
                 
-                // 2. Update Status di Database Request jadi DITERIMA
+                
                 DatabaseRequestJoin.updateStatus(userId, TransaksiJoin.Status.DITERIMA, currentBank.getFileRequestJoin());
                 
                 JOptionPane.showMessageDialog(this, "Anggota Diterima!");
@@ -263,21 +324,20 @@ public class ListMemberPanel extends JPanel {
                 "Tolak permintaan " + userName + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                // 1. Reset ID Bank user jadi null (Global)
+                
                 DatabasePenyetor.assignUserToBank(userId, "null"); 
                 
-                // 2. Update Status di Database Request jadi DITOLAK
+                
                 DatabaseRequestJoin.updateStatus(userId, TransaksiJoin.Status.DITOLAK, currentBank.getFileRequestJoin());
 
                 JOptionPane.showMessageDialog(this, "Permintaan Ditolak.");
             }
         }
         
-        refreshRequestTable(); // Tabel akan refresh dan status berubah
+        refreshRequestTable();
         refreshTable();
     }
 
-    // Method Helper agar tidak duplikasi kodingan
     private void prosesTambahMember(String userId) {
         boolean globalSuccess = DatabasePenyetor.assignUserToBank(userId, currentBank.getIdBank());
         
@@ -295,8 +355,6 @@ public class ListMemberPanel extends JPanel {
         }
     }
 
-    // --- REFRESH TABLES ---
-
     private void refreshTable() {
         tableModel.setRowCount(0);
         if (currentBank != null) {
@@ -310,32 +368,121 @@ public class ListMemberPanel extends JPanel {
     private void refreshRequestTable() {
         modelRequest.setRowCount(0);
         
-        // Load data dari database
         ArrayList<TransaksiJoin> daftarTransaksiJoins = DatabaseRequestJoin.loadData(currentBank.getFileRequestJoin());
         
         for(TransaksiJoin tj : daftarTransaksiJoins){
-            
-            // Cari nama penyetor
             Object userObj = ListMemberController.getService().getUserById(tj.getIdPenyetor());
             String namaPenyetor = "Tidak Dikenal";
             if (userObj instanceof Penyetor) {
                 namaPenyetor = ((Penyetor) userObj).getNamaLengkap();
             }
 
-            // MASUKKAN STATUS KE KOLOM KE-3
             modelRequest.addRow(new Object[]{ 
                 tj.getIdPenyetor(), 
                 namaPenyetor,
-                tj.getStatusRequest() // Ini akan menampilkan: SEDANG_DITINJAU, DITERIMA, dll
+                tj.getStatusRequest()
             });
         }
     }
 
-    private void styleButton(JButton btn, Color bg) {
+    private void styleButton(JButton btn, Color bg, Color fg) {
         btn.setBackground(bg);
-        btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btn.setForeground(fg);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setBorder(new RoundedBorder(bg.darker(), 1, 8, false)); 
+        btn.setMargin(new Insets(8, 15, 8, 15));
+    }
+
+    private void styleTableCommon(JTable table, Color headerColor, Color selectionColor) {
+        
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(headerColor);
+        header.setForeground(TEXT_COLOR);
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
+
+        final Color BORDER_COLOR = new Color(255, 255, 255, 40); 
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setBackground(headerColor);
+                label.setForeground(TEXT_COLOR);
+                label.setFont(new Font("Segoe UI", Font.BOLD, 13));
+
+                label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
+
+                return label;
+            }
+        });
+
+        table.setRowHeight(30);
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setGridColor(new Color(60, 120, 120, 100));
+        table.setShowVerticalLines(false);
+        table.setShowHorizontalLines(true);
+
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                ((DefaultTableCellRenderer) c).setHorizontalAlignment(SwingConstants.CENTER);
+
+                c.setForeground(TEXT_COLOR); 
+
+                if (!isSelected) {
+                    
+                    c.setBackground(row % 2 == 0 ? TABLE_ROW_EVEN : TABLE_ROW_ODD);
+                }
+
+                return c;
+            }
+        });
+
+        table.setSelectionBackground(selectionColor);
+        table.setSelectionForeground(Color.BLACK); 
+        table.setFillsViewportHeight(true);
+    }
+    
+    private static class RoundedBorder extends LineBorder {
+        private int radius;
+        private boolean antiAlias;
+
+        public RoundedBorder(Color color, int thickness, int radius, boolean antiAlias) {
+            super(color, thickness);
+            this.radius = radius;
+            this.antiAlias = antiAlias;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            if (antiAlias) {
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            }
+
+            g2d.setColor(getLineColor());
+
+            g2d.setStroke(new BasicStroke(getThickness()));
+            g2d.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+
+            g2d.dispose();
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            int t = getThickness();
+            int padding = radius / 3;
+            return new Insets(t + padding, t + padding, t + padding, t + padding);
+        }
+
+        @Override
+        public boolean isBorderOpaque() {
+            return false;
+        }
     }
 }

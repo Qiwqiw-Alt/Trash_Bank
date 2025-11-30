@@ -23,7 +23,7 @@ public class NoBankViewPanel extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Ikon Peringatan Besar (Optional, pakai text dulu kalau belum ada icon)
+ 
         JLabel iconLabel = new JLabel("⚠️", SwingConstants.CENTER);
         iconLabel.setFont(new Font("Segoe UI", Font.PLAIN, 60));
         add(iconLabel, gbc);
@@ -42,11 +42,11 @@ public class NoBankViewPanel extends JPanel {
         lblSub.setForeground(Color.GRAY);
         add(lblSub, gbc);
 
-        // Tombol Pintas untuk ke menu Create (UX yang bagus)
+
         gbc.gridy = 3;
-        gbc.insets = new Insets(30, 10, 10, 10); // Jarak agak jauh dari teks
+        gbc.insets = new Insets(30, 10, 10, 10); 
         JButton btnCreate = new JButton("Buat Bank Sampah Sekarang");
-        btnCreate.setBackground(new Color(0, 128, 0)); // Green Primary
+        btnCreate.setBackground(new Color(0, 128, 0)); 
         btnCreate.setForeground(Color.WHITE);
         btnCreate.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCreate.setFocusPainted(false);
@@ -54,7 +54,7 @@ public class NoBankViewPanel extends JPanel {
         btnCreate.setPreferredSize(new Dimension(250, 40));
         
         btnCreate.addActionListener(e -> {
-            // Panggil method di parent untuk pindah ke panel create
+
             parentFrame.switchPanel("CreateBank");
         });
         
