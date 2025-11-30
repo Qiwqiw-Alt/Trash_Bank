@@ -29,8 +29,8 @@ public class ProfilAdminPanel extends JPanel {
 
     // --- Styling ---
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 12);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
 
     public ProfilAdminPanel(Admin admin) {
         this.currentAdmin = admin;
@@ -55,7 +55,7 @@ public class ProfilAdminPanel extends JPanel {
         // Border dengan Judul
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Informasi Pribadi ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(GREEN_PRIMARY);
         panel.setBorder(BorderFactory.createCompoundBorder(border, new EmptyBorder(10, 15, 10, 15)));
 
@@ -102,7 +102,7 @@ public class ProfilAdminPanel extends JPanel {
         // Tombol Simpan Profil
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
-        btnSaveProfile = new JButton("💾 Simpan Perubahan Profil");
+        btnSaveProfile = new JButton("Simpan Perubahan Profil");
         styleButton(btnSaveProfile);
         btnSaveProfile.addActionListener(e -> handleSaveProfile());
         panel.add(btnSaveProfile, gbc);
@@ -122,7 +122,7 @@ public class ProfilAdminPanel extends JPanel {
 
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Keamanan (Ganti Password) ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(new Color(220, 53, 69)); // Merah dikit biar warning
         panel.setBorder(BorderFactory.createCompoundBorder(border, new EmptyBorder(10, 15, 10, 15)));
 
@@ -158,7 +158,7 @@ public class ProfilAdminPanel extends JPanel {
         // Tombol Ganti Password
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
-        btnChangePass = new JButton("🔒 Update Password");
+        btnChangePass = new JButton("Update Password");
         styleButton(btnChangePass);
         btnChangePass.setBackground(new Color(220, 53, 69)); // Merah
         btnChangePass.addActionListener(e -> handleChangePassword());
@@ -280,7 +280,7 @@ public class ProfilAdminPanel extends JPanel {
     private void styleButton(JButton btn) {
         btn.setBackground(GREEN_PRIMARY);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 14));
         btn.setFocusPainted(false);
         btn.setPreferredSize(new Dimension(200, 40));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));

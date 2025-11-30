@@ -44,8 +44,8 @@ public class SetoranPenyetorPanel extends JPanel {
     private final Color SELECTION_COLOR = new Color(0, 150, 136, 150); 
     private final int BORDER_RADIUS = 15; 
 
-    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 22);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 14);
+    private final Font FONT_TITLE = new Font("Fredoka", Font.BOLD, 22);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 14);
 
 
     public SetoranPenyetorPanel(BankSampah bankSampah) {
@@ -263,7 +263,7 @@ public class SetoranPenyetorPanel extends JPanel {
 
         cbStatus = new JComboBox<>(Status.values());
         cbStatus.setPreferredSize(new Dimension(200, 35));
-        cbStatus.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        cbStatus.setFont(new Font("Fredoka", Font.PLAIN, 14));
         cbStatus.setBackground(TEXT_COLOR); 
         cbStatus.setForeground(DARK_BG); 
         pnlAction.add(cbStatus);
@@ -369,7 +369,7 @@ public class SetoranPenyetorPanel extends JPanel {
     private void styleButton(JButton btn, Color bg, Color fg) {
         btn.setBackground(bg);
         btn.setForeground(fg);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 13));
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setBorder(new RoundedBorder(bg.darker(), 1, 8, false)); 
@@ -378,7 +378,7 @@ public class SetoranPenyetorPanel extends JPanel {
 
     private void styleTableCommon(JTable table, Color headerColor, Color selectionColor) {
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setFont(new Font("Fredoka", Font.BOLD, 13));
         header.setBackground(headerColor);
         header.setForeground(TEXT_COLOR);
         header.setPreferredSize(new Dimension(header.getWidth(), 35));
@@ -391,7 +391,7 @@ public class SetoranPenyetorPanel extends JPanel {
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setBackground(headerColor);
                 label.setForeground(TEXT_COLOR);
-                label.setFont(new Font("Segoe UI", Font.BOLD, 13));
+                label.setFont(new Font("Fredoka", Font.BOLD, 13));
 
                 label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
 
@@ -400,7 +400,7 @@ public class SetoranPenyetorPanel extends JPanel {
         });
 
         table.setRowHeight(30);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setFont(new Font("Fredoka", Font.PLAIN, 13));
         table.setGridColor(new Color(60, 120, 120, 100));
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(true);

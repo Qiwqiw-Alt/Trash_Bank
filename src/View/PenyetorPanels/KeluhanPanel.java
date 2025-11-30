@@ -70,7 +70,7 @@ public class KeluhanPanel extends JPanel {
 
         JLabel header = new JLabel(" Kirim Keluhan", SwingConstants.CENTER);
         header.setIcon(getScaledIcon(ICON_COMPLAIN_PATH, 30, 30));
-        header.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        header.setFont(new Font("Fredoka", Font.BOLD, 28));
         header.setForeground(PRIMARY_COLOR.darker());
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         add(header, BorderLayout.NORTH);
@@ -98,14 +98,14 @@ public class KeluhanPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
         JLabel judulLabel = new JLabel("Judul Keluhan:");
-        judulLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        judulLabel.setFont(new Font("Fredoka", Font.BOLD, 14));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.0;
         formPanel.add(judulLabel, gbc);
 
         judulField = new JTextField();
-        judulField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        judulField.setFont(new Font("Fredoka", Font.PLAIN, 14));
         judulField.setPreferredSize(new Dimension(300, 40));
         judulField.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(Color.LIGHT_GRAY),
@@ -116,7 +116,7 @@ public class KeluhanPanel extends JPanel {
         formPanel.add(judulField, gbc);
 
         JLabel isiLabel = new JLabel("Isi Keluhan:");
-        isiLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        isiLabel.setFont(new Font("Fredoka", Font.BOLD, 14));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.0;
@@ -124,7 +124,7 @@ public class KeluhanPanel extends JPanel {
         formPanel.add(isiLabel, gbc);
 
         isiArea = new JTextArea(6, 30);
-        isiArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        isiArea.setFont(new Font("Fredoka", Font.PLAIN, 14));
         isiArea.setLineWrap(true);
         isiArea.setWrapStyleWord(true);
         isiArea.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
@@ -144,7 +144,7 @@ public class KeluhanPanel extends JPanel {
         submitButton.setBackground(PRIMARY_COLOR);
         submitButton.setForeground(Color.WHITE);
         submitButton.setFocusPainted(false);
-        submitButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        submitButton.setFont(new Font("Fredoka", Font.BOLD, 14));
         submitButton.setPreferredSize(new Dimension(180, 45));
         submitButton.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         submitButton.addActionListener(e -> tambahComplain());
@@ -179,7 +179,7 @@ public class KeluhanPanel extends JPanel {
 
         JLabel riwayatTitle = new JLabel(" Riwayat Keluhan Anda");
         riwayatTitle.setIcon(getScaledIcon(ICON_HISTORY_PATH, ICON_SIZE, ICON_SIZE));
-        riwayatTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        riwayatTitle.setFont(new Font("Fredoka", Font.BOLD, 18));
         riwayatTitle.setForeground(PRIMARY_COLOR);
         riwayatPanel.add(riwayatTitle, BorderLayout.NORTH);
 
@@ -193,12 +193,12 @@ public class KeluhanPanel extends JPanel {
         riwayatTable = new JTable(tableModel);
         riwayatTable.setFillsViewportHeight(true);
         riwayatTable.setRowHeight(30);
-        riwayatTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        riwayatTable.setFont(new Font("Fredoka", Font.PLAIN, 13));
         riwayatTable.setGridColor(new Color(240, 240, 240));
         riwayatTable.setSelectionBackground(new Color(230, 240, 230));
 
         JTableHeader header = riwayatTable.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setBackground(HEADER_BG); 
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(header.getWidth(), 35));

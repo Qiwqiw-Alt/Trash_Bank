@@ -36,11 +36,11 @@ public class AdminHomePanel extends JPanel {
     private final Color TEXT_MUTED = new Color(108, 117, 125);
     private final Color BORDER_LIGHT = new Color(222, 226, 230); 
     
-    private final Font FONT_HEADER_TITLE = new Font("Segoe UI", Font.BOLD, 30); 
-    private final Font FONT_SUBTITLE = new Font("Segoe UI", Font.PLAIN, 16);
-    private final Font FONT_CARD_TITLE = new Font("Segoe UI", Font.BOLD, 14);
-    private final Font FONT_CARD_VALUE = new Font("Segoe UI", Font.BOLD, 36); 
-    private final Font FONT_SECTION_TITLE = new Font("Segoe UI", Font.BOLD, 20); 
+    private final Font FONT_HEADER_TITLE = new Font("Fredoka", Font.BOLD, 30); 
+    private final Font FONT_SUBTITLE = new Font("Fredoka", Font.PLAIN, 16);
+    private final Font FONT_CARD_TITLE = new Font("Fredoka", Font.BOLD, 14);
+    private final Font FONT_CARD_VALUE = new Font("Fredoka", Font.BOLD, 36); 
+    private final Font FONT_SECTION_TITLE = new Font("Fredoka", Font.BOLD, 20); 
 
     public AdminHomePanel(Admin admin, BankSampah bankSampah) {
         this.currentUser = admin;
@@ -69,7 +69,7 @@ public class AdminHomePanel extends JPanel {
         mainContent.add(Box.createVerticalStrut(25));
 
         JButton btnRefresh = new JButton("Muat Ulang Data");
-        btnRefresh.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnRefresh.setFont(new Font("Fredoka", Font.BOLD, 14));
         btnRefresh.setBackground(GREEN_PRIMARY); 
         btnRefresh.setForeground(CARD_BACKGROUND);
         btnRefresh.setFocusPainted(false);
@@ -139,7 +139,7 @@ public class AdminHomePanel extends JPanel {
         ));
 
         JLabel lblIcon = new JLabel(icon);
-        lblIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 40)); 
+        lblIcon.setFont(new Font("Fredoka Emoji", Font.PLAIN, 40)); 
         lblIcon.setForeground(accentColor);
         card.add(lblIcon, BorderLayout.WEST);
 
@@ -195,11 +195,11 @@ public class AdminHomePanel extends JPanel {
         content.setBorder(new EmptyBorder(8, 0, 8, 0)); 
 
         JLabel lblName = new JLabel("• " + name);
-        lblName.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        lblName.setFont(new Font("Fredoka", Font.PLAIN, 15));
         lblName.setForeground(TEXT_DARK);
 
         JLabel lblVal = new JLabel(String.format("%.1f Kg", totalKg)); 
-        lblVal.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblVal.setFont(new Font("Fredoka", Font.BOLD, 16));
         lblVal.setForeground(GREEN_PRIMARY.darker()); 
 
         content.add(lblName, BorderLayout.WEST);
@@ -234,7 +234,7 @@ public class AdminHomePanel extends JPanel {
         if (dataKategori.isEmpty()) {
             JLabel emptyLabel = new JLabel("Belum ada data sampah masuk.");
             emptyLabel.setBorder(new EmptyBorder(30, 10, 30, 10)); 
-            emptyLabel.setFont(new Font("Segoe UI", Font.ITALIC, 14));
+            emptyLabel.setFont(new Font("Fredoka", Font.ITALIC, 14));
             emptyLabel.setForeground(TEXT_MUTED);
             panelCategoryList.add(emptyLabel);
         } else {

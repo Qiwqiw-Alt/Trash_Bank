@@ -46,9 +46,9 @@ public class ListMemberPanel extends JPanel {
     private final Color GREEN_ACTION = new Color(0x28A745); 
     private final Color RED_DANGER = new Color(0xDC3545); 
 
-    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 20);
-    private final Font FONT_TEXT = new Font("Segoe UI", Font.PLAIN, 14);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 14);
+    private final Font FONT_TITLE = new Font("Fredoka", Font.BOLD, 20);
+    private final Font FONT_TEXT = new Font("Fredoka", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 14);
     private final int BORDER_RADIUS = 15;
 
 
@@ -98,9 +98,9 @@ public class ListMemberPanel extends JPanel {
         tabLeft.setBackground(SOFT_BG); 
         tabLeft.setForeground(TEXT_COLOR); 
         
-        tabLeft.addTab("➕ Tambah Manual", createManualAddPanel());
+        tabLeft.addTab("Tambah Manual", createManualAddPanel());
         
-        tabLeft.addTab("📩 Permintaan Masuk", createRequestPanel());
+        tabLeft.addTab("Permintaan Masuk", createRequestPanel());
 
         pnlContainerStyled.add(tabLeft, BorderLayout.CENTER);
         return pnlContainerStyled;
@@ -207,11 +207,11 @@ public class ListMemberPanel extends JPanel {
         btnPanel.setBackground(SOFT_BG);
         btnPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-        btnAccept = new JButton("✅ Terima");
+        btnAccept = new JButton("Terima");
         styleButton(btnAccept, GREEN_ACTION, TEXT_COLOR);
         btnAccept.addActionListener(e -> handleRequestAction(true));
 
-        btnReject = new JButton("❌ Tolak");
+        btnReject = new JButton("Tolak");
         styleButton(btnReject, RED_DANGER, TEXT_COLOR);
         btnReject.addActionListener(e -> handleRequestAction(false));
 
@@ -388,7 +388,7 @@ public class ListMemberPanel extends JPanel {
     private void styleButton(JButton btn, Color bg, Color fg) {
         btn.setBackground(bg);
         btn.setForeground(fg);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 13));
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setBorder(new RoundedBorder(bg.darker(), 1, 8, false)); 
@@ -398,7 +398,7 @@ public class ListMemberPanel extends JPanel {
     private void styleTableCommon(JTable table, Color headerColor, Color selectionColor) {
         
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setFont(new Font("Fredoka", Font.BOLD, 13));
         header.setBackground(headerColor);
         header.setForeground(TEXT_COLOR);
         header.setPreferredSize(new Dimension(header.getWidth(), 35));
@@ -411,7 +411,7 @@ public class ListMemberPanel extends JPanel {
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setBackground(headerColor);
                 label.setForeground(TEXT_COLOR);
-                label.setFont(new Font("Segoe UI", Font.BOLD, 13));
+                label.setFont(new Font("Fredoka", Font.BOLD, 13));
 
                 label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
 
@@ -420,7 +420,7 @@ public class ListMemberPanel extends JPanel {
         });
 
         table.setRowHeight(30);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setFont(new Font("Fredoka", Font.PLAIN, 13));
         table.setGridColor(new Color(60, 120, 120, 100));
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(true);

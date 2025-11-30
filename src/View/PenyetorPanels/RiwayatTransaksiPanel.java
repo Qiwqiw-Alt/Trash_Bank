@@ -30,7 +30,7 @@ public class RiwayatTransaksiPanel extends JPanel {
         setBackground(new Color(245, 245, 245));
 
         JLabel title = new JLabel("Riwayat Transaksi", SwingConstants.CENTER); 
-        title.setFont(new Font("Arial", Font.BOLD, 22));
+        title.setFont(new Font("Fredoka", Font.BOLD, 22));
         title.setBorder(new EmptyBorder(20, 0, 20, 0));
         
         String iconPath = "src//Asset//Image//history.png"; 
@@ -57,7 +57,7 @@ public class RiwayatTransaksiPanel extends JPanel {
         tableTitlePanel.setBackground(new Color(245, 245, 245));
         
         JLabel tableTitle = new JLabel("Riwayat Transaksi Anda");
-        tableTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        tableTitle.setFont(new Font("Fredoka", Font.BOLD, 16));
         
         if (headerIcon != null && headerIcon.getIconWidth() > 0) {
              tableTitle.setIcon(headerIcon);
@@ -98,12 +98,12 @@ public class RiwayatTransaksiPanel extends JPanel {
         JTable table = new JTable(model);
         
         table.setRowHeight(30);
-        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setFont(new Font("Fredoka", Font.PLAIN, 14));
         table.setGridColor(new Color(220, 220, 220));
         table.setSelectionBackground(new Color(220, 240, 255));
         
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setFont(new Font("Fredoka", Font.BOLD, 14));
         header.setBackground(new Color(60, 140, 135)); 
         header.setForeground(Color.WHITE);
         header.setReorderingAllowed(false);
@@ -152,7 +152,7 @@ public class RiwayatTransaksiPanel extends JPanel {
         
         if (userTransaksi.isEmpty()) {
             JLabel emptyLabel = new JLabel("Belum ada riwayat transaksi.", SwingConstants.CENTER);
-            emptyLabel.setFont(new Font("Arial", Font.ITALIC, 14));
+            emptyLabel.setFont(new Font("Fredoka", Font.ITALIC, 14));
             emptyLabel.setForeground(Color.GRAY);
             emptyLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
             mainContent.add(emptyLabel, BorderLayout.SOUTH);

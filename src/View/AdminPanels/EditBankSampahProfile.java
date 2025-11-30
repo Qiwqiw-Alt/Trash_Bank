@@ -19,8 +19,8 @@ public class EditBankSampahProfile extends JPanel {
     private JButton btnSave;
 
     private final Color GREEN_PRIMARY = new Color(40, 167, 69);
-    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
-    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
+    private final Font FONT_LABEL = new Font("Fredoka", Font.BOLD, 12);
+    private final Font FONT_INPUT = new Font("Fredoka", Font.PLAIN, 14);
 
     public EditBankSampahProfile(BankSampah bankSampah) {
         this.currentBank = bankSampah;
@@ -38,7 +38,7 @@ public class EditBankSampahProfile extends JPanel {
         
         TitledBorder border = BorderFactory.createTitledBorder(
             new LineBorder(Color.LIGHT_GRAY), " Informasi Bank Sampah ");
-        border.setTitleFont(new Font("Segoe UI", Font.BOLD, 16));
+        border.setTitleFont(new Font("Fredoka", Font.BOLD, 16));
         border.setTitleColor(GREEN_PRIMARY);
         contentPanel.setBorder(BorderFactory.createCompoundBorder(
             border, new EmptyBorder(20, 20, 20, 20)
@@ -143,7 +143,7 @@ public class EditBankSampahProfile extends JPanel {
     private void styleButton(JButton btn) {
         btn.setBackground(GREEN_PRIMARY);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Fredoka", Font.BOLD, 14));
         btn.setFocusPainted(false);
         btn.setPreferredSize(new Dimension(200, 45));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
