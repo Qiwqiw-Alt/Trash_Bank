@@ -1,5 +1,4 @@
 package Service;
-
 import Database.DataBaseAdmin;
 import Database.DatabasePenyetor;
 import Model.Admin;
@@ -22,7 +21,6 @@ public class LoginService {
     }
 
     public Object loginUser(String username, String password) {
-        // cek admin
         ArrayList<Admin> admins = DataBaseAdmin.loadData();
         for (Admin a : admins) {
             if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
@@ -30,7 +28,6 @@ public class LoginService {
             }
         }
 
-        // cek penyetor
         ArrayList<Penyetor> penyetors = DatabasePenyetor.loadData();
         for (Penyetor p : penyetors) {
             if (p.getUsername().equals(username) && p.getPassword().equals(password)) {
