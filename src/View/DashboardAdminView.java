@@ -16,20 +16,33 @@ public class DashboardAdminView extends JFrame {
     private String IdBankSampah;
     private BankSampah currentBankSampah;
     private JPanel contentPanel;
-   
-    // Constants
-    private final Color GREEN_PRIMARY = new Color(0, 128, 0); 
-    private final Color GREEN_HOVER = new Color(0, 150, 0); 
+    private ImageIcon iconImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\recycle-bin.png");
+    // --- KONSTANTA WARNA DIUBAH AGAR SESUAI DENGAN TAMPILAN BARU ---
+    private final Color GREEN_PRIMARY = new Color(0x356A69); // Hijau Gelap Kebiruan (Warna Header)
+    private final Color GREEN_HOVER = new Color(0x67AE6E); // Hijau Terang/Aksen (Warna Hover Menu/Logout)
+    private final Color GREEN_LIGHT = new Color(0x67AE6E); // Hijau Terang/Aksen (Warna Tombol Logout)
+    
+    // Variabel untuk melacak tombol mana yang sedang aktif
+    private String activeMenu = "Home"; 
+    
+    // Variabel untuk menyimpan referensi tombol Navigasi di Header
+    private JPanel homeNavButton;
+    private JPanel createBankNavButton;
+    private JPanel listMemberNavButton;
+    private JPanel givePoinNavButton;
+    private JPanel addSampahNavButton;
+    private JPanel addRewardNavButton;
+    private JPanel komplainNavButton;
+
 
     public DashboardAdminView(Admin user, String IdBankSampah) {
         this.currentUser = user;
         this.IdBankSampah = IdBankSampah;
         
-        // Cek apakah Admin punya bank sampah
         if (this.IdBankSampah != null) {
-             currentBankSampah = BankSampahController.getService().getObjBankSampah(this.IdBankSampah);
+              currentBankSampah = BankSampahController.getService().getObjBankSampah(this.IdBankSampah);
         } else {
-             currentBankSampah = null;
+              currentBankSampah = null;
         }
 
         String namaBank = (currentBankSampah != null) ? currentBankSampah.getNamaBank() : "Bank Sampah (Belum Ada)";
@@ -39,11 +52,10 @@ public class DashboardAdminView extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setResizable(true); 
-
+        setIconImage(iconImage.getImage());
         initLayout();
- 
+
         if(currentBankSampah == null){
-   
             switchPanel("EmptyState"); 
         } else {
             switchPanel("Home");
@@ -51,176 +63,223 @@ public class DashboardAdminView extends JFrame {
     }
 
     private void initLayout() {
+        getContentPane().removeAll();
         setLayout(new BorderLayout());
 
-        // Sidebar
-        add(createSidebar(), BorderLayout.WEST);
+        createHeader();
 
-        // Content
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
         add(contentPanel, BorderLayout.CENTER);
+        
+        revalidate();
+        repaint();
     }
-
-    private JPanel createSidebar() {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(260, 0)); 
-        panel.setBackground(GREEN_PRIMARY);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // --- 1. LOGO AREA ---
-        JPanel logoPanel = new JPanel();
-        logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
-        logoPanel.setBackground(GREEN_PRIMARY);
-        logoPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 20, 0)); // Padding atas bawah
-
-        JLabel logoIcon = new JLabel("♻", SwingConstants.CENTER); // Ikon recycle
-        logoIcon.setFont(new Font("Segoe UI Emoji", Font.BOLD, 40));
-        logoIcon.setForeground(Color.WHITE);
-        logoIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel logoText = new JLabel("BANK SAMPAH", SwingConstants.CENTER);
-        logoText.setFont(new Font("SansSerif", Font.BOLD, 20));
-        logoText.setForeground(Color.WHITE);
-        logoText.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+    // --- Header untuk Dashboard Admin (Warna Diubah) ---
+    private void createHeader() {
         
-        JLabel logoSubText = new JLabel("ADMINISTRATOR", SwingConstants.CENTER);
-        logoSubText.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        logoSubText.setForeground(new Color(200, 255, 200));
-        logoSubText.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        logoPanel.add(logoIcon);
-        logoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        logoPanel.add(logoText);
-        logoPanel.add(logoSubText);
-        
-        panel.add(logoPanel);
-        
-        // Garis pemisah di bawah logo
-        JSeparator separator = new JSeparator();
-        separator.setMaximumSize(new Dimension(220, 1));
-        separator.setForeground(new Color(255, 255, 255, 100));
-        separator.setBackground(new Color(255, 255, 255, 50));
-        panel.add(separator);
-        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Jarak setelah garis
-
-        // --- 2. MENU ITEMS ---
-        
-        // Tombol Create Bank Sampah (Hanya muncul jika bank null)
-        if (currentBankSampah == null) {
-            panel.add(createMenuLabel("Buat Bank Sampah", "CreateBank"));
-            panel.add(Box.createRigidArea(new Dimension(0, 10))); 
+        Component existingHeader = ((BorderLayout) getContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
+        if (existingHeader != null) {
+            remove(existingHeader);
         }
-
-        panel.add(createMenuLabel("Home", "Home"));
-        panel.add(createMenuLabel("Edit Profil", "Profil"));
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(createSectionTitle("MANAJEMEN USER"));
-        panel.add(createMenuLabel("Lihat Penyetor", "ListMember"));
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(createSectionTitle("TRANSAKSI"));
-        panel.add(createMenuLabel("Input Setoran", "GivePoin"));
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(createSectionTitle("DATA MASTER"));
-        panel.add(createMenuLabel("Jenis Sampah", "AddSampah"));
-        panel.add(createMenuLabel("Reward", "AddReward"));
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(createSectionTitle("LAINNYA"));
-        panel.add(createMenuLabel("Evaluasi Komplain", "Komplain"));
         
-        // --- 3. FOOTER (LOGOUT) ---
-        panel.add(Box.createVerticalGlue()); // Dorong ke bawah
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(GREEN_PRIMARY); // MENGGUNAKAN WARNA BARU
+        headerPanel.setPreferredSize(new Dimension(this.getWidth(), 70));
         
-        JSeparator footerSep = new JSeparator();
-        footerSep.setMaximumSize(new Dimension(220, 1));
-        footerSep.setForeground(new Color(255, 255, 255, 100));
-        panel.add(footerSep);
+        // 1. Logo (WEST)
+        String titleText = (currentBankSampah != null) ? currentBankSampah.getNamaBank().toUpperCase() : "BANK SAMPAH ADMIN";
+        JLabel headerTitle = new JLabel(titleText);
+        headerTitle.setFont(new Font("Fredoka", Font.BOLD, 24));
+        headerTitle.setForeground(Color.WHITE);
+        headerTitle.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        headerPanel.add(headerTitle, BorderLayout.WEST);
         
-        panel.add(createMenuLabel("🚪  Logout", "Logout"));
-        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Jarak bawah
+        // 2. Tombol Navigasi di Tengah (CENTER)
+        JPanel centerNavPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0)); 
+        centerNavPanel.setOpaque(false);
+        
+        // 3. Tombol Profile & Logout (EAST)
+        JPanel eastWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
+        eastWrapper.setOpaque(false);
+        
+        // --- Tombol Profile (Di EAST) ---
+        JButton profileButton = new JButton("EDIT PROFIL");
+        profileButton.setFont(new Font("Fredoka", Font.BOLD, 14));
+        profileButton.setBackground(Color.WHITE); 
+        profileButton.setForeground(GREEN_PRIMARY); 
+        profileButton.setFocusPainted(false);
+        profileButton.setMargin(new Insets(10, 15, 10, 15));
+        profileButton.addActionListener(e -> {
+            activeMenu = "Profil"; 
+            updateHeaderMenuHighlight(); 
+            switchPanel("Profil");
+        });
+        eastWrapper.add(profileButton);
 
-        return panel;
+        // Tombol Logout
+        JButton logoutButton = new JButton("LOGOUT");
+        logoutButton.setFont(new Font("Fredoka", Font.BOLD, 14));
+        logoutButton.setBackground(GREEN_LIGHT); // MENGGUNAKAN WARNA BARU
+        logoutButton.setForeground(Color.WHITE); 
+        logoutButton.setFocusPainted(false);
+        logoutButton.setMargin(new Insets(10, 15, 10, 15));
+        logoutButton.addActionListener(e -> switchPanel("Logout"));
+        eastWrapper.add(logoutButton);
+        
+        headerPanel.add(eastWrapper, BorderLayout.EAST);
+        
+        
+        if (currentBankSampah == null) {
+            // --- MODE BELUM ADA BANK SAMPAH (Empty State) ---
+            createBankNavButton = createHeaderMenuButton("BUAT BANK SAMPAH", "CreateBank");
+            
+            centerNavPanel.add(createBankNavButton);
+        } else {
+            // --- MODE SUDAH ADA BANK SAMPAH (Full Dashboard) ---
+            homeNavButton = createHeaderMenuButton("HOME", "Home");
+            listMemberNavButton = createHeaderMenuButton("LIHAT PENYETOR", "ListMember");
+            givePoinNavButton = createHeaderMenuButton("INPUT SETORAN", "GivePoin");
+            addSampahNavButton = createHeaderMenuButton("JENIS SAMPAH", "AddSampah");
+            addRewardNavButton = createHeaderMenuButton("REWARD", "AddReward");
+            komplainNavButton = createHeaderMenuButton("KOMPLAIN", "Komplain");
+            
+            centerNavPanel.add(homeNavButton);
+            centerNavPanel.add(listMemberNavButton);
+            centerNavPanel.add(givePoinNavButton);
+            centerNavPanel.add(addSampahNavButton);
+            centerNavPanel.add(addRewardNavButton);
+            centerNavPanel.add(komplainNavButton);
+        }
+        
+        headerPanel.add(centerNavPanel, BorderLayout.CENTER);
+
+        add(headerPanel, BorderLayout.NORTH); 
+        updateHeaderMenuHighlight();
     }
-
-    // Method helper untuk membuat Label Menu lebih rapi
-    private JPanel createMenuLabel(String text, String command) {
-        JPanel btn = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 12)); // Layout kiri, gap icon-teks
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50)); // Tinggi tombol konsisten
-        btn.setBackground(GREEN_PRIMARY);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    
+    // --- Tombol Menu Header (Warna Diubah) ---
+    private JPanel createHeaderMenuButton(String text, String command) {
+        JPanel btnPanel = new JPanel(new BorderLayout()); 
+        btnPanel.setBackground(GREEN_PRIMARY);
+        btnPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        JLabel lbl = new JLabel(text);
-        lbl.setForeground(Color.WHITE);
-        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 15)); // Font lebih modern
-        
-        btn.add(lbl);
+        btnPanel.setPreferredSize(new Dimension(text.length() * 8 + 30, 70)); 
 
-        // Hover Effect yang lebih halus
-        btn.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) { switchPanel(command); }
-            public void mouseEntered(MouseEvent e) { 
-                btn.setBackground(GREEN_HOVER); 
-                lbl.setFont(new Font("Segoe UI", Font.BOLD, 15)); // Bold saat hover
+        JLabel label = new JLabel(text, SwingConstants.CENTER); 
+        label.setFont(new Font("Fredoka", Font.BOLD, 14));
+        label.setForeground(Color.WHITE);
+        btnPanel.add(label, BorderLayout.CENTER);
+
+        // Hover & Click Listener
+        btnPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (command.equals("Logout")) {
+                    switchPanel("Logout"); 
+                    return;
+                }
+                
+                activeMenu = command;
+                updateHeaderMenuHighlight();
+                switchPanel(command);
             }
-            public void mouseExited(MouseEvent e) { 
-                btn.setBackground(GREEN_PRIMARY); 
-                lbl.setFont(new Font("Segoe UI", Font.PLAIN, 15)); // Normal lagi
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (!command.equals(activeMenu)) {
+                    btnPanel.setBackground(GREEN_HOVER); // MENGGUNAKAN WARNA BARU
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!command.equals(activeMenu)) {
+                    btnPanel.setBackground(GREEN_PRIMARY); // MENGGUNAKAN WARNA BARU
+                }
             }
         });
-        return btn;
+        
+        return btnPanel;
+    }
+    
+    // --- Mengatur Highlight untuk Navigasi Header (Warna Diubah) ---
+    private void updateHeaderMenuHighlight() {
+        boolean isDashboardMode = this.currentBankSampah != null;
+        
+        JPanel[] buttonsToProcess;
+        
+        if (isDashboardMode) {
+            buttonsToProcess = new JPanel[]{
+                homeNavButton, listMemberNavButton, 
+                givePoinNavButton, addSampahNavButton, addRewardNavButton, 
+                komplainNavButton
+            };
+        } else {
+            buttonsToProcess = new JPanel[]{createBankNavButton};
+        }
+        
+        // Proses Highlight
+        for (JPanel btn : buttonsToProcess) {
+            if (btn != null) {
+                boolean isActive = false;
+                
+                if (btn == homeNavButton && activeMenu.equals("Home")) isActive = true;
+                if (btn == createBankNavButton && activeMenu.equals("CreateBank")) isActive = true;
+                if (btn == listMemberNavButton && activeMenu.equals("ListMember")) isActive = true;
+                if (btn == givePoinNavButton && activeMenu.equals("GivePoin")) isActive = true;
+                if (btn == addSampahNavButton && activeMenu.equals("AddSampah")) isActive = true;
+                if (btn == addRewardNavButton && activeMenu.equals("AddReward")) isActive = true;
+                if (btn == komplainNavButton && activeMenu.equals("Komplain")) isActive = true;
+                if (activeMenu.equals("EmptyState") && btn == createBankNavButton) isActive = true;
+
+                if (isActive) {
+                    btn.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.WHITE));
+                    btn.setBackground(GREEN_PRIMARY);
+                } else {
+                    btn.setBorder(BorderFactory.createEmptyBorder());
+                    btn.setBackground(GREEN_PRIMARY);
+                }
+            }
+        }
     }
 
-    // Method helper untuk judul Section
-    private JLabel createSectionTitle(String title) {
-        JLabel lbl = new JLabel(title);
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 11));
-        lbl.setForeground(new Color(180, 255, 180)); // Warna hijau sangat muda
-        // Padding: Atas, Kiri, Bawah, Kanan
-        lbl.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 0)); 
-        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
-        // Wrapper agar alignment works di BoxLayout
-        lbl.setMaximumSize(new Dimension(Integer.MAX_VALUE, lbl.getPreferredSize().height + 10));
-        return lbl;
-    }
 
     public void switchPanel(String menuName) {
         
-        // --- LOGIKA GATEKEEPER (PEMBATASAN AKSES) ---
+        // --- LOGIKA GATEKEEPER (TIDAK DIUBAH) ---
         if(currentBankSampah == null) {
-            // Daftar menu yang BOLEH diakses
             boolean isAllowed = menuName.equals("Logout") || 
                                 menuName.equals("Profil") || 
                                 menuName.equals("CreateBank") || 
-                                menuName.equals("EmptyState"); // Tambahkan ini agar panel peringatan bisa tampil
+                                menuName.equals("EmptyState"); 
         
             if (!isAllowed) {
-                // Pesan Error jika menekan tombol lain
                 JOptionPane.showMessageDialog(this, 
                     "Anda belum membuat akun bank sampah, silahkan buat terlebih dahulu.", 
                     "Akses Ditolak", 
                     JOptionPane.WARNING_MESSAGE);
-                return; // Stop, jangan ganti panel
+                return;
             }
         }
         else { 
-            if (menuName.equals("CreateBank")) {
+            if (menuName.equals("CreateBank") || menuName.equals("EmptyState")) {
                 JOptionPane.showMessageDialog(this, 
                     "Anda sudah memiliki akun bank sampah!", 
                     "Akses Ditolak", 
                     JOptionPane.WARNING_MESSAGE);
-                return; // Stop
+                activeMenu = "Home";
+                switchPanel("Home");
+                return;
             }
         }
         
         JPanel nextPanel = null;
+        activeMenu = menuName;
 
         switch (menuName) {
             case "EmptyState":
-                // Panel Putih Peringatan
                 nextPanel = new View.AdminPanels.NoBankViewPanel(this);
                 break;
             case "CreateBank":
@@ -248,7 +307,7 @@ public class DashboardAdminView extends JFrame {
                 nextPanel = new View.AdminPanels.EvaluasiKomplainPanel(currentUser, currentBankSampah);
                 break;
             case "Logout":
-                new LoginView().setVisible(true);
+                new LoginView().setVisible(true); 
                 dispose();
                 return;
         }
@@ -256,6 +315,9 @@ public class DashboardAdminView extends JFrame {
         if (nextPanel != null) {
             contentPanel.removeAll();
             contentPanel.add(nextPanel, BorderLayout.CENTER);
+            
+            updateHeaderMenuHighlight(); 
+            
             contentPanel.revalidate();
             contentPanel.repaint();
         }
@@ -267,14 +329,13 @@ public class DashboardAdminView extends JFrame {
         
         setTitle("Dashboard Admin - " + newBank.getNamaBank());
         
-        // Refresh Sidebar (agar menu Create hilang)
-        getContentPane().remove(0); 
-        add(createSidebar(), BorderLayout.WEST); 
+        createHeader();
         
-        // Pindah ke Home
         switchPanel("Home");
         
         revalidate();
     }
-
+    
+    // --- DIHAPUS/DIKOSONGKAN (Mantan Sidebar) ---
+    private JPanel createSidebar() { return new JPanel(); }
 }
