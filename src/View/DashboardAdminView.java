@@ -17,15 +17,11 @@ public class DashboardAdminView extends JFrame {
     private BankSampah currentBankSampah;
     private JPanel contentPanel;
     private ImageIcon iconImage = new ImageIcon("Trash_Bank\\src\\Asset\\Image\\recycle-bin.png");
-    // --- KONSTANTA WARNA DIUBAH AGAR SESUAI DENGAN TAMPILAN BARU ---
-    private final Color GREEN_PRIMARY = new Color(0x356A69); // Hijau Gelap Kebiruan (Warna Header)
-    private final Color GREEN_HOVER = new Color(0x67AE6E); // Hijau Terang/Aksen (Warna Hover Menu/Logout)
-    private final Color GREEN_LIGHT = new Color(0x67AE6E); // Hijau Terang/Aksen (Warna Tombol Logout)
-    
-    // Variabel untuk melacak tombol mana yang sedang aktif
+    private final Color GREEN_PRIMARY = new Color(0x356A69);
+    private final Color GREEN_HOVER = new Color(0x67AE6E); 
+    private final Color GREEN_LIGHT = new Color(0x67AE6E); 
     private String activeMenu = "Home"; 
     
-    // Variabel untuk menyimpan referensi tombol Navigasi di Header
     private JPanel homeNavButton;
     private JPanel createBankNavButton;
     private JPanel listMemberNavButton;
@@ -76,19 +72,17 @@ public class DashboardAdminView extends JFrame {
         repaint();
     }
     
-    // --- Header untuk Dashboard Admin (Warna Diubah) ---
     private void createHeader() {
-        
         Component existingHeader = ((BorderLayout) getContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
         if (existingHeader != null) {
             remove(existingHeader);
         }
         
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(GREEN_PRIMARY); // MENGGUNAKAN WARNA BARU
+        headerPanel.setBackground(GREEN_PRIMARY); 
         headerPanel.setPreferredSize(new Dimension(this.getWidth(), 70));
         
-        // 1. Logo (WEST)
+   
         String titleText = (currentBankSampah != null) ? currentBankSampah.getNamaBank().toUpperCase() : "BANK SAMPAH ADMIN";
         JLabel headerTitle = new JLabel(titleText);
         headerTitle.setFont(new Font("Fredoka", Font.BOLD, 24));
@@ -96,15 +90,12 @@ public class DashboardAdminView extends JFrame {
         headerTitle.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         headerPanel.add(headerTitle, BorderLayout.WEST);
         
-        // 2. Tombol Navigasi di Tengah (CENTER)
         JPanel centerNavPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0)); 
         centerNavPanel.setOpaque(false);
         
-        // 3. Tombol Profile & Logout (EAST)
         JPanel eastWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
         eastWrapper.setOpaque(false);
         
-        // --- Tombol Profile (Di EAST) ---
         JButton profileButton = new JButton("EDIT PROFIL");
         profileButton.setFont(new Font("Fredoka", Font.BOLD, 14));
         profileButton.setBackground(Color.WHITE); 
@@ -118,10 +109,9 @@ public class DashboardAdminView extends JFrame {
         });
         eastWrapper.add(profileButton);
 
-        // Tombol Logout
         JButton logoutButton = new JButton("LOGOUT");
         logoutButton.setFont(new Font("Fredoka", Font.BOLD, 14));
-        logoutButton.setBackground(GREEN_LIGHT); // MENGGUNAKAN WARNA BARU
+        logoutButton.setBackground(GREEN_LIGHT); 
         logoutButton.setForeground(Color.WHITE); 
         logoutButton.setFocusPainted(false);
         logoutButton.setMargin(new Insets(10, 15, 10, 15));
@@ -132,12 +122,10 @@ public class DashboardAdminView extends JFrame {
         
         
         if (currentBankSampah == null) {
-            // --- MODE BELUM ADA BANK SAMPAH (Empty State) ---
             createBankNavButton = createHeaderMenuButton("BUAT BANK SAMPAH", "CreateBank");
             
             centerNavPanel.add(createBankNavButton);
         } else {
-            // --- MODE SUDAH ADA BANK SAMPAH (Full Dashboard) ---
             homeNavButton = createHeaderMenuButton("HOME", "Home");
             listMemberNavButton = createHeaderMenuButton("LIHAT PENYETOR", "ListMember");
             givePoinNavButton = createHeaderMenuButton("INPUT SETORAN", "GivePoin");
@@ -159,7 +147,6 @@ public class DashboardAdminView extends JFrame {
         updateHeaderMenuHighlight();
     }
     
-    // --- Tombol Menu Header (Warna Diubah) ---
     private JPanel createHeaderMenuButton(String text, String command) {
         JPanel btnPanel = new JPanel(new BorderLayout()); 
         btnPanel.setBackground(GREEN_PRIMARY);
@@ -172,7 +159,6 @@ public class DashboardAdminView extends JFrame {
         label.setForeground(Color.WHITE);
         btnPanel.add(label, BorderLayout.CENTER);
 
-        // Hover & Click Listener
         btnPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -189,14 +175,14 @@ public class DashboardAdminView extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 if (!command.equals(activeMenu)) {
-                    btnPanel.setBackground(GREEN_HOVER); // MENGGUNAKAN WARNA BARU
+                    btnPanel.setBackground(GREEN_HOVER); 
                 }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 if (!command.equals(activeMenu)) {
-                    btnPanel.setBackground(GREEN_PRIMARY); // MENGGUNAKAN WARNA BARU
+                    btnPanel.setBackground(GREEN_PRIMARY); 
                 }
             }
         });
@@ -204,7 +190,6 @@ public class DashboardAdminView extends JFrame {
         return btnPanel;
     }
     
-    // --- Mengatur Highlight untuk Navigasi Header (Warna Diubah) ---
     private void updateHeaderMenuHighlight() {
         boolean isDashboardMode = this.currentBankSampah != null;
         
@@ -220,7 +205,6 @@ public class DashboardAdminView extends JFrame {
             buttonsToProcess = new JPanel[]{createBankNavButton};
         }
         
-        // Proses Highlight
         for (JPanel btn : buttonsToProcess) {
             if (btn != null) {
                 boolean isActive = false;
@@ -247,8 +231,6 @@ public class DashboardAdminView extends JFrame {
 
 
     public void switchPanel(String menuName) {
-        
-        // --- LOGIKA GATEKEEPER (TIDAK DIUBAH) ---
         if(currentBankSampah == null) {
             boolean isAllowed = menuName.equals("Logout") || 
                                 menuName.equals("Profil") || 

@@ -29,28 +29,23 @@ public class ManajemenSampahPanel extends JPanel {
     private BankSampah currentBank;
     private String selectedIdSampah= null; 
 
-    // Komponen Form
     private JTextField tfRKategori;
     private JTextField tfRharga;
     
-    // Tombol CRUD
-    private JButton btnAdd;    // Create
-    private JButton btnUpdate; // Update
-    private JButton btnDelete; // Delete
-    private JButton btnClear;  // Reset Form
+    private JButton btnAdd;    
+    private JButton btnUpdate; 
+    private JButton btnDelete; 
+    private JButton btnClear;  
 
-    // Komponen Tabel
     private JTable tableSampah;
     private DefaultTableModel tableModel;
 
-    // Styling Colors
     private final Color GREEN_HEADER = new Color(40, 167, 69);
     private final Color GREEN_BG_LIGHT = new Color(209, 231, 221);
     private final Color TEXT_GREEN = new Color(15, 81, 50);
-    private final Color COLOR_EDIT = new Color(255, 193, 7); // Kuning
-    private final Color COLOR_DELETE = new Color(220, 53, 69); // Merah
+    private final Color COLOR_EDIT = new Color(255, 193, 7); 
+    private final Color COLOR_DELETE = new Color(220, 53, 69); 
 
-    // Fonts
     private final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 22);
     private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
 
@@ -85,7 +80,6 @@ public class ManajemenSampahPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // --- BAGIAN TABEL (READ) ---
     private JPanel createTopSection() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -97,7 +91,6 @@ public class ManajemenSampahPanel extends JPanel {
         panel.add(lblMainTitle);
         panel.add(Box.createVerticalStrut(15));
 
-        // Alert Info
         JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         alertPanel.setBackground(GREEN_BG_LIGHT);
         alertPanel.setBorder(new CompoundBorder(
@@ -113,7 +106,6 @@ public class ManajemenSampahPanel extends JPanel {
         panel.add(alertPanel);
         panel.add(Box.createVerticalStrut(15));
 
-        // Tabel
         String[] columns = {"ID", "Kategori Sampah", "Harga per Kg"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -137,22 +129,18 @@ public class ManajemenSampahPanel extends JPanel {
         scrollTable.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(scrollTable);
 
-        // --- EVENT LISTENER TABEL (PENTING BUAT UPDATE/DELETE) ---
         tableSampah.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = tableSampah.getSelectedRow();
                 if (row != -1) {
-                    // Ambil data dari tabel
                     selectedIdSampah = tableModel.getValueAt(row, 0).toString();
                     String kategori = tableModel.getValueAt(row, 1).toString();
                     String harga = tableModel.getValueAt(row, 2).toString();
 
-                    // Isi ke form
                     tfRKategori.setText(kategori);
                     tfRharga.setText(harga);
 
-                    // Atur tombol: Matikan Add, Nyalakan Edit & Delete
                     toggleButtons(true);
                 }
             }
@@ -161,7 +149,6 @@ public class ManajemenSampahPanel extends JPanel {
         return panel;
     }
 
-    // --- BAGIAN FORM (CREATE, UPDATE, DELETE) ---
     private JPanel createBottomSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
@@ -178,17 +165,16 @@ public class ManajemenSampahPanel extends JPanel {
         lblFormTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         panel.add(lblFormTitle, gbc);
 
-        // Input Fields
         gbc.gridy++; panel.add(new JLabel("Kategori Sampah:"), gbc);
         gbc.gridy++; tfRKategori = new JTextField(); styleTextField(tfRKategori); panel.add(tfRKategori, gbc);
 
         gbc.gridy++; panel.add(new JLabel("Harga per Kg (Rp):"), gbc);
         gbc.gridy++; 
-        tfRharga = new JTextField(); // GANTI JADI TEXTFIELD
+        tfRharga = new JTextField(); 
         styleTextField(tfRharga);
         panel.add(tfRharga, gbc);
 
-        // --- TOMBOL AKSI ---
+ 
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
@@ -223,13 +209,9 @@ public class ManajemenSampahPanel extends JPanel {
         return panel;
     }
 
-    // ================= LOGIC CRUD =================
-
-    // 1. CREATE
     private void handleAdd() {
         if (!validateInput()) return;
         
-        // Generate ID baru (Bisa pakai method static di DatabaseSampah)
         String newId = DatabaseSampah.generateSampahId(); 
         
         Sampah s = new Sampah(
@@ -238,7 +220,7 @@ public class ManajemenSampahPanel extends JPanel {
            Double.parseDouble(tfRharga.getText().trim())
         );
 
-        String path = currentBank.getFileDaftarSampah(); // Ambil path dari Model Bank
+        String path = currentBank.getFileDaftarSampah(); 
         DatabaseSampah.addSampah(s, path);
         
         JOptionPane.showMessageDialog(this, "Berhasil menambah data!");
@@ -246,7 +228,6 @@ public class ManajemenSampahPanel extends JPanel {
         refreshTable();
     }
 
-    // 2. UPDATE
     private void handleUpdate() {
         if (selectedIdSampah == null) return;
         if (!validateInput()) return;
@@ -255,7 +236,7 @@ public class ManajemenSampahPanel extends JPanel {
         if (confirm == JOptionPane.YES_OPTION) {
             
             Sampah r = new Sampah(
-                selectedIdSampah, // ID Tetap sama (jangan diubah)
+                selectedIdSampah,
                 tfRKategori.getText().trim(),
                 Double.parseDouble(tfRharga.getText().trim())
             );
@@ -269,7 +250,6 @@ public class ManajemenSampahPanel extends JPanel {
         }
     }
 
-    // 3. DELETE
     private void handleDelete() {
         if (selectedIdSampah == null) return;
 
@@ -285,7 +265,6 @@ public class ManajemenSampahPanel extends JPanel {
         }
     }
 
-    // 4. READ (Refresh Table)
     private void refreshTable() {
         tableModel.setRowCount(0);
         String path = currentBank.getFileDaftarSampah();
@@ -300,7 +279,6 @@ public class ManajemenSampahPanel extends JPanel {
         }
     }
 
-    // --- Helpers ---
     private boolean validateInput() {
         if (tfRKategori.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Data tidak boleh kosong!");
@@ -320,13 +298,13 @@ public class ManajemenSampahPanel extends JPanel {
         tfRharga.setText("");
         selectedIdSampah = null;
         tableSampah.clearSelection();
-        toggleButtons(false); // Balik ke mode Add
+        toggleButtons(false); 
     }
 
     private void toggleButtons(boolean isEditMode) {
-        btnAdd.setEnabled(!isEditMode);   // Jika mode edit, tombol Add mati
-        btnUpdate.setEnabled(isEditMode); // Jika mode edit, tombol Update nyala
-        btnDelete.setEnabled(isEditMode); // Jika mode edit, tombol Delete nyala
+        btnAdd.setEnabled(!isEditMode);   
+        btnUpdate.setEnabled(isEditMode); 
+        btnDelete.setEnabled(isEditMode); 
     }
 
     private void styleTextField(JTextField tf) {

@@ -178,9 +178,6 @@ public class LoginView extends JFrame {
         field.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     }
 
-    // ===========================
-    // LOGIC LOGIN (TIDAK DIUBAH)
-    // ===========================
     private void loginAction() {
         String username = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
@@ -198,7 +195,6 @@ public class LoginView extends JFrame {
             return;
         }
 
-        // USER DITEMUKAN → CEK TYPE
         if (user instanceof Admin) {
             Admin admin = (Admin) user;
 

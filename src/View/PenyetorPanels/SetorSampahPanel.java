@@ -146,19 +146,18 @@ public class SetorSampahPanel extends JPanel {
         double hargaPerKg = s.getHargaPerKg();
         double subtotal = berat * hargaPerKg;
 
-        // Tambah ke tabel
+  
         tableModel.addRow(new Object[] {
                 s.getJenis(), hargaPerKg, berat, subtotal
         });
 
-        // Update total
+
         totalBerat += berat;
         totalHarga += subtotal;
 
         lbTotalBerat.setText("Total Berat: " + totalBerat + " kg");
         lbTotalHarga.setText("Total Harga: Rp " + totalHarga);
 
-        // Tambah ke list item transaksi
         listItems.add(new ItemTransaksi("Belum ada", s.getIdSampah(), hargaPerKg, berat));
 
         tfBerat.setText("");
@@ -186,17 +185,17 @@ public class SetorSampahPanel extends JPanel {
         }
         trx.setItemTransaksi(listItems);
 
-        listTransaksi.add(trx); //-> tambah transaski ke total semua transaksi yang terjadi
+        listTransaksi.add(trx); 
         
-        DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi()); // -> tulis ke file data transksi setiap bank, transaksi yang baru terjadi
-        DatabaseTransaksi.writeData(listTransaksi); // -> tulis ke file total transaski yang pernah terjadi di aplikasi 
-        DatabaseItemTransaksi.writeData(listItems, bank.getFileItemTransaksi()); // -> menulis item setiap transaksi ke file bank
-        DatabaseItemTransaksi.writeData(listItems); // -> menulis item transaksi ke file data keseluruhan transaksi yang terjadi di apliaski
+        DatabaseTransaksi.addTransaksi(trx, bank.getFileTransaksi());
+        DatabaseTransaksi.writeData(listTransaksi); 
+        DatabaseItemTransaksi.writeData(listItems, bank.getFileItemTransaksi()); 
+        DatabaseItemTransaksi.writeData(listItems); 
 
         JOptionPane.showMessageDialog(this, "Transaksi berhasil dikirim!");
         user.tambahSetoran(1);
 
-        // Reset panel
+
         tableModel.setRowCount(0);
         listItems.clear();
         totalBerat = 0;

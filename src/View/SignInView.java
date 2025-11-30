@@ -197,7 +197,6 @@ public class SignInView extends JFrame {
     });
 }
 
-// Tambahkan atau ubah helper methods ini jika belum ada:
 private void styleTextField(JTextField field) {
     field.setPreferredSize(new Dimension(25, 40));
     field.setBackground(Color.WHITE);
@@ -212,9 +211,6 @@ private void styleField(JComboBox<String> box) {
     box.setFont(new Font("Fredoka", Font.PLAIN, 14));
     box.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 }
-    // ==============================
-    // LOGIC PENDAFTARAN (DIPERBAIKI)
-    // ==============================
     private void registerUser() {
         String role = roleBox.getSelectedItem().toString();
         String nama = namaField.getText();
@@ -231,7 +227,6 @@ private void styleField(JComboBox<String> box) {
             return;
         }
 
-        // Buat user baru berdasarkan role
         if (role.equals("Admin")) {
             SignInController.getService().registerAdmin(role, nama, user, pass, noHp);
         } else {

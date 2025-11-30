@@ -26,22 +26,20 @@ public class EvaluasiKomplainPanel extends JPanel {
     private String selectedIdComplain = null;
     private ArrayList<Complain> listComplainCache;
 
-    // --- Komponen Tabel ---
+
     private JTable tableComplain;
     private DefaultTableModel tableModel;
 
-    // --- Komponen Form Detail ---
+
     private JLabel lblPengirim;
     private JLabel lblTanggal;
     private JTextField tfJudul;
     private JTextArea taIsiKomplain;
     private JTextArea taTanggapanAdmin;
-    
-    // --- Komponen Ganti Status (COMBOBOX) ---
+
     private JComboBox<Complain.Status> cbStatus; 
     private JButton btnSimpan;
 
-    // --- Styling ---
     private final Color GREEN_HEADER = new Color(40, 167, 69);
     private final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 18);
     private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
@@ -62,13 +60,11 @@ public class EvaluasiKomplainPanel extends JPanel {
         mainContent.setBackground(Color.WHITE);
         mainContent.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Bagian Atas: Tabel
         mainContent.add(createTableSection());
         mainContent.add(Box.createVerticalStrut(20));
         mainContent.add(new JSeparator());
         mainContent.add(Box.createVerticalStrut(20));
         
-        // Bagian Bawah: Form Ubah Status
         mainContent.add(createFormSection());
 
         JScrollPane mainScroll = new JScrollPane(mainContent);
@@ -77,7 +73,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         add(mainScroll, BorderLayout.CENTER);
     }
 
-    // --- 1. TABEL DAFTAR KOMPLAIN ---
     private JPanel createTableSection() {
         JPanel panel = new JPanel(new BorderLayout(0, 10));
         panel.setBackground(Color.WHITE);
@@ -124,7 +119,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         return panel;
     }
 
-    // --- 2. FORM DETAIL & UBAH STATUS ---
     private JPanel createFormSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
@@ -137,7 +131,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 0; gbc.gridy = 0;
 
-        // Info Pengirim
         gbc.weightx = 0.5;
         lblPengirim = new JLabel("Pengirim: -");
         lblPengirim.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -148,7 +141,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         lblTanggal.setFont(new Font("Segoe UI", Font.BOLD, 14));
         panel.add(lblTanggal, gbc);
 
-        // Judul (Read Only)
         gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2;
         panel.add(createLabel("Judul Masalah:"), gbc);
         gbc.gridy++;
@@ -156,7 +148,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         tfJudul.setBackground(new Color(245, 245, 245));
         panel.add(tfJudul, gbc);
 
-        // Isi Komplain (Read Only)
         gbc.gridy++;
         panel.add(createLabel("Isi Laporan:"), gbc);
         gbc.gridy++;
@@ -165,7 +156,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         taIsiKomplain.setBackground(new Color(245, 245, 245));
         panel.add(new JScrollPane(taIsiKomplain), gbc);
 
-        // Tanggapan Admin (Editable)
         gbc.gridy++;
         panel.add(createLabel("Tanggapan Admin:"), gbc);
         gbc.gridy++;
@@ -173,14 +163,13 @@ public class EvaluasiKomplainPanel extends JPanel {
         taTanggapanAdmin.setLineWrap(true); taTanggapanAdmin.setWrapStyleWord(true);
         panel.add(new JScrollPane(taTanggapanAdmin), gbc);
 
-        // --- PILIH STATUS (COMBOBOX) ---
+
         gbc.gridy++;
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         actionPanel.setBackground(Color.WHITE);
 
         actionPanel.add(createLabel("Update Status: "));
         
-        // ComboBox berisi 4 Status dari Enum
         cbStatus = new JComboBox<>(Complain.Status.values());
         cbStatus.setPreferredSize(new Dimension(200, 35));
         cbStatus.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -188,7 +177,7 @@ public class EvaluasiKomplainPanel extends JPanel {
 
         actionPanel.add(Box.createHorizontalStrut(15));
 
-        // Tombol Simpan
+
         btnSimpan = new JButton("💾 Simpan Perubahan");
         styleButton(btnSimpan, GREEN_HEADER);
         btnSimpan.addActionListener(e -> handleUpdateStatus());
@@ -200,7 +189,6 @@ public class EvaluasiKomplainPanel extends JPanel {
         return panel;
     }
 
-    // ================= LOGIC =================
 
     private void handleUpdateStatus() {
         if (selectedIdComplain == null) return;
@@ -245,17 +233,14 @@ public class EvaluasiKomplainPanel extends JPanel {
         String sender = tableModel.getValueAt(row, 2).toString();
         String judul = tableModel.getValueAt(row, 3).toString();
         
-        // Ambil status saat ini dari tabel
         Complain.Status currentStat = (Complain.Status) tableModel.getValueAt(row, 4);
 
         lblPengirim.setText("Pengirim: " + sender);
         lblTanggal.setText("Tanggal: " + tgl);
         tfJudul.setText(judul);
-        
-        // Set ComboBox sesuai status yang sedang aktif
+      
         cbStatus.setSelectedItem(currentStat);
-        
-        // Logic ambil detail dari DB (Dummy)
+
         taIsiKomplain.setText("Detail isi komplain diambil dari database..."); 
         taTanggapanAdmin.setText("Tanggapan lama...");
 

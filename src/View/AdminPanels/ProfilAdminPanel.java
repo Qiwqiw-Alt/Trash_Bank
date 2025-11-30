@@ -117,9 +117,7 @@ public class ProfilAdminPanel extends JPanel {
         return panel;
     }
 
-    // ========================================================================
-    // BAGIAN KANAN: GANTI PASSWORD
-    // ========================================================================
+   
     private JPanel createPasswordSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
@@ -136,14 +134,13 @@ public class ProfilAdminPanel extends JPanel {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 0;
 
-        // 1. Password Lama
         panel.add(createLabel("Password Lama:"), gbc);
         gbc.gridy++;
         pfOldPass = new JPasswordField();
         styleTextField(pfOldPass);
         panel.add(pfOldPass, gbc);
 
-        // 2. Password Baru
+
         gbc.gridy++;
         panel.add(createLabel("Password Baru:"), gbc);
         gbc.gridy++;
@@ -151,7 +148,7 @@ public class ProfilAdminPanel extends JPanel {
         styleTextField(pfNewPass);
         panel.add(pfNewPass, gbc);
 
-        // 3. Konfirmasi Password
+   
         gbc.gridy++;
         panel.add(createLabel("Konfirmasi Password Baru:"), gbc);
         gbc.gridy++;
@@ -159,12 +156,12 @@ public class ProfilAdminPanel extends JPanel {
         styleTextField(pfConfirmPass);
         panel.add(pfConfirmPass, gbc);
 
-        // Tombol Ganti Password
+  
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
         btnChangePass = new JButton("🔒 Update Password");
         styleButton(btnChangePass);
-        btnChangePass.setBackground(new Color(220, 53, 69)); // Merah
+        btnChangePass.setBackground(new Color(220, 53, 69)); 
         btnChangePass.addActionListener(e -> handleChangePassword());
         panel.add(btnChangePass, gbc);
 
@@ -176,15 +173,11 @@ public class ProfilAdminPanel extends JPanel {
         return panel;
     }
 
-    // ========================================================================
-    // LOGIC & DATA HANDLING
-    // ========================================================================
 
     private void loadData() {
         if (currentAdmin != null) {
             tfIdAdmin.setText(currentAdmin.getIdAdmin());
-            
-            // Handle kemungkinan Bank ID null (misal baru create admin)
+     
             String bankId = currentAdmin.getIdBankSampah();
             tfIdBank.setText((bankId == null || bankId.equals("null")) ? "Belum Terhubung" : bankId);
             
@@ -204,18 +197,12 @@ public class ProfilAdminPanel extends JPanel {
             return;
         }
 
-        // 1. Update Object di Memori
         currentAdmin.setNamaAdmin(nama);
         currentAdmin.setUsername(user);
         currentAdmin.setNohp(hp);
 
-        // 2. Update ke Database (File TXT)
-        // Kita construct path file adminnya secara dinamis berdasarkan ID Bank
-        // Path: src/Database/Admin/admin_BSxxx.txt
         String path = "src\\Database\\Admin\\admin_" + currentAdmin.getIdBankSampah() + ".txt";
         
-        // Panggil method update di DatabaseAdmin (pastikan method updateAdmin() sudah kamu buat di DatabaseAdmin.java)
-        // Jika belum ada, gunakan trik load -> edit -> save manual
         DataBaseAdmin.updateAdmin(currentAdmin, path);
 
         JOptionPane.showMessageDialog(this, "Profil berhasil diperbarui!");
@@ -226,40 +213,35 @@ public class ProfilAdminPanel extends JPanel {
         String newPass = new String(pfNewPass.getPassword());
         String confirmPass = new String(pfConfirmPass.getPassword());
 
-        // 1. Validasi Input Kosong
         if (oldPass.isEmpty() || newPass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Password tidak boleh kosong!");
             return;
         }
 
-        // 2. Cek Password Lama Benar/Salah
         if (!oldPass.equals(currentAdmin.getPassword())) {
             JOptionPane.showMessageDialog(this, "Password Lama Salah!", "Akses Ditolak", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 3. Cek Konfirmasi Password
         if (!newPass.equals(confirmPass)) {
             JOptionPane.showMessageDialog(this, "Konfirmasi password baru tidak cocok!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 4. Update Object
         currentAdmin.setPassword(newPass);
 
-        // 5. Simpan ke File
+
         String path = "src\\Database\\Admin\\admin_" + currentAdmin.getIdBankSampah() + ".txt";
         DataBaseAdmin.updateAdmin(currentAdmin, path);
 
         JOptionPane.showMessageDialog(this, "Password berhasil diubah!");
         
-        // Bersihkan field password
         pfOldPass.setText("");
         pfNewPass.setText("");
         pfConfirmPass.setText("");
     }
 
-    // --- Helpers Styling ---
+
     private JLabel createLabel(String text) {
         JLabel lbl = new JLabel(text);
         lbl.setFont(FONT_LABEL);
@@ -272,7 +254,7 @@ public class ProfilAdminPanel extends JPanel {
         styleTextField(tf);
         tf.setEditable(isEditable);
         if (!isEditable) {
-            tf.setBackground(new Color(240, 240, 240)); // Abu-abu kalau read-only
+            tf.setBackground(new Color(240, 240, 240)); 
             tf.setForeground(Color.GRAY);
         }
         return tf;

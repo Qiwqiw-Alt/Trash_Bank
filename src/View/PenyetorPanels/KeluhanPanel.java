@@ -20,7 +20,7 @@ public class KeluhanPanel extends JPanel {
    private BankSampahService bss;
    private ArrayList<Complain> daftarComplain;
 
-   // Komponen UI
+
    private JTextField judulField;
    private JTextArea isiArea;
    private JButton submitButton;
@@ -43,18 +43,18 @@ public class KeluhanPanel extends JPanel {
       setBackground(Color.WHITE);
       setBorder(new EmptyBorder(20, 20, 20, 20));
 
-      // Header
+
       JLabel header = new JLabel("Kirim Keluhan");
       header.setFont(new Font("Segoe UI", Font.BOLD, 26));
       header.setHorizontalAlignment(SwingConstants.CENTER);
       add(header, BorderLayout.NORTH);
 
-      // Panel utama
+
       JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
       mainPanel.setBackground(Color.WHITE);
       add(mainPanel, BorderLayout.CENTER);
 
-      // Form keluhan
+
       JPanel formPanel = new JPanel();
       formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
       formPanel.setBackground(Color.WHITE);
@@ -62,7 +62,7 @@ public class KeluhanPanel extends JPanel {
             BorderFactory.createTitledBorder("Form Keluhan"),
             BorderFactory.createEmptyBorder(15, 15, 15, 15)));
 
-      // Judul
+   
       JLabel judulLabel = new JLabel("Judul Keluhan:");
       judulLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       formPanel.add(judulLabel);
@@ -77,7 +77,7 @@ public class KeluhanPanel extends JPanel {
       formPanel.add(judulField);
       formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-      // Isi
+
       JLabel isiLabel = new JLabel("Isi Keluhan:");
       isiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
       formPanel.add(isiLabel);
@@ -95,7 +95,6 @@ public class KeluhanPanel extends JPanel {
       formPanel.add(scrollPane);
       formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-      // Tombol Submit
       submitButton = new JButton("Submit Keluhan");
       submitButton.setBackground(new Color(0, 128, 0));
       submitButton.setForeground(Color.WHITE);
@@ -108,7 +107,7 @@ public class KeluhanPanel extends JPanel {
 
       mainPanel.add(formPanel, BorderLayout.NORTH);
 
-      // Panel riwayat
+
       JPanel riwayatPanel = new JPanel(new BorderLayout());
       riwayatPanel.setBackground(Color.WHITE);
       riwayatPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -118,7 +117,7 @@ public class KeluhanPanel extends JPanel {
       tableModel = new DefaultTableModel(new Object[] { "ID Complain", "Judul", "Isi", "Status", "Tanggapan" }, 0) {
          @Override
          public boolean isCellEditable(int row, int column) {
-            return false; // read-only
+            return false; 
          }
       };
 
@@ -156,17 +155,16 @@ public class KeluhanPanel extends JPanel {
       Complain complainBaru = new Complain(idComplain, idUser, idBank, judul, isi);
       daftarComplain.add(complainBaru);
 
-      // Simpan ke database
+
       DatabaseComplain.writeData(daftarComplain, bank.getFileComplain());
       DatabaseComplain.writeData(daftarComplain);
 
       JOptionPane.showMessageDialog(this, "Keluhan berhasil dikirim!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
 
-      // Reset form
       judulField.setText("");
       isiArea.setText("");
 
-      // Refresh tabel
+
       loadRiwayatKeluhan();
    }
 

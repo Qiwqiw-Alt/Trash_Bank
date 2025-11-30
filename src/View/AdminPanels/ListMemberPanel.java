@@ -15,27 +15,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListMemberPanel extends JPanel {
-
     private BankSampah currentBank;
-    
-    // --- Komponen Tab Kiri ---
+
     private JTabbedPane tabLeft;
-    
-    // 1. Tab Manual Add
+
     private JTextField tfUserId;
     private JButton btnAdd;
 
-    // 2. Tab Request List (BARU)
+
     private JTable tableRequest;
     private DefaultTableModel modelRequest;
     private JButton btnAccept;
     private JButton btnReject;
     
-    // --- Komponen Kanan (Daftar Member Sah) ---
+
     private JTable tableMember;
     private DefaultTableModel tableModel;
 
-    // Styling
     private final Color GREEN_PRIMARY = new Color(0, 128, 0);
     private final Color RED_DANGER = new Color(220, 53, 69);
     private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 18);
@@ -45,8 +41,8 @@ public class ListMemberPanel extends JPanel {
         this.currentBank = bankSampah;
         
         initLayout();
-        refreshTable(); // Load data member
-        refreshRequestTable(); // Load data request
+        refreshTable(); 
+        refreshRequestTable(); 
     }
 
     private void initLayout() {
@@ -54,16 +50,12 @@ public class ListMemberPanel extends JPanel {
         setBackground(new Color(245, 245, 245)); 
         setBorder(new EmptyBorder(20, 20, 20, 20)); 
 
-        // 1. PANEL KIRI (TABBED PANE)
         add(createLeftPanel());
 
-        // 2. PANEL KANAN (LIST MEMBER)
+
         add(createRightPanel());
     }
 
-    // ========================================================================
-    // BAGIAN KIRI: TABBED PANE (MANUAL ADD & REQUEST)
-    // ========================================================================
     private JPanel createLeftPanel() {
         JPanel container = new JPanel(new BorderLayout());
         container.setBackground(Color.WHITE);
@@ -72,10 +64,8 @@ public class ListMemberPanel extends JPanel {
         tabLeft = new JTabbedPane();
         tabLeft.setFont(new Font("Segoe UI", Font.BOLD, 12));
         
-        // Tab 1: Input Manual (Kode lama dipindah ke method ini)
         tabLeft.addTab("➕ Tambah Manual", createManualAddPanel());
-        
-        // Tab 2: Permintaan Masuk (Fitur Baru)
+ 
         tabLeft.addTab("📩 Permintaan Masuk", createRequestPanel());
 
         container.add(tabLeft, BorderLayout.CENTER);
@@ -135,7 +125,6 @@ public class ListMemberPanel extends JPanel {
         lblTitle.setForeground(Color.DARK_GRAY);
         panel.add(lblTitle, BorderLayout.NORTH);
 
-        // Tabel Request
         String[] cols = {"ID Penyetor", "Nama Penyetor", "Status"}; 
         modelRequest = new DefaultTableModel(cols, 0) {
             @Override
@@ -143,10 +132,9 @@ public class ListMemberPanel extends JPanel {
         };
         tableRequest = new JTable(modelRequest);
         tableRequest.setRowHeight(25);
-        tableRequest.setSelectionBackground(new Color(255, 240, 200)); // Warna kuning muda
+        tableRequest.setSelectionBackground(new Color(255, 240, 200)); 
         panel.add(new JScrollPane(tableRequest), BorderLayout.CENTER);
 
-        // Tombol Aksi
         JPanel btnPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         btnPanel.setBackground(Color.WHITE);
 
@@ -165,9 +153,6 @@ public class ListMemberPanel extends JPanel {
         return panel;
     }
 
-    // ========================================================================
-    // BAGIAN KANAN: DAFTAR MEMBER SAH
-    // ========================================================================
     private JPanel createRightPanel() {
         JPanel panel = new JPanel(new BorderLayout(0, 10));
         panel.setBackground(Color.WHITE);
@@ -200,9 +185,6 @@ public class ListMemberPanel extends JPanel {
         return panel;
     }
 
-    // ========================================================================
-    // LOGIC & ACTIONS
-    // ========================================================================
 
     private void handleAddMember() {
         String targetId = tfUserId.getText().trim();
@@ -212,14 +194,12 @@ public class ListMemberPanel extends JPanel {
             return;
         }
 
-        // --- Logic Manual Add (Sama seperti sebelumnya) ---
         if (ListMemberController.getService().isUserAvilable(targetId)) {
             int confirm = JOptionPane.showConfirmDialog(this, 
                 "Tambahkan User ID: " + targetId + " ke database lokal bank ini?",
                 "Konfirmasi", JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                // Proses Add Member
                 prosesTambahMember(targetId);
                 tfUserId.setText(""); 
             }
@@ -238,7 +218,6 @@ public class ListMemberPanel extends JPanel {
         String userId = (String) modelRequest.getValueAt(row, 0);
         String userName = (String) modelRequest.getValueAt(row, 1);
         
-        // Cek status sekarang agar tidak double action
         String currentStatus = modelRequest.getValueAt(row, 2).toString();
         if(currentStatus.equals("DITERIMA") || currentStatus.equals("DITOLAK")){
              JOptionPane.showMessageDialog(this, "Request ini sudah diproses sebelumnya.");
@@ -250,10 +229,8 @@ public class ListMemberPanel extends JPanel {
                 "Terima " + userName + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                // 1. Masukkan ke Member Sah (Lokal)
                 prosesTambahMember(userId); 
                 
-                // 2. Update Status di Database Request jadi DITERIMA
                 DatabaseRequestJoin.updateStatus(userId, TransaksiJoin.Status.DITERIMA, currentBank.getFileRequestJoin());
                 
                 JOptionPane.showMessageDialog(this, "Anggota Diterima!");
@@ -263,21 +240,18 @@ public class ListMemberPanel extends JPanel {
                 "Tolak permintaan " + userName + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                // 1. Reset ID Bank user jadi null (Global)
                 DatabasePenyetor.assignUserToBank(userId, "null"); 
                 
-                // 2. Update Status di Database Request jadi DITOLAK
                 DatabaseRequestJoin.updateStatus(userId, TransaksiJoin.Status.DITOLAK, currentBank.getFileRequestJoin());
 
                 JOptionPane.showMessageDialog(this, "Permintaan Ditolak.");
             }
         }
         
-        refreshRequestTable(); // Tabel akan refresh dan status berubah
+        refreshRequestTable();
         refreshTable();
     }
 
-    // Method Helper agar tidak duplikasi kodingan
     private void prosesTambahMember(String userId) {
         boolean globalSuccess = DatabasePenyetor.assignUserToBank(userId, currentBank.getIdBank());
         
@@ -295,8 +269,6 @@ public class ListMemberPanel extends JPanel {
         }
     }
 
-    // --- REFRESH TABLES ---
-
     private void refreshTable() {
         tableModel.setRowCount(0);
         if (currentBank != null) {
@@ -310,23 +282,20 @@ public class ListMemberPanel extends JPanel {
     private void refreshRequestTable() {
         modelRequest.setRowCount(0);
         
-        // Load data dari database
         ArrayList<TransaksiJoin> daftarTransaksiJoins = DatabaseRequestJoin.loadData(currentBank.getFileRequestJoin());
         
         for(TransaksiJoin tj : daftarTransaksiJoins){
             
-            // Cari nama penyetor
             Object userObj = ListMemberController.getService().getUserById(tj.getIdPenyetor());
             String namaPenyetor = "Tidak Dikenal";
             if (userObj instanceof Penyetor) {
                 namaPenyetor = ((Penyetor) userObj).getNamaLengkap();
             }
 
-            // MASUKKAN STATUS KE KOLOM KE-3
             modelRequest.addRow(new Object[]{ 
                 tj.getIdPenyetor(), 
                 namaPenyetor,
-                tj.getStatusRequest() // Ini akan menampilkan: SEDANG_DITINJAU, DITERIMA, dll
+                tj.getStatusRequest() 
             });
         }
     }

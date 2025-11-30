@@ -14,12 +14,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class CreateBankSampahPanel extends JPanel {
-
-    // Simpan referensi ke Frame utama agar bisa memanggil method refresh
     private DashboardAdminView parentFrame;
     private Admin currentAdmin;
 
-    // Komponen Form
     private JTextField tfNamaBank;
     private JTextField tfAlamat;
     private JButton btnSimpan;
@@ -40,27 +37,26 @@ public class CreateBankSampahPanel extends JPanel {
     }
 
     private void initUI() {
-        setLayout(new GridBagLayout()); // Gunakan GridBagLayout agar form rapi di tengah
+        setLayout(new GridBagLayout()); 
         setBackground(Color.WHITE);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Margin antar komponen
+        gbc.insets = new Insets(10, 10, 10, 10); 
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // 1. Judul
+
         JLabel lblTitle = new JLabel("SETUP BANK SAMPAH ANDA");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
         lblTitle.setForeground(GREEN_PRIMARY);
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; // Span 2 kolom
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; 
         gbc.anchor = GridBagConstraints.CENTER;
         add(lblTitle, gbc);
 
-        // Deskripsi Kecil
+
         JLabel lblDesc = new JLabel("Halo " + currentAdmin.getNamaAdmin() + ", silakan buat Bank Sampah baru untuk memulai.");
         gbc.gridy = 1;
         add(lblDesc, gbc);
 
-        // 2. Input Nama Bank
         gbc.gridy = 2; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.WEST;
         add(new JLabel("Nama Bank Sampah:"), gbc);
 
@@ -68,7 +64,6 @@ public class CreateBankSampahPanel extends JPanel {
         gbc.gridx = 1; 
         add(tfNamaBank, gbc);
 
-        // 3. Input Alamat
         gbc.gridx = 0; gbc.gridy = 3;
         add(new JLabel("Alamat Lengkap:"), gbc);
 
@@ -76,7 +71,6 @@ public class CreateBankSampahPanel extends JPanel {
         gbc.gridx = 1;
         add(tfAlamat, gbc);
 
-        // 4. Tombol Simpan
         btnSimpan = new JButton("Buat & Simpan Bank Sampah");
         btnSimpan.setBackground(GREEN_PRIMARY);
         btnSimpan.setForeground(Color.WHITE);
@@ -84,10 +78,9 @@ public class CreateBankSampahPanel extends JPanel {
         btnSimpan.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2; gbc.fill = GridBagConstraints.NONE; gbc.anchor = GridBagConstraints.CENTER;
-        gbc.ipady = 10; // Tinggi tombol
+        gbc.ipady = 10; 
         add(btnSimpan, gbc);
 
-        // --- ACTION LISTENER (LOGIKA UTAMA) ---
         btnSimpan.addActionListener(e -> handleSimpan());
     }
 
@@ -95,7 +88,6 @@ public class CreateBankSampahPanel extends JPanel {
         String nama = tfNamaBank.getText().trim();
         String alamat = tfAlamat.getText().trim();
 
-        // Validasi Input
         if (nama.isEmpty() || alamat.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama Bank dan Alamat tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
@@ -104,20 +96,16 @@ public class CreateBankSampahPanel extends JPanel {
         String idBank = DatabaseBankSampah.generateBankId();
         CreateBankSampahController.getService().addBankSampah(idBank, nama, alamat);
 
-        // 4. Update Admin (Hubungkan Admin dengan Bank ini)
         ArrayList<Admin> listAdmin = DataBaseAdmin.loadData();
         for (Admin a : listAdmin) {
             if (a.getIdAdmin().equals(currentAdmin.getIdAdmin())) {
-                a.setIdBankSampah(idBank); // Update data di list static
+                a.setIdBankSampah(idBank); 
                 break;
             }
         }
         DataBaseAdmin.writeData(listAdmin);
-        // 5. Tampilkan Pesan Sukses
         JOptionPane.showMessageDialog(this, "Bank Sampah '" + nama + "' berhasil dibuat!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
 
-        // 6. PANGGIL METHOD DI PARENT FRAME UNTUK REFRESH DASHBOARD
-        // Ini langkah krusial agar tampilan berubah dari form create ke dashboard menu
         if (parentFrame != null) {
             parentFrame.onBankCreatedSuccess(new BankSampah(idBank, idBank, alamat));
         }

@@ -19,32 +19,29 @@ import java.util.ArrayList;
 public class ManajemenRewardPanel extends JPanel {
 
     private BankSampah currentBank;
-    private String selectedIdReward = null; // Untuk menyimpan ID yang sedang diedit
+    private String selectedIdReward = null; 
 
-    // Komponen Form
+
     private JTextField tfRname;
     private JTextArea taRdescription;
     private JTextField tfRpoin;
     private JTextField tfStock;
     
-    // Tombol CRUD
-    private JButton btnAdd;    // Create
-    private JButton btnUpdate; // Update
-    private JButton btnDelete; // Delete
-    private JButton btnClear;  // Reset Form
+    private JButton btnAdd;   
+    private JButton btnUpdate; 
+    private JButton btnDelete; 
+    private JButton btnClear;  
 
-    // Komponen Tabel
     private JTable tableReward;
     private DefaultTableModel tableModel;
 
-    // Styling Colors
     private final Color GREEN_HEADER = new Color(40, 167, 69);
     private final Color GREEN_BG_LIGHT = new Color(209, 231, 221);
     private final Color TEXT_GREEN = new Color(15, 81, 50);
-    private final Color COLOR_EDIT = new Color(255, 193, 7); // Kuning
-    private final Color COLOR_DELETE = new Color(220, 53, 69); // Merah
+    private final Color COLOR_EDIT = new Color(255, 193, 7); 
+    private final Color COLOR_DELETE = new Color(220, 53, 69); 
 
-    // Fonts
+
     private final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 22);
     private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 14);
 
@@ -79,7 +76,7 @@ public class ManajemenRewardPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // --- BAGIAN TABEL (READ) ---
+
     private JPanel createTopSection() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -91,7 +88,6 @@ public class ManajemenRewardPanel extends JPanel {
         panel.add(lblMainTitle);
         panel.add(Box.createVerticalStrut(15));
 
-        // Alert Info
         JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         alertPanel.setBackground(GREEN_BG_LIGHT);
         alertPanel.setBorder(new CompoundBorder(
@@ -107,7 +103,6 @@ public class ManajemenRewardPanel extends JPanel {
         panel.add(alertPanel);
         panel.add(Box.createVerticalStrut(15));
 
-        // Tabel
         String[] columns = {"ID", "Nama Reward", "Deskripsi", "Poin", "Stok"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -131,26 +126,25 @@ public class ManajemenRewardPanel extends JPanel {
         scrollTable.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(scrollTable);
 
-        // --- EVENT LISTENER TABEL (PENTING BUAT UPDATE/DELETE) ---
         tableReward.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = tableReward.getSelectedRow();
                 if (row != -1) {
-                    // Ambil data dari tabel
+
                     selectedIdReward = tableModel.getValueAt(row, 0).toString();
                     String nama = tableModel.getValueAt(row, 1).toString();
                     String desc = tableModel.getValueAt(row, 2).toString();
                     String poin = tableModel.getValueAt(row, 3).toString();
                     String stok = tableModel.getValueAt(row, 4).toString();
 
-                    // Isi ke form
+
                     tfRname.setText(nama);
                     taRdescription.setText(desc);
                     tfRpoin.setText(poin);
                     tfStock.setText(stok);
 
-                    // Atur tombol: Matikan Add, Nyalakan Edit & Delete
+
                     toggleButtons(true);
                 }
             }
@@ -159,7 +153,6 @@ public class ManajemenRewardPanel extends JPanel {
         return panel;
     }
 
-    // --- BAGIAN FORM (CREATE, UPDATE, DELETE) ---
     private JPanel createBottomSection() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
@@ -176,7 +169,7 @@ public class ManajemenRewardPanel extends JPanel {
         lblFormTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         panel.add(lblFormTitle, gbc);
 
-        // Input Fields
+
         gbc.gridy++; panel.add(new JLabel("Nama Reward:"), gbc);
         gbc.gridy++; tfRname = new JTextField(); styleTextField(tfRname); panel.add(tfRname, gbc);
 
@@ -187,7 +180,7 @@ public class ManajemenRewardPanel extends JPanel {
         taRdescription.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         panel.add(new JScrollPane(taRdescription), gbc);
 
-        // Row Poin & Stok
+
         gbc.gridy++;
         JPanel rowNumbers = new JPanel(new GridLayout(1, 2, 20, 0));
         rowNumbers.setBackground(Color.WHITE);
@@ -203,7 +196,7 @@ public class ManajemenRewardPanel extends JPanel {
         rowNumbers.add(p1); rowNumbers.add(p2);
         panel.add(rowNumbers, gbc);
 
-        // --- TOMBOL AKSI ---
+
         gbc.gridy++;
         gbc.insets = new Insets(20, 0, 0, 0);
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
@@ -215,7 +208,7 @@ public class ManajemenRewardPanel extends JPanel {
 
         btnUpdate = new JButton("✏️ Edit");
         styleButton(btnUpdate, COLOR_EDIT);
-        btnUpdate.setForeground(Color.BLACK); // Text hitam biar jelas di kuning
+        btnUpdate.setForeground(Color.BLACK); 
         btnUpdate.addActionListener(e -> handleUpdate());
 
         btnDelete = new JButton("🗑️ Hapus");
@@ -233,19 +226,15 @@ public class ManajemenRewardPanel extends JPanel {
 
         panel.add(btnPanel, gbc);
 
-        // Default: Tombol Edit/Hapus mati dulu
         toggleButtons(false);
 
         return panel;
     }
 
-    // ================= LOGIC CRUD =================
-
-    // 1. CREATE
     private void handleAdd() {
         if (!validateInput()) return;
         
-        // Generate ID baru (Bisa pakai method static di DatabaseReward)
+
         String newId = DatabaseReward.generateRewardId(); 
         
         Reward r = new Reward(
@@ -256,7 +245,7 @@ public class ManajemenRewardPanel extends JPanel {
             Integer.parseInt(tfStock.getText().trim())
         );
 
-        String path = currentBank.getFileReward(); // Ambil path dari Model Bank
+        String path = currentBank.getFileReward(); 
         DatabaseReward.addReward(r, path);
         
         JOptionPane.showMessageDialog(this, "Berhasil menambah data!");
@@ -264,7 +253,6 @@ public class ManajemenRewardPanel extends JPanel {
         refreshTable();
     }
 
-    // 2. UPDATE
     private void handleUpdate() {
         if (selectedIdReward == null) return;
         if (!validateInput()) return;
@@ -273,7 +261,7 @@ public class ManajemenRewardPanel extends JPanel {
         if (confirm == JOptionPane.YES_OPTION) {
             
             Reward r = new Reward(
-                selectedIdReward, // ID Tetap sama (jangan diubah)
+                selectedIdReward, 
                 tfRname.getText().trim(),
                 taRdescription.getText().trim(),
                 Integer.parseInt(tfRpoin.getText().trim()),
@@ -289,7 +277,6 @@ public class ManajemenRewardPanel extends JPanel {
         }
     }
 
-    // 3. DELETE
     private void handleDelete() {
         if (selectedIdReward == null) return;
 
@@ -305,7 +292,6 @@ public class ManajemenRewardPanel extends JPanel {
         }
     }
 
-    // 4. READ (Refresh Table)
     private void refreshTable() {
         tableModel.setRowCount(0);
         String path = currentBank.getFileReward();
@@ -322,7 +308,6 @@ public class ManajemenRewardPanel extends JPanel {
         }
     }
 
-    // --- Helpers ---
     private boolean validateInput() {
         if (tfRname.getText().isEmpty() || tfRpoin.getText().isEmpty() || tfStock.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Data tidak boleh kosong!");
@@ -345,13 +330,13 @@ public class ManajemenRewardPanel extends JPanel {
         tfStock.setText("");
         selectedIdReward = null;
         tableReward.clearSelection();
-        toggleButtons(false); // Balik ke mode Add
+        toggleButtons(false); 
     }
 
     private void toggleButtons(boolean isEditMode) {
-        btnAdd.setEnabled(!isEditMode);   // Jika mode edit, tombol Add mati
-        btnUpdate.setEnabled(isEditMode); // Jika mode edit, tombol Update nyala
-        btnDelete.setEnabled(isEditMode); // Jika mode edit, tombol Delete nyala
+        btnAdd.setEnabled(!isEditMode);   
+        btnUpdate.setEnabled(isEditMode); 
+        btnDelete.setEnabled(isEditMode); 
     }
 
     private void styleTextField(JTextField tf) {

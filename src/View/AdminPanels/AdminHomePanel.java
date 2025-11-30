@@ -1,7 +1,7 @@
 package View.AdminPanels;
 
 import Model.Admin;
-import Model.BankSampah; // Sesuaikan import ini jika perlu
+import Model.BankSampah;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -132,7 +132,7 @@ public class AdminHomePanel extends JPanel {
         // Konten text
         JPanel content = new JPanel(new GridLayout(2, 1));
         content.setBackground(WHITE);
-        content.setBorder(new EmptyBorder(0, 15, 0, 0)); // Jarak dari garis aksen
+        content.setBorder(new EmptyBorder(0, 15, 0, 0));
 
         JLabel lblTitle = new JLabel(title);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -157,7 +157,6 @@ public class AdminHomePanel extends JPanel {
             new EmptyBorder(20, 20, 20, 20)
         ));
 
-        // Judul Section
         JLabel lblTitle = new JLabel("📦 Stok Sampah per Kategori");
         lblTitle.setFont(FONT_MED);
         lblTitle.setForeground(GREEN_PRIMARY);
@@ -174,7 +173,7 @@ public class AdminHomePanel extends JPanel {
         return container;
     }
 
-    // Helper untuk membuat baris kategori
+
     private JPanel createCategoryRow(String name, double totalKg) {
         JPanel row = new JPanel(new BorderLayout());
         row.setBackground(WHITE);
@@ -191,46 +190,33 @@ public class AdminHomePanel extends JPanel {
         row.add(lblName, BorderLayout.WEST);
         row.add(lblVal, BorderLayout.EAST);
         
-        // Garis pemisah tipis di bawah
         row.add(new JSeparator(SwingConstants.HORIZONTAL), BorderLayout.SOUTH);
 
         return row;
     }
 
-    // ========================================================================
-    // 🛠️ BAGIAN LOGIKA DATABASE (PLACEHOLDER)
-    // Silakan isi bagian ini dengan logika DB kamu sendiri
-    // ========================================================================
-
-    // ... kode atas sama ...
 
     private void loadData() {
-        // Pastikan Controller dan Service tidak null
         if (curreBankSampah == null) return;
 
-        // 1. LOAD DATA BANK INFO
         String namaBank = AdminHomePanelController.getService().getBankName(currentUser);
         lblBankName.setText(namaBank.isEmpty() ? "Bank Sampah" : namaBank);
 
-        // 2. LOAD TOTAL MEMBER
         int totalMember = AdminHomePanelController.getService().getTotalMember(curreBankSampah);
         lblTotalMemberVal.setText(String.valueOf(totalMember));
 
-        // 3. LOAD TOTAL TRANSAKSI
         int totalTrx = AdminHomePanelController.getService().getTotalTransaksi(curreBankSampah);
         lblTotalTrxVal.setText(String.valueOf(totalTrx));
 
-        // 4. LOAD TOTAL BERAT SAMPAH (Tambahkan " Kg" biar jelas)
+        
         double totalBerat = AdminHomePanelController.getService().getTotalBeratSampah(curreBankSampah);
-        lblTotalSampahVal.setText(String.format("%.1f Kg", totalBerat)); // Format 1 desimal
+        lblTotalSampahVal.setText(String.format("%.1f Kg", totalBerat)); 
 
-        // 5. LOAD DETAIL PER KATEGORI
         Map<String, Double> dataKategori = AdminHomePanelController.getService().beratPerKategori(curreBankSampah);
         
-        panelCategoryList.removeAll(); // Bersihkan list lama
+        panelCategoryList.removeAll(); 
 
         if (dataKategori.isEmpty()) {
-            // Tampilkan pesan jika belum ada data
             JLabel emptyLabel = new JLabel("Belum ada data sampah masuk.");
             emptyLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
             emptyLabel.setFont(new Font("Segoe UI", Font.ITALIC, 13));
@@ -241,7 +227,6 @@ public class AdminHomePanel extends JPanel {
             }
         }
 
-        // Refresh UI
         panelCategoryList.revalidate();
         panelCategoryList.repaint();
     }

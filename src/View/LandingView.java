@@ -63,7 +63,6 @@ public class LandingView extends JFrame {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        // ======================= HEADER =======================
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(new Color(0x356A69));
         headerPanel.setPreferredSize(new Dimension(0, 60));
@@ -88,7 +87,7 @@ public class LandingView extends JFrame {
         headerPanel.add(loginButtonWrapper, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-        // ======================= BODY SCROLL =======================
+
         scrollableContent = new JPanel();
         scrollableContent.setLayout(new BoxLayout(scrollableContent, BoxLayout.Y_AXIS));
         scrollableContent.setBackground(Color.WHITE);
@@ -101,7 +100,6 @@ public class LandingView extends JFrame {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane, BorderLayout.CENTER);
 
-        // ======================= WELCOME SECTION =======================
         welcomeWrapper = new JPanel(new GridLayout(1, 2));
         welcomeWrapper.setBackground(Color.WHITE);
         welcomeWrapper.setPreferredSize(new Dimension(1000, 500));
@@ -110,7 +108,6 @@ public class LandingView extends JFrame {
 
         scrollableContent.add(welcomeWrapper);
 
-        // ========== LEFT PANEL ==========
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setBackground(Color.WHITE);
@@ -150,7 +147,6 @@ public class LandingView extends JFrame {
 
         welcomeWrapper.add(leftPanel);
 
-        // ========== RIGHT PANEL (IMAGE) ==========
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setBackground(Color.WHITE);
 
@@ -163,7 +159,6 @@ public class LandingView extends JFrame {
 
         welcomeWrapper.add(rightPanel);
 
-        // ======================= ABOUT SECTION =======================
         scrollableContent.add(Box.createVerticalStrut(40));
 
         JLabel aboutTitle = new JLabel("ABOUT");
@@ -174,22 +169,18 @@ public class LandingView extends JFrame {
 
         scrollableContent.add(Box.createVerticalStrut(20));
 
-        // PERBAIKAN: Gunakan panel dengan layout yang lebih fleksibel
         aboutWrapper = new JPanel();
         aboutWrapper.setLayout(new BoxLayout(aboutWrapper, BoxLayout.X_AXIS));
         aboutWrapper.setBackground(Color.WHITE);
         aboutWrapper.setBorder(BorderFactory.createEmptyBorder(20, 60, 60, 60));
         aboutWrapper.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        // Atur maksimum width yang lebih besar untuk mencegah pemotongan
+
         aboutWrapper.setMaximumSize(new Dimension(1200, Integer.MAX_VALUE));
 
-        // Panel untuk konten about
         JPanel aboutContentPanel = new JPanel(new GridLayout(1, 2, 40, 0));
         aboutContentPanel.setBackground(Color.WHITE);
         aboutContentPanel.setMaximumSize(new Dimension(1200, Integer.MAX_VALUE));
 
-        // --- TEKS ABOUT 1 ---
         JPanel about1Panel = new JPanel(new BorderLayout());
         about1Panel.setBackground(Color.WHITE);
         JTextArea about1 = createWrapTextArea(
@@ -197,7 +188,7 @@ public class LandingView extends JFrame {
         );
         about1Panel.add(about1, BorderLayout.CENTER);
 
-        // --- TEKS ABOUT 2 ---
+
         JPanel about2Panel = new JPanel(new BorderLayout());
         about2Panel.setBackground(Color.WHITE);
         JTextArea about2 = createWrapTextArea(
@@ -211,10 +202,8 @@ public class LandingView extends JFrame {
         aboutWrapper.add(aboutContentPanel);
         scrollableContent.add(aboutWrapper);
         
-        // Tambahkan padding di paling bawah
         scrollableContent.add(Box.createVerticalStrut(50));
 
-        // ======================= ACTION =======================
         loginButton.addActionListener(e -> navigateToLogin());
         startButton.addActionListener(e -> navigateToLogin());
     }
@@ -229,15 +218,15 @@ public class LandingView extends JFrame {
         area.setOpaque(false);
         area.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // PERBAIKAN: Atur preferred size yang sesuai
-        area.setPreferredSize(new Dimension(300, 300)); // Lebar minimum, tinggi fleksibel
+  
+        area.setPreferredSize(new Dimension(300, 300)); 
         area.setMinimumSize(new Dimension(250, 200));
         
         return area;
     }
 
     private void navigateToLogin() {
-        // Asumsi LoginView ada
+   
         new LoginView().setVisible(true); 
         dispose();
     }
