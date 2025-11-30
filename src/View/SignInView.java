@@ -19,7 +19,7 @@ public class SignInView extends JFrame {
 
     public SignInView() {
         setTitle("Sign Up - Bank Sampah");
-        setSize(800, 700); // Diperbesar untuk menampung field tambahan
+        setSize(800, 600); // Diperbesar untuk menampung field tambahan
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -28,124 +28,190 @@ public class SignInView extends JFrame {
         initComponents();
     }
 
-    private void initComponents() {
+   private void initComponents() {
 
-        JPanel mainPanel = new JPanel(null);
+    // Ukuran frame 800x700 (diatur di constructor), lebih besar dari LoginView 800x600 untuk menampung field lebih banyak.
+    setLayout(new BorderLayout()); 
 
-        // ==============================
-        // PANEL KIRI (HIJAU)
-        // ==============================
-        JPanel leftPanel = new JPanel(null);
-        leftPanel.setBackground(new Color(0x59AC77));
-        leftPanel.setBounds(0, 0, 350, 700);
+    // ===================================
+    // PANEL KIRI (500px - IMAGE/HEADER)
+    // Mirip dengan sisi KIRI LoginView (putih)
+    // ===================================
+    JPanel leftPanel = new JPanel(new BorderLayout());
+    leftPanel.setPreferredSize(new Dimension(400, 600));
+    leftPanel.setBackground(Color.WHITE);
 
-        JLabel titleLeft = new JLabel("Create Account", SwingConstants.CENTER);
-        titleLeft.setFont(new Font("Fredoka", Font.BOLD, 26));
-        titleLeft.setForeground(Color.WHITE);
-        titleLeft.setBounds(0, 200, 350, 40);
-        leftPanel.add(titleLeft);
+    // BAGIAN ATAS ATAU HEADER (Logo)
+    JLabel headerLabel = new JLabel("BANK SAMPAH", SwingConstants.LEFT);
+    headerLabel.setFont(new Font("Fredoka", Font.BOLD, 24));
+    headerLabel.setForeground(new Color(0x356A69)); // Warna Hijau Gelap
+    headerLabel.setBorder(BorderFactory.createEmptyBorder(30, 30, 0, 0)); // Padding
+    leftPanel.add(headerLabel, BorderLayout.NORTH);
 
-        JLabel desc1 = new JLabel("Daftarkan akun baru", SwingConstants.CENTER);
-        desc1.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        desc1.setForeground(Color.WHITE);
-        desc1.setBounds(0, 250, 350, 30);
-        leftPanel.add(desc1);
+    // Kontainer Gambar (di Tengah)
+    JPanel imageContainer = new JPanel(new GridBagLayout());
+    imageContainer.setBackground(Color.WHITE);
+    
+    // Placeholder untuk Gambar Ilustrasi (Anda bisa mengganti path ini)
+    ImageIcon signupImage = new ImageIcon("D:\\project PBO\\Trash_Bank\\src\\Asset\\Image\\1010042-10 - Edited.png\\"); // Ganti dengan gambar Sign Up
+    Image img = signupImage.getImage();
+    // Skala gambar lebih kecil karena panel lebih tinggi
+    Image scaledImg = img.getScaledInstance(350, 350, Image.SCALE_SMOOTH); 
+    JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+    imageContainer.add(imageLabel);
+    leftPanel.add(imageContainer, BorderLayout.CENTER);
 
-        JLabel desc2 = new JLabel("untuk mengakses aplikasi", SwingConstants.CENTER);
-        desc2.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        desc2.setForeground(Color.WHITE);
-        desc2.setBounds(0, 280, 350, 30);
-        leftPanel.add(desc2);
+    // Footer Text
+    JLabel footerLabel = new JLabel("Daftarkan dirimu dan mulai peduli lingkungan!", SwingConstants.CENTER);
+    footerLabel.setFont(new Font("Fredoka", Font.BOLD, 16));
+    footerLabel.setForeground(new Color(0x356A69));
+    footerLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0)); // Padding bawah
+    leftPanel.add(footerLabel, BorderLayout.SOUTH);
 
-        // ==============================
-        // PANEL KANAN (FORM)
-        // ==============================
-        JPanel rightPanel = new JPanel(null);
-        rightPanel.setBackground(Color.WHITE);
-        rightPanel.setBounds(350, 0, 450, 700);
+    add(leftPanel, BorderLayout.WEST);
 
-        JLabel titleRight = new JLabel("Buat Akun Baru");
-        titleRight.setFont(new Font("Fredoka", Font.BOLD, 26));
-        titleRight.setBounds(110, 65, 300, 40);
-        rightPanel.add(titleRight);
+    // ===================================
+    // PANEL KANAN (300px - FORM)
+    // Mirip dengan sisi KANAN LoginView (Hijau Gelap)
+    // ===================================
+    JPanel rightPanel = new JPanel(new GridBagLayout());
+    rightPanel.setBackground(new Color(0x356A69)); // Warna Hijau Gelap
 
-        // LABEL & INPUT
-        JLabel roleLabel = new JLabel("Daftar Sebagai:");
-        roleLabel.setBounds(60, 135, 200, 25);
-        roleLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(roleLabel);
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(8, 20, 8, 20); // Padding antara komponen
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipadx = 0; // Reset internal padding
+    gbc.gridwidth = 2; // Lebar field mencakup 2 kolom
 
-        roleBox = new JComboBox<>(new String[]{"Admin", "Penyetor"});
-        roleBox.setBounds(60, 170, 330, 35);
-        roleBox.setFont(new Font("Fredoka", Font.PLAIN, 14));
-        rightPanel.add(roleBox);
+    int y = 0;
 
-        JLabel namaLabel = new JLabel("Nama Lengkap:");
-        namaLabel.setBounds(60, 215, 200, 25);
-        namaLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(namaLabel);
+    // Title
+    JLabel title = new JLabel("Create Your Account", SwingConstants.LEFT);
+    title.setFont(new Font("Fredoka", Font.BOLD, 26));
+    title.setForeground(Color.WHITE);
+    gbc.gridx = 0;
+    gbc.gridy = y++;
+    rightPanel.add(title, gbc);
 
-        namaField = new JTextField();
-        namaField.setBounds(60, 240, 330, 35);
-        rightPanel.add(namaField);
+    // Subtitle (Text Link to LoginView)
+    JPanel subtitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    subtitlePanel.setOpaque(false);
 
-        JLabel noHpLabel = new JLabel("No. HP:");
-        noHpLabel.setBounds(60, 280, 200, 25);
-        noHpLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(noHpLabel);
+    JLabel alreadyHaveAccount = new JLabel("Sudah punya akun? ");
+    alreadyHaveAccount.setFont(new Font("Fredoka", Font.PLAIN, 12));
+    alreadyHaveAccount.setForeground(Color.WHITE);
+    subtitlePanel.add(alreadyHaveAccount);
 
-        noHpField = new JTextField();
-        noHpField.setBounds(60, 310, 330, 35);
-        rightPanel.add(noHpField);
+    JLabel loginLink = new JLabel("Login di sini");
+    loginLink.setFont(new Font("Fredoka", Font.BOLD, 12));
+    loginLink.setForeground(new Color(0x67AE6E));
+    loginLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    subtitlePanel.add(loginLink);
+    
+    gbc.gridy = y++;
+    gbc.insets = new Insets(0, 20, 20, 20); // Sedikit lebih rapat ke atas
+    rightPanel.add(subtitlePanel, gbc);
+    gbc.insets = new Insets(8, 20, 8, 20); // Reset padding
 
-        JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(60, 360, 200, 25);
-        userLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(userLabel);
+    // Role Box (Daftar Sebagai)
+    roleBox = new JComboBox<>(new String[]{"Admin", "Penyetor"});
+    styleField(roleBox);
+    gbc.gridy = y++;
+    rightPanel.add(roleBox, gbc);
 
-        usernameField = new JTextField();
-        usernameField.setBounds(60, 390, 330, 35);
-        rightPanel.add(usernameField);
+    // Nama Lengkap
+    namaField = new JTextField(25);
+    namaField.setText("Nama Lengkap");
+    styleTextField(namaField);
+    gbc.gridy = y++;
+    rightPanel.add(namaField, gbc);
 
-        JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(60, 430, 200, 25);   // dari 410 → 430
-        passLabel.setFont(new Font("Fredoka", Font.PLAIN, 16));
-        rightPanel.add(passLabel);
+    // No. HP
+    noHpField = new JTextField(25);
+    noHpField.setText("Nomor HP");
+    styleTextField(noHpField);
+    gbc.gridy = y++;
+    rightPanel.add(noHpField, gbc);
 
-        passwordField = new JPasswordField();
-        passwordField.setBounds(60, 460, 330, 35);   // dari 440 → 460
-        rightPanel.add(passwordField);
+    // Username
+    usernameField = new JTextField(25);
+    usernameField.setText("Username"); 
+    styleTextField(usernameField);
+    gbc.gridy = y++;
+    rightPanel.add(usernameField, gbc);
 
-        // BUTTON
-        registerButton = new JButton("Register");
-        registerButton.setBounds(60, 540, 145, 40);
-        registerButton.setBackground(new Color(0x59AC77));
-        registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Fredoka", Font.BOLD, 15));
-        registerButton.setFocusPainted(false);
-        rightPanel.add(registerButton);
+    // Password
+    passwordField = new JPasswordField(25);
+    passwordField.setText("Password");
+    styleTextField(passwordField);
+    gbc.gridy = y++;
+    rightPanel.add(passwordField, gbc);
 
-        backButton = new JButton("Back");
-        backButton.setBounds(245, 540, 145, 40);
-        backButton.setBackground(new Color(0x59AC77));
-        backButton.setForeground(Color.WHITE);
-        backButton.setFont(new Font("Fredoka", Font.BOLD, 15));
-        backButton.setFocusPainted(false);
-        rightPanel.add(backButton);
+    // Dummy Space/Divider
+    gbc.gridy = y++;
+    rightPanel.add(Box.createVerticalStrut(10), gbc);
 
-        // ADD PANEL
-        mainPanel.add(leftPanel);
-        mainPanel.add(rightPanel);
-        add(mainPanel);
+    // Button Container (Register dan Back)
+    JPanel buttonContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+    buttonContainer.setOpaque(false);
 
-        // Aksi Tombol
-        registerButton.addActionListener(e -> registerUser());
-        backButton.addActionListener(e -> {
+    // Register Button
+    registerButton = new JButton("Register");
+    registerButton.setFont(new Font("Fredoka", Font.BOLD, 14));
+    registerButton.setBackground(new Color(0x67AE6E)); // Warna Hijau
+    registerButton.setForeground(Color.WHITE);
+    registerButton.setFocusPainted(false);
+    registerButton.setPreferredSize(new Dimension(130, 40)); 
+    buttonContainer.add(registerButton);
+
+    // Back Button
+    backButton = new JButton("Back");
+    backButton.setFont(new Font("Fredoka", Font.BOLD, 14));
+    backButton.setBackground(new Color(0x67AE6E)); 
+    backButton.setForeground(Color.WHITE);
+    backButton.setFocusPainted(false);
+    backButton.setPreferredSize(new Dimension(130, 40));
+    buttonContainer.add(backButton);
+
+    gbc.gridy = y++;
+    gbc.ipady = 0; // Reset internal padding
+    rightPanel.add(buttonContainer, gbc);
+
+    add(rightPanel, BorderLayout.CENTER); 
+
+    // Aksi Tombol (Logic tidak diubah)
+    registerButton.addActionListener(e -> registerUser());
+    
+    // Action listener untuk link teks "Login di sini"
+    loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
             new LoginView().setVisible(true);
             dispose();
-        });
-    }
+        }
+    });
 
+    backButton.addActionListener(e -> {
+        new LoginView().setVisible(true);
+        dispose();
+    });
+}
+
+// Tambahkan atau ubah helper methods ini jika belum ada:
+private void styleTextField(JTextField field) {
+    field.setPreferredSize(new Dimension(25, 40));
+    field.setBackground(Color.WHITE);
+    field.setFont(new Font("Fredoka", Font.PLAIN, 14));
+    field.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    field.setForeground(Color.GRAY);
+}
+
+private void styleField(JComboBox<String> box) {
+    box.setPreferredSize(new Dimension(25, 40));
+    box.setBackground(Color.WHITE);
+    box.setFont(new Font("Fredoka", Font.PLAIN, 14));
+    box.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+}
     // ==============================
     // LOGIC PENDAFTARAN (DIPERBAIKI)
     // ==============================
